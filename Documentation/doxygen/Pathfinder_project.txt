@@ -23,11 +23,11 @@
 
 \page page_components Components 
 - \subpage I2C0
-- \subpage SERVO1_TimerUnit
-- \subpage PwmLdd1
+- \subpage Motors_TimerUnit
 - \subpage ASerialLdd1
 - \subpage TRIG
-- \subpage TU1
+- \subpage PwmLdd2
+- \subpage PwmLdd3
 
 */
 

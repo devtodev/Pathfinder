@@ -6,7 +6,7 @@
 **     Version     : Component 01.003, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-11-03, 14:11, # CodeGen: 39
+**     Date/Time   : 2016-12-09, 14:03, # CodeGen: 44
 **     Abstract    :
 **
 **     Settings    :
@@ -205,8 +205,6 @@ bool PE_PeripheralUsed(uint32_t PrphBaseAddress)
     case 0x4006A000UL:
     /* Base address allocated by peripheral(s) PTB */
     case 0x400FF040UL:
-    /* Base address allocated by peripheral(s) TPM2 */
-    case 0x4003A000UL:
       result = TRUE;
       break;
     default:
@@ -235,21 +233,21 @@ void LDD_SetClockConfiguration(LDD_TClockConfiguration ClockConfiguration)
   if (PE_LDD_DeviceDataList[PE_LDD_COMPONENT_I2C0_ID] != NULL) {
     I2C0_SetClockConfiguration(PE_LDD_DeviceDataList[PE_LDD_COMPONENT_I2C0_ID], ClockConfiguration);
   }
-  /* Component SERVO1_TimerUnit (TimerUnit_LDD). */
-  if (PE_LDD_DeviceDataList[PE_LDD_COMPONENT_SERVO1_TimerUnit_ID] != NULL) {
-    SERVO1_TimerUnit_SetClockConfiguration(PE_LDD_DeviceDataList[PE_LDD_COMPONENT_SERVO1_TimerUnit_ID], ClockConfiguration);
-  }
-  /* Component PwmLdd1 (PWM_LDD). */
-  if (PE_LDD_DeviceDataList[PE_LDD_COMPONENT_PwmLdd1_ID] != NULL) {
-    PwmLdd1_SetClockConfiguration(PE_LDD_DeviceDataList[PE_LDD_COMPONENT_PwmLdd1_ID], ClockConfiguration);
+  /* Component Motors_TimerUnit (TimerUnit_LDD). */
+  if (PE_LDD_DeviceDataList[PE_LDD_COMPONENT_Motors_TimerUnit_ID] != NULL) {
+    Motors_TimerUnit_SetClockConfiguration(PE_LDD_DeviceDataList[PE_LDD_COMPONENT_Motors_TimerUnit_ID], ClockConfiguration);
   }
   /* Component ASerialLdd1 (Serial_LDD). */
   if (PE_LDD_DeviceDataList[PE_LDD_COMPONENT_ASerialLdd1_ID] != NULL) {
     ASerialLdd1_SetClockConfiguration(PE_LDD_DeviceDataList[PE_LDD_COMPONENT_ASerialLdd1_ID], ClockConfiguration);
   }
-  /* Component TU1 (TimerUnit_LDD). */
-  if (PE_LDD_DeviceDataList[PE_LDD_COMPONENT_TU1_ID] != NULL) {
-    TU1_SetClockConfiguration(PE_LDD_DeviceDataList[PE_LDD_COMPONENT_TU1_ID], ClockConfiguration);
+  /* Component PwmLdd2 (PWM_LDD). */
+  if (PE_LDD_DeviceDataList[PE_LDD_COMPONENT_PwmLdd2_ID] != NULL) {
+    PwmLdd2_SetClockConfiguration(PE_LDD_DeviceDataList[PE_LDD_COMPONENT_PwmLdd2_ID], ClockConfiguration);
+  }
+  /* Component PwmLdd3 (PWM_LDD). */
+  if (PE_LDD_DeviceDataList[PE_LDD_COMPONENT_PwmLdd3_ID] != NULL) {
+    PwmLdd3_SetClockConfiguration(PE_LDD_DeviceDataList[PE_LDD_COMPONENT_PwmLdd3_ID], ClockConfiguration);
   }
   BT_SetClockConfiguration(ClockConfiguration);
 }

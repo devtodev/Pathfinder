@@ -6,7 +6,7 @@
 **     Version     : Component 01.003, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-11-03, 14:29, # CodeGen: 41
+**     Date/Time   : 2016-12-09, 14:03, # CodeGen: 44
 **     Abstract    :
 **
 **     Settings    :
@@ -70,15 +70,15 @@
 #include "CS1.h"
 #include "I2C0.h"
 #include "UTIL1.h"
-#include "SERVO1.h"
-#include "Pwm1.h"
-#include "PwmLdd1.h"
-#include "SERVO1_TimerUnit.h"
+#include "Motors_TimerUnit.h"
 #include "BT.h"
 #include "ASerialLdd1.h"
 #include "TRIG.h"
-#include "TU1.h"
 #include "WAIT1.h"
+#include "MotorSpeed_4.h"
+#include "PwmLdd2.h"
+#include "MotorSpeed_3.h"
+#include "PwmLdd3.h"
 
 
 /*

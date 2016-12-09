@@ -39,14 +39,14 @@
 #include "TSK1.h"
 #include "MMA1.h"
 #include "WAIT1.h"
-#include "SERVO1.h"
-#include "Pwm1.h"
-#include "PwmLdd1.h"
-#include "SERVO1_TimerUnit.h"
+#include "MotorSpeed_4.h"
+#include "Motors_TimerUnit.h"
 #include "BT.h"
 #include "ASerialLdd1.h"
 #include "TRIG.h"
-#include "TU1.h"
+#include "PwmLdd2.h"
+#include "MotorSpeed_3.h"
+#include "PwmLdd3.h"
 #include "GI2C1.h"
 #include "TMOUT1.h"
 #include "CS1.h"
@@ -72,7 +72,7 @@ extern "C" {
 void Cpu_OnNMIINT(void);
 
 
-void FRTOS1_vApplicationStackOverflowHook(xTaskHandle pxTask, char *pcTaskName);
+void FRTOS1_vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName);
 /*
 ** ===================================================================
 **     Event       :  FRTOS1_vApplicationStackOverflowHook (module Events)

@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : KL46P121M48SF4RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-11-03, 14:29, # CodeGen: 41
+**     Date/Time   : 2016-12-09, 14:03, # CodeGen: 44
 **     Abstract    :
 **
 **     Settings    :
@@ -492,15 +492,15 @@
 #include "CS1.h"
 #include "I2C0.h"
 #include "UTIL1.h"
-#include "SERVO1.h"
-#include "Pwm1.h"
-#include "PwmLdd1.h"
-#include "SERVO1_TimerUnit.h"
+#include "Motors_TimerUnit.h"
 #include "BT.h"
 #include "ASerialLdd1.h"
 #include "TRIG.h"
-#include "TU1.h"
 #include "WAIT1.h"
+#include "MotorSpeed_4.h"
+#include "PwmLdd2.h"
+#include "MotorSpeed_3.h"
+#include "PwmLdd3.h"
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
@@ -1642,9 +1642,9 @@ void __init_hardware(void)
   /* System clock initialization */
   /* SIM_CLKDIV1: OUTDIV1=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,OUTDIV4=3,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0 */
   SIM_CLKDIV1 = (SIM_CLKDIV1_OUTDIV1(0x00) | SIM_CLKDIV1_OUTDIV4(0x03)); /* Set the system prescalers to safe value */
-  /* SIM_SCGC5: PORTE=1,PORTD=1,PORTB=1,PORTA=1 */
+  /* SIM_SCGC5: PORTE=1,PORTC=1,PORTB=1,PORTA=1 */
   SIM_SCGC5 |= SIM_SCGC5_PORTE_MASK |
-               SIM_SCGC5_PORTD_MASK |
+               SIM_SCGC5_PORTC_MASK |
                SIM_SCGC5_PORTB_MASK |
                SIM_SCGC5_PORTA_MASK;   /* Enable clock gate for ports to enable pin routing */
   if ((PMC_REGSC & PMC_REGSC_ACKISO_MASK) != 0x0U) {
@@ -1788,12 +1788,12 @@ void PE_low_level_init(void)
   GI2C1_Init();
   /* ### MMA8451Q "MMA1" init code ... */
   /* Write code here ... */
-  /* ### PWM_LDD "PwmLdd1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
-  (void)PwmLdd1_Init(NULL);
-  /* ### Servo "SERVO1" init code ... */
-  SERVO1_Init();
   /* ### Asynchro serial "BT" init code ... */
   BT_Init();
+  /* ### PWM_LDD "PwmLdd2" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)PwmLdd2_Init(NULL);
+  /* ### PWM_LDD "PwmLdd3" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)PwmLdd3_Init(NULL);
 }
   /* Flash configuration field */
   __attribute__ ((section (".cfmconfig"))) const uint8_t _cfm[0x10] = {
