@@ -19,8 +19,8 @@
 #define MOTOR4_A 0
 #define MOTOR4_B 6
 
-#define FORWARD 1
-#define BACKWARD -1
+#define FORWARD -1
+#define BACKWARD 1
 #define RELEASE 0
 
 #define HC595_SHIFT_MSB_FIRST 1
@@ -65,7 +65,7 @@ void motorsInit()
 	MotorSpeed_3_SetDutyUS(0xFFFF);
 	motorDirection(1, RELEASE);
 	motorDirection(2, RELEASE);
-	motorDirection(3, BACKWARD);
+	motorDirection(3, FORWARD);
 	motorDirection(4, FORWARD);
 }
 
