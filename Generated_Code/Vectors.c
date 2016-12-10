@@ -6,7 +6,7 @@
 **     Version     : Component 01.003, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-09, 14:03, # CodeGen: 44
+**     Date/Time   : 2016-12-10, 12:54, # CodeGen: 64
 **     Abstract    :
 **
 **     Settings    :
@@ -64,15 +64,25 @@
   #include "CS1.h"
   #include "I2C0.h"
   #include "UTIL1.h"
-  #include "Motors_TimerUnit.h"
   #include "BT.h"
   #include "ASerialLdd1.h"
   #include "TRIG.h"
   #include "WAIT1.h"
   #include "MotorSpeed_4.h"
   #include "PwmLdd2.h"
+  #include "Motors_TimerUnit.h"
+  #include "TU1.h"
   #include "MotorSpeed_3.h"
-  #include "PwmLdd3.h"
+  #include "PwmLdd1.h"
+  #include "MotorsDirection.h"
+  #include "STCP1.h"
+  #include "BitIoLdd1.h"
+  #include "DS1.h"
+  #include "BitIoLdd2.h"
+  #include "SHCP1.h"
+  #include "BitIoLdd3.h"
+  #include "OE1.h"
+  #include "BitIoLdd4.h"
   #include "Events.h"
 
 
@@ -127,7 +137,7 @@
     (tIsrFunc)&Cpu_Interrupt,          /* 0x20  0x00000080   -   ivINT_CMP0                    unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x21  0x00000084   -   ivINT_TPM0                    unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x22  0x00000088   -   ivINT_TPM1                    unused by PE */
-    (tIsrFunc)&Cpu_Interrupt,          /* 0x23  0x0000008C   -   ivINT_TPM2                    unused by PE */
+    (tIsrFunc)&TU1_Interrupt,          /* 0x23  0x0000008C   2   ivINT_TPM2                    used by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x24  0x00000090   -   ivINT_RTC                     unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x25  0x00000094   -   ivINT_RTC_Seconds             unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x26  0x00000098   -   ivINT_PIT                     unused by PE */

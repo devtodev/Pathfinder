@@ -7,7 +7,7 @@
 **     Version     : Component 01.164, Driver 01.11, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-09, 14:03, # CodeGen: 44
+**     Date/Time   : 2016-12-10, 11:46, # CodeGen: 59
 **     Abstract    :
 **          This TimerUnit component provides a low level API for unified hardware access across
 **          various timer devices using the Prescaler-Counter-Compare-Capture timer structure.
@@ -19,7 +19,7 @@
 **          Counter width                                  : 16 bits
 **          Value type                                     : uint16_t
 **          Input clock source                             : Internal
-**            Counter frequency                            : 327.68 kHz
+**            Counter frequency                            : Auto select
 **          Counter restart                                : On-match
 **            Period device                                : TPM0_MOD
 **            Period                                       : 20 ms
@@ -27,22 +27,22 @@
 **          Channel list                                   : 2
 **            Channel 0                                    : 
 **              Mode                                       : Compare
-**                Compare                                  : TPM0_C2V
-**                Offset                                   : 1.365333 ms
-**                Output on compare                        : Set
-**                  Output on overrun                      : Clear
-**                  Initial state                          : Low
-**                  Output pin                             : PTA5/USB_CLKIN/TPM0_CH2/I2S0_TX_BCLK
-**                  Output pin signal                      : 
-**                Interrupt                                : Disabled
-**            Channel 1                                    : 
-**              Mode                                       : Compare
 **                Compare                                  : TPM0_C4V
-**                Offset                                   : 0 µs
+**                Offset                                   : 1.5 ms
 **                Output on compare                        : Set
 **                  Output on overrun                      : Clear
 **                  Initial state                          : Low
 **                  Output pin                             : LCD_P28/CMP0_IN2/PTC8/I2C0_SCL/TPM0_CH4/I2S0_MCLK
+**                  Output pin signal                      : 
+**                Interrupt                                : Disabled
+**            Channel 1                                    : 
+**              Mode                                       : Compare
+**                Compare                                  : TPM0_C2V
+**                Offset                                   : 1.5 ms
+**                Output on compare                        : Set
+**                  Output on overrun                      : Clear
+**                  Initial state                          : Low
+**                  Output pin                             : PTA5/USB_CLKIN/TPM0_CH2/I2S0_TX_BCLK
 **                  Output pin signal                      : 
 **                Interrupt                                : Disabled
 **          Initialization                                 : 
@@ -144,17 +144,17 @@ extern "C" {
 #define __BWUserType_Motors_TimerUnit_TValueType
   typedef uint16_t Motors_TimerUnit_TValueType ; /* Type for data parameters of methods */
 #endif
-#define Motors_TimerUnit_CNT_INP_FREQ_U_0 0x00050000UL /* Counter input frequency in Hz */
-#define Motors_TimerUnit_CNT_INP_FREQ_U_0_CFG_0 0x00050000UL /* Counter input frequency in Hz for Clock configuration 0 */
-#define Motors_TimerUnit_CNT_INP_FREQ_R_0 327679.97986734204F /* Counter input frequency in Hz */
-#define Motors_TimerUnit_CNT_INP_FREQ_R_0_CFG_0 327679.97986734204F /* Counter input frequency in Hz for Clock configuration 0 */
+#define Motors_TimerUnit_CNT_INP_FREQ_U_0 0x00280000UL /* Counter input frequency in Hz */
+#define Motors_TimerUnit_CNT_INP_FREQ_U_0_CFG_0 0x00280000UL /* Counter input frequency in Hz for Clock configuration 0 */
+#define Motors_TimerUnit_CNT_INP_FREQ_R_0 2621438.120953155F /* Counter input frequency in Hz */
+#define Motors_TimerUnit_CNT_INP_FREQ_R_0_CFG_0 2621438.120953155F /* Counter input frequency in Hz for Clock configuration 0 */
 #define Motors_TimerUnit_CNT_INP_FREQ_COUNT 0U /* Count of predefined counter input frequencies */
-#define Motors_TimerUnit_PERIOD_TICKS 0x199AUL /* Initialization value of period in 'counter ticks' */
+#define Motors_TimerUnit_PERIOD_TICKS 0xCCCDUL /* Initialization value of period in 'counter ticks' */
 #define Motors_TimerUnit_NUMBER_OF_CHANNELS 0x02U /* Count of predefined channels */
 #define Motors_TimerUnit_COUNTER_WIDTH 0x10U /* Counter width in bits  */
 #define Motors_TimerUnit_COUNTER_DIR DIR_UP /* Direction of counting */
-#define Motors_TimerUnit_OFFSET_0_TICKS 0x01BFul /* Initialization value of offset as 'counter ticks' for channel 0 */
-#define Motors_TimerUnit_OFFSET_1_TICKS 0x00ul /* Initialization value of offset as 'counter ticks' for channel 1 */
+#define Motors_TimerUnit_OFFSET_0_TICKS 0x0F5Cul /* Initialization value of offset as 'counter ticks' for channel 0 */
+#define Motors_TimerUnit_OFFSET_1_TICKS 0x0F5Cul /* Initialization value of offset as 'counter ticks' for channel 1 */
 /*! Peripheral base address of a device allocated by the component. This constant can be used directly in PDD macros. */
 #define Motors_TimerUnit_PRPH_BASE_ADDRESS  0x40038000U
   

@@ -7,7 +7,7 @@
 **     Version     : Component 02.241, Driver 01.01, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-09, 14:03, # CodeGen: 44
+**     Date/Time   : 2016-12-10, 16:29, # CodeGen: 65
 **     Abstract    :
 **         This component implements a pulse-width modulation generator
 **         that generates signal with variable duty and fixed cycle. 
@@ -20,7 +20,7 @@
 **          Counter                                        : TPM0_CNT
 **          Interrupt service/event                        : Disabled
 **          Period                                         : 20 ms
-**          Starting pulse width                           : 1.365333 ms
+**          Starting pulse width                           : 1.5 ms
 **          Initial polarity                               : low
 **          Same period in modes                           : no
 **          Component uses entire timer                    : no
@@ -92,7 +92,7 @@
 #include "PE_Const.h"
 #include "IO_Map.h"
 /* Include inherited beans */
-#include "PwmLdd3.h"
+#include "PwmLdd1.h"
 
 #include "Cpu.h"
 
@@ -101,8 +101,8 @@ extern "C" {
 #endif 
 
 
-#define MotorSpeed_3_PERIOD_VALUE PwmLdd3_PERIOD_VALUE /* Initial period value in ticks of the timer. It is available only if the bean is enabled in high speed mode. */
-#define MotorSpeed_3_PERIOD_VALUE_HIGH PwmLdd3_PERIOD_VALUE_0 /* Period value in ticks of the timer in high speed mode. It is available only if the bean is enabled in high speed mode. */
+#define MotorSpeed_3_PERIOD_VALUE PwmLdd1_PERIOD_VALUE /* Initial period value in ticks of the timer. It is available only if the bean is enabled in high speed mode. */
+#define MotorSpeed_3_PERIOD_VALUE_HIGH PwmLdd1_PERIOD_VALUE_0 /* Period value in ticks of the timer in high speed mode. It is available only if the bean is enabled in high speed mode. */
 
 
 /*
@@ -127,7 +127,7 @@ extern "C" {
 **                           the active speed mode
 ** ===================================================================
 */
-#define MotorSpeed_3_SetRatio16(Ratio) (PwmLdd3_SetRatio16(PwmLdd3_DeviceData, Ratio))
+#define MotorSpeed_3_SetRatio16(Ratio) (PwmLdd1_SetRatio16(PwmLdd1_DeviceData, Ratio))
 
 /*
 ** ===================================================================
@@ -149,7 +149,7 @@ extern "C" {
 **                           ERR_RANGE - Parameter out of range
 ** ===================================================================
 */
-#define MotorSpeed_3_SetDutyUS(Time) (PwmLdd3_SetDutyUS(PwmLdd3_DeviceData, Time))
+#define MotorSpeed_3_SetDutyUS(Time) (PwmLdd1_SetDutyUS(PwmLdd1_DeviceData, Time))
 
 /*
 ** ===================================================================
@@ -171,7 +171,7 @@ extern "C" {
 **                           ERR_RANGE - Parameter out of range
 ** ===================================================================
 */
-#define MotorSpeed_3_SetDutyMS(Time) (PwmLdd3_SetDutyMS(PwmLdd3_DeviceData, Time))
+#define MotorSpeed_3_SetDutyMS(Time) (PwmLdd1_SetDutyMS(PwmLdd1_DeviceData, Time))
 
 /* END MotorSpeed_3. */
 

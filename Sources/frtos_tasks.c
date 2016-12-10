@@ -16,7 +16,7 @@
 #include "drivers/acelerometro.h"
 #include "drivers/BT_actions.h"
 #include "middleware/Distance.h"
-#include "middleware/servoMotor.h"
+#include "middleware/motor.h"
 
 #define ACCEL_ANTIREBOTE	30
 
@@ -25,16 +25,9 @@
 static portTASK_FUNCTION(MotorTask, pvParameters) {
 	uint16_t SERVO1_position;
 
-	servoInit();
+	motorsInit();
 	for(;;) {
-		setServoOnRight();
-		vTaskDelay(300/portTICK_RATE_MS);
-		setServoOnCenter();
-		vTaskDelay(300/portTICK_RATE_MS);
-		setServoOnLeft();
-		vTaskDelay(300/portTICK_RATE_MS);
-		setServoOnCenter();
-		vTaskDelay(300/portTICK_RATE_MS);
+		motorsSetSpeed(0xFFFF/2);
 	}
 
 	vTaskDelete(MotorTask);

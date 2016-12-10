@@ -670,29 +670,6 @@ Module "UTIL1"     (component Utility)
    - UTIL1_SetValue24LE -Stores a 24bit value in memory as Little Endian
    - UTIL1_SetValue32LE -Stores a 32bit value in memory as Little Endian
 
-Module "Motors_TimerUnit" (component TimerUnit_LDD)
-   - Motors_TimerUnit_Init -Initializes the device. Allocates memory for the device data structure, allocates interrupt vectors 
-                and sets interrupt priority, sets pin routing, sets timing, etc. If the property <"Enable in init. code"> is 
-                set to "yes" value then the device is also enabled (see the description of the <Enable> method). In this case 
-                the <Enable> method is not necessary and needn't to be generated. This method can be called only once. Before 
-                the second call of Init the <Deinit> must be called first.
-   - Motors_TimerUnit_Enable -Enables the component - it starts the signal generation. Events may be generated (see 
-                SetEventMask). The method is not available if the counter can't be disabled/enabled by HW.
-   - Motors_TimerUnit_Disable -Disables the component - it stops signal generation and events calling. The method is not 
-                available if the counter can't be disabled/enabled by HW.
-   - Motors_TimerUnit_GetPeriodTicks -Returns the number of counter ticks before re-initialization. See also method 
-                <SetPeriodTicks>. This method is available only if the property <"Counter restart"> is switched to 'on-match' 
-                value.
-   - Motors_TimerUnit_GetCounterValue -Returns the content of counter register. This method can be used both if counter is 
-                enabled and if counter is disabled. The method is not available if HW doesn't allow reading of the counter.
-   - Motors_TimerUnit_SetOffsetTicks -Sets the new offset value to channel specified by the parameter ChannelIdx. It is user 
-                responsibility to use value below selected period. This method is available when at least one channel is 
-                configured.
-   - Motors_TimerUnit_GetOffsetTicks -Returns the number of counter ticks to compare match channel specified by the parameter 
-                ChannelIdx. See also method <SetOffsetTicks>. This method is available when at least one channel is configured.
-   - Motors_TimerUnit_SelectOutputAction -Sets the type of compare match and counter overflow action on channel output. This 
-                method is available when at least one channel is configured.
-
 Module "BT"        (component AsynchroSerial)
    - BT_RecvChar -If any data is received, this method returns one character, otherwise it returns an error code (it does not 
                 wait for data). This method is enabled only if the receiver property is enabled.  [Note:] Because the preferred 
@@ -763,6 +740,43 @@ Module "MotorSpeed_4" (component PWM)
                 a 16-bit unsigned integer number. The method is available only if it is not selected list of predefined values 
                 in <Starting pulse width> property.
 
+Module "Motors_TimerUnit" (component TimerUnit_LDD)
+   - Motors_TimerUnit_Init -Initializes the device. Allocates memory for the device data structure, allocates interrupt vectors 
+                and sets interrupt priority, sets pin routing, sets timing, etc. If the property <"Enable in init. code"> is 
+                set to "yes" value then the device is also enabled (see the description of the <Enable> method). In this case 
+                the <Enable> method is not necessary and needn't to be generated. This method can be called only once. Before 
+                the second call of Init the <Deinit> must be called first.
+   - Motors_TimerUnit_Enable -Enables the component - it starts the signal generation. Events may be generated (see 
+                SetEventMask). The method is not available if the counter can't be disabled/enabled by HW.
+   - Motors_TimerUnit_Disable -Disables the component - it stops signal generation and events calling. The method is not 
+                available if the counter can't be disabled/enabled by HW.
+   - Motors_TimerUnit_GetPeriodTicks -Returns the number of counter ticks before re-initialization. See also method 
+                <SetPeriodTicks>. This method is available only if the property <"Counter restart"> is switched to 'on-match' 
+                value.
+   - Motors_TimerUnit_GetCounterValue -Returns the content of counter register. This method can be used both if counter is 
+                enabled and if counter is disabled. The method is not available if HW doesn't allow reading of the counter.
+   - Motors_TimerUnit_SetOffsetTicks -Sets the new offset value to channel specified by the parameter ChannelIdx. It is user 
+                responsibility to use value below selected period. This method is available when at least one channel is 
+                configured.
+   - Motors_TimerUnit_GetOffsetTicks -Returns the number of counter ticks to compare match channel specified by the parameter 
+                ChannelIdx. See also method <SetOffsetTicks>. This method is available when at least one channel is configured.
+   - Motors_TimerUnit_SelectOutputAction -Sets the type of compare match and counter overflow action on channel output. This 
+                method is available when at least one channel is configured.
+
+Module "TU1"       (component TimerUnit_LDD)
+   - TU1_Init -Initializes the device. Allocates memory for the device data structure, allocates interrupt vectors and sets 
+                interrupt priority, sets pin routing, sets timing, etc. If the property <"Enable in init. code"> is set to 
+                "yes" value then the device is also enabled (see the description of the <Enable> method). In this case the 
+                <Enable> method is not necessary and needn't to be generated. This method can be called only once. Before the 
+                second call of Init the <Deinit> must be called first.
+   - TU1_Deinit -Deinitializes the device. Switches off the device, frees the device data structure memory, interrupts vectors, 
+                etc.
+   - TU1_ResetCounter -Resets counter. If counter is counting up then it is set to zero. If counter is counting down then 
+                counter is updated to the reload value.   The method is not available if HW doesn't allow resetting of the 
+                counter.
+   - TU1_GetCaptureValue -Returns the content of capture register specified by the parameter ChannelIdx. This method is 
+                available when at least one channel is configured.
+
 Module "MotorSpeed_3" (component PWM)
    - MotorSpeed_3_SetRatio16 -This method sets a new duty-cycle ratio. Ratio is expressed as a 16-bit unsigned integer number. 
                 0 - FFFF value is proportional to ratio 0 - 100%. The method is available only if it is not selected list of 
@@ -774,6 +788,18 @@ Module "MotorSpeed_3" (component PWM)
    - MotorSpeed_3_SetDutyMS -This method sets the new duty value of the output signal. The duty is expressed in milliseconds as 
                 a 16-bit unsigned integer number. The method is available only if it is not selected list of predefined values 
                 in <Starting pulse width> property.
+
+Module "MotorsDirection" (component 74HC595)
+   - MotorsDirection_Enable -Enables the device
+   - MotorsDirection_Disable -Disables the device
+   - MotorsDirection_ShiftByte -Shift a byte to the shift register. The most significant bit will be on output pin 0. Use 
+                Latch() to show the data on the output pins.
+   - MotorsDirection_Latch -Sends a latch pulse to move the bits from the internal memory to the output pins.
+   - MotorsDirection_ReadByte -Returns the current value of the shift register. The current value of the shift register is 
+                cached in the driver.
+   - MotorsDirection_WriteByte -Shifts the given byte and latches it.
+   - MotorsDirection_Deinit -Deinitializes the driver
+   - MotorsDirection_Init -Initializes the driver
 
 Module "Cpu"       (component MKL46Z256LL4)
    - Cpu_SetClockConfiguration -Calling of this method will cause the clock configuration change and reconfiguration of all 

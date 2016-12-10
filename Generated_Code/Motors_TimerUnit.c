@@ -7,7 +7,7 @@
 **     Version     : Component 01.164, Driver 01.11, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-09, 14:03, # CodeGen: 44
+**     Date/Time   : 2016-12-10, 11:46, # CodeGen: 59
 **     Abstract    :
 **          This TimerUnit component provides a low level API for unified hardware access across
 **          various timer devices using the Prescaler-Counter-Compare-Capture timer structure.
@@ -19,7 +19,7 @@
 **          Counter width                                  : 16 bits
 **          Value type                                     : uint16_t
 **          Input clock source                             : Internal
-**            Counter frequency                            : 327.68 kHz
+**            Counter frequency                            : Auto select
 **          Counter restart                                : On-match
 **            Period device                                : TPM0_MOD
 **            Period                                       : 20 ms
@@ -27,22 +27,22 @@
 **          Channel list                                   : 2
 **            Channel 0                                    : 
 **              Mode                                       : Compare
-**                Compare                                  : TPM0_C2V
-**                Offset                                   : 1.365333 ms
-**                Output on compare                        : Set
-**                  Output on overrun                      : Clear
-**                  Initial state                          : Low
-**                  Output pin                             : PTA5/USB_CLKIN/TPM0_CH2/I2S0_TX_BCLK
-**                  Output pin signal                      : 
-**                Interrupt                                : Disabled
-**            Channel 1                                    : 
-**              Mode                                       : Compare
 **                Compare                                  : TPM0_C4V
-**                Offset                                   : 0 µs
+**                Offset                                   : 1.5 ms
 **                Output on compare                        : Set
 **                  Output on overrun                      : Clear
 **                  Initial state                          : Low
 **                  Output pin                             : LCD_P28/CMP0_IN2/PTC8/I2C0_SCL/TPM0_CH4/I2S0_MCLK
+**                  Output pin signal                      : 
+**                Interrupt                                : Disabled
+**            Channel 1                                    : 
+**              Mode                                       : Compare
+**                Compare                                  : TPM0_C2V
+**                Offset                                   : 1.5 ms
+**                Output on compare                        : Set
+**                  Output on overrun                      : Clear
+**                  Initial state                          : Low
+**                  Output pin                             : PTA5/USB_CLKIN/TPM0_CH2/I2S0_TX_BCLK
 **                  Output pin signal                      : 
 **                Interrupt                                : Disabled
 **          Initialization                                 : 
@@ -131,7 +131,7 @@ extern "C" {
 #endif 
 
 /* List of channels used by component */
-static const uint8_t ChannelDevice[Motors_TimerUnit_NUMBER_OF_CHANNELS] = {0x02U,0x04U};
+static const uint8_t ChannelDevice[Motors_TimerUnit_NUMBER_OF_CHANNELS] = {0x04U,0x02U};
 
 /* Table of channels mode / 0 - compare mode, 1 - capture mode */
 static const uint8_t ChannelMode[Motors_TimerUnit_NUMBER_OF_CHANNELS] = {0x00U,0x00U};
@@ -215,25 +215,25 @@ LDD_TDeviceData* Motors_TimerUnit_Init(LDD_TUserData *UserDataPtr)
   TPM0_C4SC = 0x00U;                   /* Clear channel status and control register */
   /* TPM0_C5SC: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,CHF=0,CHIE=0,MSB=0,MSA=0,ELSB=0,ELSA=0,??=0,DMA=0 */
   TPM0_C5SC = 0x00U;                   /* Clear channel status and control register */
-  /* TPM0_MOD: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,MOD=0x1999 */
-  TPM0_MOD = TPM_MOD_MOD(0x1999);      /* Set up modulo register */
-  /* TPM0_C2SC: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,CHF=0,CHIE=0,MSB=1,MSA=0,ELSB=1,ELSA=1,??=0,DMA=0 */
-  TPM0_C2SC = (TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK | TPM_CnSC_ELSA_MASK); /* Set up channel status and control register */
-  /* TPM0_C2V: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,VAL=0x01BF */
-  TPM0_C2V = TPM_CnV_VAL(0x01BF);      /* Set up channel value register */
+  /* TPM0_MOD: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,MOD=0xCCCC */
+  TPM0_MOD = TPM_MOD_MOD(0xCCCC);      /* Set up modulo register */
   /* TPM0_C4SC: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,CHF=0,CHIE=0,MSB=1,MSA=0,ELSB=1,ELSA=1,??=0,DMA=0 */
   TPM0_C4SC = (TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK | TPM_CnSC_ELSA_MASK); /* Set up channel status and control register */
-  /* TPM0_C4V: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,VAL=0 */
-  TPM0_C4V = TPM_CnV_VAL(0x00);        /* Set up channel value register */
-  /* PORTA_PCR5: ISF=0,MUX=3 */
-  PORTA_PCR5 = (uint32_t)((PORTA_PCR5 & (uint32_t)~(uint32_t)(
+  /* TPM0_C4V: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,VAL=0x0F5C */
+  TPM0_C4V = TPM_CnV_VAL(0x0F5C);      /* Set up channel value register */
+  /* TPM0_C2SC: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,CHF=0,CHIE=0,MSB=1,MSA=0,ELSB=1,ELSA=1,??=0,DMA=0 */
+  TPM0_C2SC = (TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK | TPM_CnSC_ELSA_MASK); /* Set up channel status and control register */
+  /* TPM0_C2V: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,VAL=0x0F5C */
+  TPM0_C2V = TPM_CnV_VAL(0x0F5C);      /* Set up channel value register */
+  /* PORTC_PCR8: ISF=0,MUX=3 */
+  PORTC_PCR8 = (uint32_t)((PORTC_PCR8 & (uint32_t)~(uint32_t)(
                 PORT_PCR_ISF_MASK |
                 PORT_PCR_MUX(0x04)
                )) | (uint32_t)(
                 PORT_PCR_MUX(0x03)
                ));
-  /* PORTC_PCR8: ISF=0,MUX=3 */
-  PORTC_PCR8 = (uint32_t)((PORTC_PCR8 & (uint32_t)~(uint32_t)(
+  /* PORTA_PCR5: ISF=0,MUX=3 */
+  PORTA_PCR5 = (uint32_t)((PORTA_PCR5 & (uint32_t)~(uint32_t)(
                 PORT_PCR_ISF_MASK |
                 PORT_PCR_MUX(0x04)
                )) | (uint32_t)(
@@ -593,7 +593,7 @@ void Motors_TimerUnit_SetClockConfiguration(LDD_TDeviceData *DeviceDataPtr, LDD_
     case CPU_CLOCK_CONFIG_0:
       DeviceDataPrv->EnMode = TRUE;    /* Set the flag "device enabled" in the actual clock configuration */
       DeviceDataPrv->Source = TPM_PDD_SYSTEM; /* Select clock source */
-      TPM_PDD_SetPrescaler(TPM0_BASE_PTR, TPM_PDD_DIVIDE_64); /* Set prescaler register */
+      TPM_PDD_SetPrescaler(TPM0_BASE_PTR, TPM_PDD_DIVIDE_8); /* Set prescaler register */
       break;
     default:
       DeviceDataPrv->EnMode = FALSE;   /* Set the flag "device disabled" in the actual clock configuration */

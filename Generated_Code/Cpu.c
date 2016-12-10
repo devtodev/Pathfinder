@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : KL46P121M48SF4RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-09, 14:03, # CodeGen: 44
+**     Date/Time   : 2016-12-10, 12:54, # CodeGen: 64
 **     Abstract    :
 **
 **     Settings    :
@@ -206,9 +206,7 @@
 **          Initialization priority                        : interrupts enabled
 **          Watchdog disable                               : yes
 **          Internal peripherals                           : 
-**            NMI pin                                      : Enabled
-**              NMI Pin                                    : TSI0_CH5/PTA4/I2C1_SDA/TPM0_CH1/NMI_b
-**              NMI Pin signal                             : 
+**            NMI pin                                      : Disabled
 **            Reset control                                : Enabled
 **              Reset pin                                  : PTA20/RESET_b
 **              Reset pin signal                           : 
@@ -282,7 +280,7 @@
 **                    Protection region 31                 : Unprotected
 **              Peripheral settings                        : 
 **                Reset pin function                       : Enabled
-**                NMI function                             : Enabled
+**                NMI function                             : Disabled
 **                FLASH initialization speed               : Fast
 **                Clock dividers settings                  : Fast clock boot
 **            MCM settings                                 : Disabled
@@ -492,15 +490,25 @@
 #include "CS1.h"
 #include "I2C0.h"
 #include "UTIL1.h"
-#include "Motors_TimerUnit.h"
 #include "BT.h"
 #include "ASerialLdd1.h"
 #include "TRIG.h"
 #include "WAIT1.h"
 #include "MotorSpeed_4.h"
 #include "PwmLdd2.h"
+#include "Motors_TimerUnit.h"
+#include "TU1.h"
 #include "MotorSpeed_3.h"
-#include "PwmLdd3.h"
+#include "PwmLdd1.h"
+#include "MotorsDirection.h"
+#include "STCP1.h"
+#include "BitIoLdd1.h"
+#include "DS1.h"
+#include "BitIoLdd2.h"
+#include "SHCP1.h"
+#include "BitIoLdd3.h"
+#include "OE1.h"
+#include "BitIoLdd4.h"
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
@@ -1642,8 +1650,9 @@ void __init_hardware(void)
   /* System clock initialization */
   /* SIM_CLKDIV1: OUTDIV1=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,OUTDIV4=3,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0 */
   SIM_CLKDIV1 = (SIM_CLKDIV1_OUTDIV1(0x00) | SIM_CLKDIV1_OUTDIV4(0x03)); /* Set the system prescalers to safe value */
-  /* SIM_SCGC5: PORTE=1,PORTC=1,PORTB=1,PORTA=1 */
+  /* SIM_SCGC5: PORTE=1,PORTD=1,PORTC=1,PORTB=1,PORTA=1 */
   SIM_SCGC5 |= SIM_SCGC5_PORTE_MASK |
+               SIM_SCGC5_PORTD_MASK |
                SIM_SCGC5_PORTC_MASK |
                SIM_SCGC5_PORTB_MASK |
                SIM_SCGC5_PORTA_MASK;   /* Enable clock gate for ports to enable pin routing */
@@ -1721,12 +1730,6 @@ void PE_low_level_init(void)
     PEX_RTOS_INIT();                   /* Initialization of the selected RTOS. Macro is defined by the RTOS component. */
   #endif
       /* Initialization of the SIM module */
-  /* PORTA_PCR4: ISF=0,MUX=7 */
-  PORTA_PCR4 = (uint32_t)((PORTA_PCR4 & (uint32_t)~(uint32_t)(
-                PORT_PCR_ISF_MASK
-               )) | (uint32_t)(
-                PORT_PCR_MUX(0x07)
-               ));
         /* Initialization of the RCM module */
   /* RCM_RPFW: RSTFLTSEL=0 */
   RCM_RPFW &= (uint8_t)~(uint8_t)(RCM_RPFW_RSTFLTSEL(0x1F));
@@ -1792,8 +1795,18 @@ void PE_low_level_init(void)
   BT_Init();
   /* ### PWM_LDD "PwmLdd2" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
   (void)PwmLdd2_Init(NULL);
-  /* ### PWM_LDD "PwmLdd3" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
-  (void)PwmLdd3_Init(NULL);
+  /* ### PWM_LDD "PwmLdd1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)PwmLdd1_Init(NULL);
+  /* ### BitIO_LDD "BitIoLdd1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)BitIoLdd1_Init(NULL);
+  /* ### BitIO_LDD "BitIoLdd2" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)BitIoLdd2_Init(NULL);
+  /* ### BitIO_LDD "BitIoLdd3" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)BitIoLdd3_Init(NULL);
+  /* ### BitIO_LDD "BitIoLdd4" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)BitIoLdd4_Init(NULL);
+  /* ### 74HC595 "MotorsDirection" init code ... */
+  MotorsDirection_Init();
 }
   /* Flash configuration field */
   __attribute__ ((section (".cfmconfig"))) const uint8_t _cfm[0x10] = {
@@ -1823,8 +1836,8 @@ void PE_low_level_init(void)
     0xFFU,
    /* NV_FSEC: KEYEN=1,MEEN=3,FSLACC=3,SEC=2 */
     0x7EU,
-   /* NV_FOPT: ??=1,??=1,FAST_INIT=1,LPBOOT1=1,RESET_PIN_CFG=1,NMI_DIS=1,??=1,LPBOOT0=1 */
-    0xFFU,
+   /* NV_FOPT: ??=1,??=1,FAST_INIT=1,LPBOOT1=1,RESET_PIN_CFG=1,NMI_DIS=0,??=1,LPBOOT0=1 */
+    0xFBU,
     0xFFU,
     0xFFU
   };

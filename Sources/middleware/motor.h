@@ -7,7 +7,5 @@
 
 
 
-void encender();
-void apagar();
-void swDireccion();
-void velocidad(int rpm);
+void motorsInit();
+void motorsSetSpeed(int speed);
