@@ -3,7 +3,7 @@
   <Header>
     <Name>Pathfinder</Name>
     <SavedBy>karl</SavedBy>
-    <ModificationStamp>49</ModificationStamp>
+    <ModificationStamp>50</ModificationStamp>
     <Date>2016-10-15</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.12.2.RT7_b1550-0615</PEversion>
@@ -29,7 +29,7 @@
     <UseExistingModules>true</UseExistingModules>
     <RenamePeripheries>false</RenamePeripheries>
     <Autodependency>true</Autodependency>
-    <ProjectCompNumb>144</ProjectCompNumb>
+    <ProjectCompNumb>152</ProjectCompNumb>
     <DelUnusedPreviouslyGenFiles>true</DelUnusedPreviouslyGenFiles>
     <GeneratedCodeFrozen>false</GeneratedCodeFrozen>
     <AssignInitComponentNameToPrph>true</AssignInitComponentNameToPrph>
@@ -20288,7 +20288,7 @@
               <ItemSymbol>Duty</ItemSymbol>
               <ReadOnly>false</ReadOnly>
               <UserReadOnly>false</UserReadOnly>
-              <Value>TPM0_C4V</Value>
+              <Value>TPM0_C2V</Value>
               <SharedPrphMode>false</SharedPrphMode>
             </ItemState>
             <ItemState>
@@ -21257,7 +21257,7 @@
           <ComponentUUID>com.freescale.processorexpert.bitio</ComponentUUID>
           <BeanType>BitIO</BeanType>
           <Name>STCP1</Name>
-          <CompNumb>136</CompNumb>
+          <CompNumb>144</CompNumb>
           <CompEnabled>true</CompEnabled>
           <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
           <IconName>BITIO</IconName>
@@ -21277,7 +21277,7 @@
               <ItemSymbol>_Pin</ItemSymbol>
               <ReadOnly>false</ReadOnly>
               <UserReadOnly>false</UserReadOnly>
-              <Value>PTA13/TPM1_CH1/I2S0_TX_FS</Value>
+              <Value>LCD_P47/PTD7/SPI1_MISO/UART0_TX/SPI1_MOSI</Value>
               <SharedPrphMode>false</SharedPrphMode>
             </ItemState>
             <ItemState>
@@ -21303,7 +21303,7 @@
                 <ComponentUUID>com.freescale.processorexpert.ldd.bitio_ldd</ComponentUUID>
                 <BeanType>BitIO_LDD</BeanType>
                 <Name>BitIoLdd1</Name>
-                <CompNumb>140</CompNumb>
+                <CompNumb>145</CompNumb>
                 <CompEnabled>true</CompEnabled>
                 <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
                 <IconName>PORT_LDD</IconName>
@@ -21323,7 +21323,7 @@
                     <ItemSymbol>_Pin</ItemSymbol>
                     <ReadOnly>false</ReadOnly>
                     <UserReadOnly>false</UserReadOnly>
-                    <Value>PTA13/TPM1_CH1/I2S0_TX_FS</Value>
+                    <Value>LCD_P47/PTD7/SPI1_MISO/UART0_TX/SPI1_MOSI</Value>
                     <SharedPrphMode>false</SharedPrphMode>
                   </ItemState>
                   <ItemState>
@@ -21854,7 +21854,7 @@
           <ComponentUUID>com.freescale.processorexpert.bitio</ComponentUUID>
           <BeanType>BitIO</BeanType>
           <Name>DS1</Name>
-          <CompNumb>137</CompNumb>
+          <CompNumb>146</CompNumb>
           <CompEnabled>true</CompEnabled>
           <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
           <IconName>BITIO</IconName>
@@ -21874,7 +21874,7 @@
               <ItemSymbol>_Pin</ItemSymbol>
               <ReadOnly>false</ReadOnly>
               <UserReadOnly>false</UserReadOnly>
-              <Value>LCD_P47/PTD7/SPI1_MISO/UART0_TX/SPI1_MOSI</Value>
+              <Value>PTA13/TPM1_CH1/I2S0_TX_FS</Value>
               <SharedPrphMode>false</SharedPrphMode>
             </ItemState>
             <ItemState>
@@ -21900,7 +21900,7 @@
                 <ComponentUUID>com.freescale.processorexpert.ldd.bitio_ldd</ComponentUUID>
                 <BeanType>BitIO_LDD</BeanType>
                 <Name>BitIoLdd2</Name>
-                <CompNumb>141</CompNumb>
+                <CompNumb>147</CompNumb>
                 <CompEnabled>true</CompEnabled>
                 <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
                 <IconName>PORT_LDD</IconName>
@@ -21920,7 +21920,7 @@
                     <ItemSymbol>_Pin</ItemSymbol>
                     <ReadOnly>false</ReadOnly>
                     <UserReadOnly>false</UserReadOnly>
-                    <Value>LCD_P47/PTD7/SPI1_MISO/UART0_TX/SPI1_MOSI</Value>
+                    <Value>PTA13/TPM1_CH1/I2S0_TX_FS</Value>
                     <SharedPrphMode>false</SharedPrphMode>
                   </ItemState>
                   <ItemState>
@@ -22451,7 +22451,7 @@
           <ComponentUUID>com.freescale.processorexpert.bitio</ComponentUUID>
           <BeanType>BitIO</BeanType>
           <Name>SHCP1</Name>
-          <CompNumb>138</CompNumb>
+          <CompNumb>148</CompNumb>
           <CompEnabled>true</CompEnabled>
           <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
           <IconName>BITIO</IconName>
@@ -22497,7 +22497,7 @@
                 <ComponentUUID>com.freescale.processorexpert.ldd.bitio_ldd</ComponentUUID>
                 <BeanType>BitIO_LDD</BeanType>
                 <Name>BitIoLdd3</Name>
-                <CompNumb>142</CompNumb>
+                <CompNumb>149</CompNumb>
                 <CompEnabled>true</CompEnabled>
                 <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
                 <IconName>PORT_LDD</IconName>
@@ -23091,7 +23091,7 @@
           <ComponentUUID>com.freescale.processorexpert.bitio</ComponentUUID>
           <BeanType>BitIO</BeanType>
           <Name>OE1</Name>
-          <CompNumb>139</CompNumb>
+          <CompNumb>150</CompNumb>
           <CompEnabled>true</CompEnabled>
           <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
           <IconName>BITIO</IconName>
@@ -23137,7 +23137,7 @@
                 <ComponentUUID>com.freescale.processorexpert.ldd.bitio_ldd</ComponentUUID>
                 <BeanType>BitIO_LDD</BeanType>
                 <Name>BitIoLdd4</Name>
-                <CompNumb>143</CompNumb>
+                <CompNumb>151</CompNumb>
                 <CompEnabled>true</CompEnabled>
                 <GenCodeMode>ALWAYS_WRITE</GenCodeMode>
                 <IconName>PORT_LDD</IconName>

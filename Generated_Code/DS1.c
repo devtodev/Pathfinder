@@ -7,7 +7,7 @@
 **     Version     : Component 02.086, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 12:51, # CodeGen: 62
+**     Date/Time   : 2016-12-10, 18:25, # CodeGen: 66
 **     Abstract    :
 **         This component "BitIO" implements an one-bit input/output.
 **         It uses one bit/pin of a port.
@@ -16,7 +16,7 @@
 **         (if supported by target language and compiler).
 **     Settings    :
 **          Component name                                 : DS1
-**          Pin for I/O                                    : LCD_P47/PTD7/SPI1_MISO/UART0_TX/SPI1_MOSI
+**          Pin for I/O                                    : PTA13/TPM1_CH1/I2S0_TX_FS
 **          Pin signal                                     : 
 **          BitIO_LDD                                      : BitIO_LDD
 **          Direction                                      : Output

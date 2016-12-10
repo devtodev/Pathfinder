@@ -23,46 +23,50 @@
 #define BACKWARD -1
 #define RELEASE 0
 
+#define HC595_SHIFT_MSB_FIRST 1
+
 int latch_state = 0;
 
 void HC595_ShiftByte(int val)
 {
-  uint8_t i;
+	uint8_t i;
 
-  /* precondition: latch pin, data pin and clock pin are all low */
-  for(i=0;i<8;i++) { /* shift all the 8 bits */
-    /* put data bit */
-#if HC595_SHIFT_MSB_FIRST
-    if (val&0x80) { /* LSB bit first */
-#else /* LSB first */
-    if (val&1) { /* LSB bit first */
-#endif
-      DS1_SetVal();
-    } else {
-      DS1_ClrVal();
-    }
-    SHCP1_SetVal(); /* CLK high: data gets transfered into memory */
-    DS1_ClrVal(); /* data line low */
-    SHCP1_ClrVal(); /* CLK high: data gets transfered into memory */
-#if HC595_SHIFT_MSB_FIRST
-    val <<= 1; /* next bit */ #else     val >>= 1; /* next bit */
-#endif
-  }
+	/* precondition: latch pin, data pin and clock pin are all low */
+	for(i=0;i<8;i++) { /* shift all the 8 bits */
+	/* put data bit */
+	#if HC595_SHIFT_MSB_FIRST
+		if (val&0x80) { /* LSB bit first */
+	#else /* LSB first */
+		if (val&1) { /* LSB bit first */
+	#endif
+		  DS1_SetVal();
+		} else {
+		  DS1_ClrVal();
+		}
+		SHCP1_SetVal(); /* CLK high: data gets transfered into memory */
+		DS1_ClrVal(); /* data line low */
+		SHCP1_ClrVal(); /* CLK high: data gets transfered into memory */
+	#if HC595_SHIFT_MSB_FIRST
+		val <<= 1; /* next bit */
+	#else
+		val >>= 1; /* next bit */
+	#endif
+	  }
+
+	/* send a latch pulse to show the data on the output pins */
+	STCP1_SetVal(); /* set latch to high */
+	STCP1_ClrVal(); /* set latch to low */
 }
-
- void HC595_Latch()
- {
-    /* send a latch pulse to show the data on the output pins */
-    STCP1_SetVal(); /* set latch to high */
-    STCP1_ClrVal(); /* set latch to low */
- }
 
 void motorsInit()
 {
-	MotorSpeed_4_SetDutyUS(0xFFFF/2);
-	MotorSpeed_3_SetDutyUS(0xFFFF/2);
-	HC595_ShiftByte(latch_state);
-	HC595_Latch();
+	OE1_PutVal(0);
+	MotorSpeed_4_SetDutyUS(0xFFFF);
+	MotorSpeed_3_SetDutyUS(0xFFFF);
+	motorDirection(1, RELEASE);
+	motorDirection(2, RELEASE);
+	motorDirection(3, BACKWARD);
+	motorDirection(4, FORWARD);
 }
 
 void motorsSetSpeed(int speed)
@@ -112,5 +116,4 @@ int motorDirection(int motornum, int cmd) {
   }
 
   HC595_ShiftByte(latch_state);
-  HC595_Latch();
 }
