@@ -10,21 +10,8 @@
 #include "MotorSpeed_3.h"
 #include "MotorsDirection.h"
 
-#define MOTOR1_A 2
-#define MOTOR1_B 3
-#define MOTOR2_A 1
-#define MOTOR2_B 4
-#define MOTOR3_A 5
-#define MOTOR3_B 7
-#define MOTOR4_A 0
-#define MOTOR4_B 6
-
-#define FORWARD -1
-#define BACKWARD 1
-#define RELEASE 0
 
 #define HC595_SHIFT_MSB_FIRST 1
-
 int latch_state = 0;
 
 void HC595_ShiftByte(int val)
@@ -60,19 +47,24 @@ void HC595_ShiftByte(int val)
 
 void motorsInit()
 {
-	OE1_PutVal(0);
-	MotorSpeed_4_SetDutyUS(0xFFFF);
-	MotorSpeed_3_SetDutyUS(0xFFFF);
-	motorDirection(1, RELEASE);
-	motorDirection(2, RELEASE);
-	motorDirection(3, FORWARD);
-	motorDirection(4, FORWARD);
+	OE1_PutVal(0); // enable output of the shift register
+	motorSetSpeed(MOTORRIGHT, 0);
+	motorSetSpeed(MOTORLEFT, 0);
+	motorDirection(MOTORRIGHT, RELEASE);
+	motorDirection(MOTORRIGHT, RELEASE);
 }
 
-void motorsSetSpeed(int speed)
+void motorSetSpeed(int motornum, int speed)
 {
-	MotorSpeed_4_SetRatio16(speed);
-	MotorSpeed_3_SetRatio16(speed);
+	switch(motornum) {
+		case MOTORLEFT:
+			MotorSpeed_3_SetRatio16(speed);
+			break;
+		case MOTORRIGHT:
+			MotorSpeed_4_SetRatio16(speed);
+			break;
+	}
+
 }
 
 
@@ -87,9 +79,9 @@ int motorDirection(int motornum, int cmd) {
 		a = MOTOR1_A; b = MOTOR1_B; break;
 	  case 2:
 		a = MOTOR2_A; b = MOTOR2_B; break;
-	  case 3:
+	  case MOTORLEFT:
 		a = MOTOR3_A; b = MOTOR3_B; break;
-	  case 4:
+	  case MOTORRIGHT:
 		a = MOTOR4_A; b = MOTOR4_B; break;
 	  default:
 		return -1;

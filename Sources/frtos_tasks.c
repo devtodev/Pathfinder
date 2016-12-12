@@ -29,9 +29,9 @@ static portTASK_FUNCTION(MotorTask, pvParameters) {
 	for(;;) {
 		motorsSetSpeed(0xFFFF/2);
 	}
-
 	vTaskDelete(MotorTask);
 }
+
 #define BUFFERDISTANCESIZE 5
 static portTASK_FUNCTION(SensorUltrasonidoTask, pvParameters) {
 
