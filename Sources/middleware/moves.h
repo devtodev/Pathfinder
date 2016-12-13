@@ -19,3 +19,4 @@ void move_Forward();
 void move_Backward();
 void move_Rotate(int direction);
 
+void move_init();

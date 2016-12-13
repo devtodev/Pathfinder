@@ -207,8 +207,7 @@ PE_DEBUGHALT();
     <Enabled v="Y" />
     <Properties>
       <Component_name v="FRTOS1" />
-      <RTOS_Version v="V9.0.0" />
-      <Kinetis_SDK v="KSDK1" />
+      <RTOS_Version v="V8.2.3" />
       <boolgroup name="Kinetis SDK" v="Disabled" />
       <group name="Custom Port">
         <Compiler v="automatic" />
@@ -217,14 +216,14 @@ PE_DEBUGHALT();
       </group>
       <Classic_CodeWarrior v="no" />
       <Disabled_Interrupts_in_Startup v="yes" />
-      <configASSERT v="yes" />
+      <configASSERT_defined v="yes" />
       <Enable_GDB_Debug_Helper v="no" />
       <Application_Task_Tags v="no" />
       <Thread_Local_Storage_Pointers v="0" />
       <Use_Trace_Facility v="no" />
       <boolgroup name="Segger System Viewer Trace" v="Disabled" />
       <boolgroup name="Percepio Trace" v="Disabled" />
-      <boolgroup name="Generate Runtime Statistics" v="Disabled" />
+      <boolgroup name="Collect Runtime Statistics" v="Disabled" />
       <group name="Scheduler">
         <boolgroup name="ColdFire V1" v="Disabled" />
         <boolgroup name="ColdFire V2" v="Disabled" />
@@ -271,30 +270,16 @@ PE_DEBUGHALT();
       </group>
       <boolgroup name="Timers" v="Disabled" />
       <group name="Memory">
-        <boolgroup name="Dynamic Allocation" v="Enabled">
-          <Heap_Size v="4096" />
-          <Application_allocated_Heap v="no" />
-          <Memory_Allocation_Scheme v="Scheme 3: malloc/free" />
-        </boolgroup>
-        <boolgroup name="Static Allocation" v="Disabled" />
-        <boolgroup name="User Memory Section" v="Disabled" />
-      </group>
-      <group name="RTOS Adaptor">
-        <group name="Memory allocation">
-          <boolgroup name="User function for memory allocation" v="no" />
-          <boolgroup name="User function for memory deallocation" v="no" />
-        </group>
-        <group name="Critical section">
-          <boolgroup name="User function for entering critical section" v="no" />
-          <boolgroup name="User function for exiting critical section" v="no" />
-        </group>
+        <Application_allocated_Heap v="no" />
+        <Memory_Allocation_Scheme v="Scheme 3: malloc/free" />
+        <boolgroup name="User Heap Section" v="Disabled" />
+        <Total_Heap_Size v="4096" />
       </group>
       <boolgroup name="Shell" v="Disabled" />
       <Utility v="UTIL1" />
     </Properties>
     <Methods>
       <xTaskCreate v="generate code" />
-      <xTaskCreateStatic v="generate code" />
       <vTaskDelete v="generate code" />
       <vTaskStartScheduler v="generate code" />
       <vTaskEndScheduler v="don&amp;apos;t generate code" />
@@ -304,7 +289,6 @@ PE_DEBUGHALT();
       <xTaskResumeAll v="generate code" />
       <xTaskResumeFromISR v="generate code" />
       <vTaskStepTick v="don&amp;apos;t generate code" />
-      <xTaskAbortDelay v="generate code" />
       <taskYIELD v="generate code" />
       <taskENTER_CRITICAL v="generate code" />
       <taskEXIT_CRITICAL v="generate code" />
@@ -313,26 +297,21 @@ PE_DEBUGHALT();
       <vTaskDelay v="generate code" />
       <vTaskDelayUntil v="generate code" />
       <uxTaskPriorityGet v="generate code" />
+      <vTaskPrioritySet v="generate code" />
       <xTaskGetTickCount v="generate code" />
       <xTaskGetTickCountFromISR v="generate code" />
-      <vTaskPrioritySet v="generate code" />
-      <xSemaphoreCreateBinary v="generate code" />
-      <xSemaphoreCreateBinaryStatic v="generate code" />
-      <xSemaphoreCreateCounting v="generate code" />
-      <xSemaphoreCreateCountingStatic v="generate code" />
-      <xSemaphoreGive v="generate code" />
-      <xSemaphoreTake v="generate code" />
-      <uxSemaphoreGetCount v="generate code" />
-      <xSemaphoreGiveFromISR v="generate code" />
-      <xSemaphoreTakeFromISR v="generate code" />
-      <xSemaphoreGetMutexHolder v="generate code" />
-      <xSemaphoreCreateMutex v="generate code" />
-      <xSemaphoreCreateMutexStatic v="generate code" />
       <xSemaphoreCreateRecursiveMutex v="generate code" />
-      <xSemaphoreCreateRecursiveMutexStatic v="generate code" />
       <xSemaphoreTakeRecursive v="generate code" />
       <xSemaphoreGiveRecursive v="generate code" />
+      <xSemaphoreCreateMutex v="generate code" />
+      <xSemaphoreTake v="generate code" />
+      <xSemaphoreGive v="generate code" />
+      <xSemaphoreCreateBinary v="generate code" />
+      <xSemaphoreCreateCounting v="generate code" />
+      <xSemaphoreGiveFromISR v="generate code" />
+      <xSemaphoreTakeFromISR v="generate code" />
       <vSemaphoreDelete v="generate code" />
+      <xSemaphoreGetMutexHolder v="generate code" />
       <pvPortMalloc v="generate code" />
       <vPortFree v="generate code" />
       <xPortGetFreeHeapSize v="generate code" />
@@ -351,7 +330,6 @@ PE_DEBUGHALT();
       <uxQueueMessagesWaiting v="generate code" />
       <uxQueueMessagesWaitingfromISR v="generate code" />
       <xQueueCreate v="generate code" />
-      <xQueueCreateStatic v="generate code" />
       <vQueueDelete v="generate code" />
       <xQueueReset v="generate code" />
       <xQueueSendToBack v="generate code" />
@@ -374,7 +352,6 @@ PE_DEBUGHALT();
       <xQueueSelectFromSet v="don&amp;apos;t generate code" />
       <xQueueSelectFromSetFromISR v="don&amp;apos;t generate code" />
       <xEventGroupCreate v="generate code" />
-      <xEventGroupCreateStatic v="generate code" />
       <xEventGroupWaitBits v="generate code" />
       <xEventGroupSetBits v="generate code" />
       <xEventGroupSetBitsFromISR v="generate code" />
@@ -384,7 +361,6 @@ PE_DEBUGHALT();
       <xEventGroupGetBitsFromISR v="generate code" />
       <xEventGroupSync v="generate code" />
       <xTimerCreate v="generate code" />
-      <xTimerCreateStatic v="don&amp;apos;t generate code" />
       <xTimerIsTimerActive v="generate code" />
       <xTimerStart v="generate code" />
       <xTimerStop v="generate code" />
@@ -411,14 +387,8 @@ PE_DEBUGHALT();
       <xTaskNotifyStateClear v="generate code" />
       <vTaskSetThreadLocalStoragePointer v="generate code" />
       <pvTaskGetThreadLocalStoragePointer v="generate code" />
-      <xTaskGetHandle v="generate code" />
-      <pcTaskGetName v="generate code" />
-      <vTaskGetInfo v="generate code" />
       <ParseCommand v="don&amp;apos;t generate code" />
-      <AppConfigureTimerForRuntimeStats v="generate code" />
-      <AppGetRuntimeCounterValueFromISR v="generate code" />
       <Init v="generate code" />
-      <Deinit v="generate code" />
     </Methods>
     <Events>
       <Event_module_name v="Events" />
@@ -567,8 +537,8 @@ PE_DEBUGHALT();
       <WriteByteAddress8 v="generate code" />
       <ProbeACK v="generate code" />
       <GetSemaphore v="generate code" />
-      <ScanDevice v="generate code" />
       <Deinit v="generate code" />
+      <ScanDevice v="generate code" />
       <Init v="generate code" />
     </Methods>
     <Events>
@@ -589,7 +559,6 @@ PE_DEBUGHALT();
     <Template v="Timeout" />
     <Properties>
       <Component_name v="TMOUT1" />
-      <SDK v="KSDK1" />
       <Critical_Section v="CS1" />
       <Maximum_counters v="1" />
       <Counter_tick_period__ms_ v="10" />
@@ -756,7 +725,6 @@ PE_DEBUGHALT();
       <Num16uToStr v="generate code" />
       <Num32uToStr v="generate code" />
       <Num32sToStr v="generate code" />
-      <NumFloatToStr v="generate code" />
       <Num16sToStrFormatted v="generate code" />
       <Num16uToStrFormatted v="generate code" />
       <Num32uToStrFormatted v="generate code" />
@@ -776,7 +744,6 @@ PE_DEBUGHALT();
       <strcatNum24Hex v="generate code" />
       <strcatNum32Hex v="generate code" />
       <strcatNum32sDotValue100 v="generate code" />
-      <strcatNumFloat v="generate code" />
       <IsLeapYear v="generate code" />
       <WeekDay v="generate code" />
       <ReadEscapedName v="generate code" />
@@ -802,12 +769,6 @@ PE_DEBUGHALT();
       <strtailcmp v="generate code" />
       <strlen v="generate code" />
       <strCutTail v="generate code" />
-      <GetValue16LE v="generate code" />
-      <GetValue24LE v="generate code" />
-      <GetValue32LE v="generate code" />
-      <SetValue16LE v="generate code" />
-      <SetValue24LE v="generate code" />
-      <SetValue32LE v="generate code" />
     </Methods>
     <Events>
       <EmptySection_DummyValue />

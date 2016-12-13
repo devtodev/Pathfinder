@@ -24,6 +24,23 @@ void move_SpeedRefresh()
 	motorSetSpeed(MOTORRIGHT, speed_Right * K);
 }
 
+void move_DirectionRefresh()
+{
+	motorSetSpeed(MOTORLEFT, speed_Left);
+	motorSetSpeed(MOTORRIGHT, speed_Right);
+}
+
+
+void move_init()
+{
+	int speed_Left = 0;
+	int speed_Right = 0;
+	int direction_Left = RELEASE;
+	int direction_Right = RELEASE;
+	move_DirectionRefresh();
+	move_SpeedRefresh();
+}
+
 void move_SpeedLeftIncrease()
 {
 	speed_Left = (speed_Left<10)?speed_Left+1:speed_Left;
@@ -32,6 +49,16 @@ void move_SpeedLeftIncrease()
 void move_SpeedLeftDecrease()
 {
 	speed_Left = (speed_Left>-10)?speed_Left-1:speed_Left;
+}
+
+void move_SpeedRightIncrease()
+{
+	speed_Right = (speed_Right<10)?speed_Right+1:speed_Right;
+}
+
+void move_SpeedRightDecrease()
+{
+	speed_Right = (speed_Right>-10)?speed_Right-1:speed_Right;
 }
 
 // increase or decrease the speed
@@ -66,12 +93,14 @@ void move_Forward()
 {
 	direction_Left = FORWARD;
 	direction_Right = FORWARD;
+	move_DirectionRefresh();
 }
 
 void move_Backward()
 {
 	direction_Left = BACKWARD;
 	direction_Right = BACKWARD;
+	move_DirectionRefresh();
 }
 
 void move_Rotate(int direction)
@@ -87,5 +116,6 @@ void move_Rotate(int direction)
 			direction_Right = BACKWARD;
 			break;
 	}
+	move_DirectionRefresh();
 }
 

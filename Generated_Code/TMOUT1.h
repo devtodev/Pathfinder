@@ -4,10 +4,10 @@
 **     Project     : Pathfinder
 **     Processor   : MKL46Z256VLL4
 **     Component   : Timeout
-**     Version     : Component 01.035, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.030, Driver 01.00, CPU db: 3.00.000
 **     Repository  : My Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-07, 19:50, # CodeGen: 43
+**     Date/Time   : 2016-12-13, 15:51, # CodeGen: 68
 **     Abstract    :
 **
 The module implements timeout functionality. With this implementation,
@@ -15,7 +15,6 @@ it is possible to wait for a given time, and the time is counted by
 a periodic interrupt.
 **     Settings    :
 **          Component name                                 : TMOUT1
-**          SDK                                            : KSDK1
 **          Critical Section                               : CS1
 **          Maximum counters                               : 1
 **          Counter tick period (ms)                       : 10
@@ -30,7 +29,7 @@ a periodic interrupt.
 **         Init           - void TMOUT1_Init(void);
 **
 **     License   :  Open Source (LGPL)
-**     Copyright : (c) Copyright Erich Styger, 2011-2016, all rights reserved.
+**     Copyright : (c) Copyright Erich Styger, 2011-2015, all rights reserved.
 **     This an open source software implementing timeout routines using Processor Expert.
 **     This is a free software and is opened for education,  research  and commercial developments under license policy of following terms:
 **     * This is a free software and there is NO WARRANTY.
@@ -55,27 +54,25 @@ a periodic interrupt.
 #define __TMOUT1_H
 
 /* MODULE TMOUT1. */
+
+/* Include shared modules, which are used for whole project */
+#include "PE_Types.h"
+#include "PE_Error.h"
+#include "PE_Const.h"
+#include "IO_Map.h"
 /* Include inherited beans */
-#include "KSDK1.h"
 #include "CS1.h"
 
-#if KSDK1_SDK_VERSION_USED == KSDK1_SDK_VERSION_NONE
-/* Include shared modules, which are used for whole project */
-  #include "PE_Types.h"
-  #include "PE_Error.h"
-  #include "PE_Const.h"
-  #include "IO_Map.h"
-  #include "Cpu.h"
-#endif
+#include "Cpu.h"
 
 
 #ifndef __BWUserType_TMOUT1_CounterType
 #define __BWUserType_TMOUT1_CounterType
-  typedef uint32_t TMOUT1_CounterType ; /* Base type of counter which holds the counting value */
+  typedef int16_t TMOUT1_CounterType ; /* Base type of counter which holds the counting value */
 #endif
 #ifndef __BWUserType_TMOUT1_CounterHandle
 #define __BWUserType_TMOUT1_CounterHandle
-  typedef uint8_t TMOUT1_CounterHandle ; /* Type for the timeout counter handle. */
+  typedef byte TMOUT1_CounterHandle ;  /* Type for the timeout counter handle. */
 #endif
 
 #define TMOUT1_OUT_OF_HANDLE 0xff  /* special handle to indicate that we were running out of handlers */

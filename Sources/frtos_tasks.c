@@ -16,20 +16,20 @@
 #include "drivers/acelerometro.h"
 #include "drivers/BT_actions.h"
 #include "middleware/Distance.h"
-#include "middleware/motor.h"
+#include "middleware/moves.h"
 
 #define ACCEL_ANTIREBOTE	30
 
 
 
-static portTASK_FUNCTION(MotorTask, pvParameters) {
+static portTASK_FUNCTION(LocomotionTask, pvParameters) {
 	uint16_t SERVO1_position;
 
-	motorsInit();
+	move_init();
 	for(;;) {
-		motorsSetSpeed(0xFFFF/2);
+		move_Forward();
 	}
-	vTaskDelete(MotorTask);
+	vTaskDelete(LocomotionTask);
 }
 
 #define BUFFERDISTANCESIZE 5
@@ -107,8 +107,8 @@ static portTASK_FUNCTION(AcelerometroTask, pvParameters) {
 void CreateTasks(void) {
   BT_init();
   if (FRTOS1_xTaskCreate(
-      MotorTask,  /* pointer to the task */
-      "MotorTask", /* task name for kernel awareness debugging */
+      LocomotionTask,  /* pointer to the task */
+      "LocomotionTask", /* task name for kernel awareness debugging */
       configMINIMAL_STACK_SIZE, /* task stack size */
       (void*)NULL, /* optional task startup argument */
       tskIDLE_PRIORITY + 3,  /* initial priority */

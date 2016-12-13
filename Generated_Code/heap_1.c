@@ -1,9 +1,9 @@
 /* << EST */
 #include "FreeRTOSConfig.h"
-#if !defined(configFRTOS_MEMORY_SCHEME) || (configFRTOS_MEMORY_SCHEME==1 && configSUPPORT_DYNAMIC_ALLOCATION==1)
+#if configFRTOS_MEMORY_SCHEME==1
 
 /*
-    FreeRTOS V9.0.0 - Copyright (C) 2016 Real Time Engineers Ltd.
+    FreeRTOS V8.2.3 - Copyright (C) 2015 Real Time Engineers Ltd.
     All rights reserved
 
     VISIT http://www.FreeRTOS.org TO ENSURE YOU ARE USING THE LATEST VERSION.
@@ -81,6 +81,8 @@
  */
 #include <stdlib.h>
 
+#include "Events.h"
+
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
 all the API functions to use the MPU wrappers.  That should only be done when
 task.h is included from an application file. */
@@ -91,19 +93,11 @@ task.h is included from an application file. */
 
 #undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#if( configSUPPORT_DYNAMIC_ALLOCATION == 0 )
-	#error This file must not be used if configSUPPORT_DYNAMIC_ALLOCATION is 0
-#endif
-
 /* A few bytes might be lost to byte aligning the heap start address. */
 #define configADJUSTED_HEAP_SIZE	( configTOTAL_HEAP_SIZE - portBYTE_ALIGNMENT )
 
 /* Allocate the memory for the heap. */
-#if( configAPPLICATION_ALLOCATED_HEAP == 1 )
-	/* The application writer has already defined the array used for the RTOS
-	heap - probably so it can be placed in a special segment or address. */
-	extern uint8_t ucHeap[ configTOTAL_HEAP_SIZE ];
-#elif configUSE_HEAP_SECTION_NAME && configCOMPILER==configCOMPILER_ARM_IAR /* << EST */
+#if configUSE_HEAP_SECTION_NAME && configCOMPILER==configCOMPILER_ARM_IAR /* << EST */
   #pragma language=extended
   #pragma location = configHEAP_SECTION_NAME_STRING
   static uint8_t ucHeap[configTOTAL_HEAP_SIZE] @ configHEAP_SECTION_NAME_STRING; 
@@ -111,8 +105,7 @@ task.h is included from an application file. */
   static uint8_t __attribute__((section (configHEAP_SECTION_NAME_STRING))) ucHeap[configTOTAL_HEAP_SIZE];
 #else
   static uint8_t ucHeap[configTOTAL_HEAP_SIZE];
-#endif /* configAPPLICATION_ALLOCATED_HEAP */
-
+#endif
 static size_t xNextFreeByte = ( size_t ) 0;
 
 /*-----------------------------------------------------------*/
@@ -123,14 +116,12 @@ void *pvReturn = NULL;
 static uint8_t *pucAlignedHeap = NULL;
 
 	/* Ensure that blocks are always aligned to the required number of bytes. */
-	#if( portBYTE_ALIGNMENT != 1 )
-	{
+	#if portBYTE_ALIGNMENT != 1
 		if( xWantedSize & portBYTE_ALIGNMENT_MASK )
 		{
 			/* Byte alignment required. */
 			xWantedSize += ( portBYTE_ALIGNMENT - ( xWantedSize & portBYTE_ALIGNMENT_MASK ) );
 		}
-	}
 	#endif
 
 	vTaskSuspendAll();
@@ -159,9 +150,7 @@ static uint8_t *pucAlignedHeap = NULL;
 	{
 		if( pvReturn == NULL )
 		{
-		  /* EST: Using configuration macro name for hook */
-			extern void configUSE_MALLOC_FAILED_HOOK_NAME( void );
-      configUSE_MALLOC_FAILED_HOOK_NAME();
+      FRTOS1_vApplicationMallocFailedHook();
 		}
 	}
 	#endif

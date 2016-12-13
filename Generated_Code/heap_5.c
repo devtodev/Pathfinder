@@ -1,8 +1,8 @@
 /* << EST */
 #include "FreeRTOSConfig.h"
-#if !defined(configFRTOS_MEMORY_SCHEME) || (configFRTOS_MEMORY_SCHEME==5 && configSUPPORT_DYNAMIC_ALLOCATION==1)
+#if configFRTOS_MEMORY_SCHEME==5
 /*
-    FreeRTOS V9.0.0 - Copyright (C) 2016 Real Time Engineers Ltd.
+    FreeRTOS V8.2.3 - Copyright (C) 2015 Real Time Engineers Ltd.
     All rights reserved
 
     VISIT http://www.FreeRTOS.org TO ENSURE YOU ARE USING THE LATEST VERSION.
@@ -114,6 +114,8 @@
  */
 #include <stdlib.h>
 
+#include "Events.h"
+
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
 all the API functions to use the MPU wrappers.  That should only be done when
 task.h is included from an application file. */
@@ -123,10 +125,6 @@ task.h is included from an application file. */
 #include "task.h"
 
 #undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
-
-#if( configSUPPORT_DYNAMIC_ALLOCATION == 0 )
-	#error This file must not be used if configSUPPORT_DYNAMIC_ALLOCATION is 0
-#endif
 
 /* Block sizes must not get too small. */
 #define heapMINIMUM_BLOCK_SIZE	( ( size_t ) ( xHeapStructSize << 1 ) )
@@ -300,9 +298,7 @@ void *pvReturn = NULL;
 	{
 		if( pvReturn == NULL )
 		{
-		  /* EST: Using configuration macro name for hook */
-			extern void configUSE_MALLOC_FAILED_HOOK_NAME( void );
-		  configUSE_MALLOC_FAILED_HOOK_NAME();
+		        FRTOS1_vApplicationMallocFailedHook();
 		}
 		else
 		{

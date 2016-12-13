@@ -1,5 +1,5 @@
 /*
-    FreeRTOS V9.0.0 - Copyright (C) 2016 Real Time Engineers Ltd.
+    FreeRTOS V8.2.3 - Copyright (C) 2015 Real Time Engineers Ltd.
     All rights reserved
 
     VISIT http://www.FreeRTOS.org TO ENSURE YOU ARE USING THE LATEST VERSION.
@@ -96,12 +96,9 @@
 #define configCPU_FAMILY_ARM_M7                   9   /* ARM Cortex-M7 */
 #define configCPU_FAMILY_ARM_M7F                  10  /* ARM Cortex-M7F (with floating point unit) */
 /* Macros to identify set of core families */
-#define configCPU_FAMILY_IS_ARM_M0(fam)           ((fam)==configCPU_FAMILY_ARM_M0P)
-#define configCPU_FAMILY_IS_ARM_M4(fam)           (((fam)==configCPU_FAMILY_ARM_M4)  || ((fam)==configCPU_FAMILY_ARM_M4F))
 #define configCPU_FAMILY_IS_ARM_M7(fam)           (((fam)==configCPU_FAMILY_ARM_M7)  || ((fam)==configCPU_FAMILY_ARM_M7F))
-#define configCPU_FAMILY_IS_ARM_M4_M7(fam)        (configCPU_FAMILY_IS_ARM_M4(fam) || configCPU_FAMILY_IS_ARM_M7(fam))
-#define configCPU_FAMILY_IS_ARM_FPU(fam)          (((fam)==configCPU_FAMILY_ARM_M4F) || ((fam)==configCPU_FAMILY_ARM_M7F))
-#define configCPU_FAMILY_IS_ARM(fam)              (configCPU_FAMILY_IS_ARM_M0(fam) || configCPU_FAMILY_IS_ARM_M4(fam) || configCPU_FAMILY_IS_ARM_M7(fam))
+#define configCPU_FAMILY_IS_ARM_M4(fam)           (((fam)==configCPU_FAMILY_ARM_M4)  || ((fam)==configCPU_FAMILY_ARM_M4F))
+#define configCPU_FAMILY_IS_ARM(fam)              (((fam)==configCPU_FAMILY_ARM_M0P) || configCPU_FAMILY_IS_ARM_M4(fam) || configCPU_FAMILY_IS_ARM_M7(fam))
 
 #define configCPU_FAMILY                          configCPU_FAMILY_ARM_M0P
 
@@ -126,44 +123,27 @@
 #define configPEX_KINETIS_SDK                     0 /* 1: project is a Kinetis SDK Processor Expert project; 0: No Kinetis Processor Expert project */
 #define configGENERATE_RUN_TIME_STATS_USE_TICKS   0 /* 1: Use the RTOS tick counter as runtime counter. 0: use extra timer */
 #define configGENERATE_RUN_TIME_STATS             0 /* 1: generate runtime statistics; 0: no runtime statistics */
-#if configGENERATE_RUN_TIME_STATS
-  #if configGENERATE_RUN_TIME_STATS_USE_TICKS
-    #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()   /* nothing */ /* default: use Tick counter as runtime counter */
-    #define portGET_RUN_TIME_COUNTER_VALUE()           xTaskGetTickCountFromISR() /* default: use Tick counter as runtime counter */
-  #else /* use dedicated timer */
-    #include <stdint.h>
-    extern uint32_t FRTOS1_AppGetRuntimeCounterValueFromISR(void);
-    #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()   FRTOS1_AppConfigureTimerForRuntimeStats()
-    #define portGET_RUN_TIME_COUNTER_VALUE()           FRTOS1_AppGetRuntimeCounterValueFromISR()
-  #endif
-#else /* no runtime stats, use empty macros */
-  #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()     /* nothing */
-  #define portGET_RUN_TIME_COUNTER_VALUE()             /* nothing */
-#endif
+#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()  /* nothing */ /* default: use Tick counter as runtime counter */
+#define portGET_RUN_TIME_COUNTER_VALUE()          xTaskGetTickCount() /* default: use Tick counter as runtime counter */
 #define configUSE_PREEMPTION                      1 /* 1: pre-emptive mode; 0: cooperative mode */
 #define configUSE_TIME_SLICING                    1 /* 1: use time slicing; 0: don't time slice at tick interrupt time */
 #define configUSE_IDLE_HOOK                       1 /* 1: use Idle hook; 0: no Idle hook */
-#define configUSE_IDLE_HOOK_NAME                  FRTOS1_vApplicationIdleHook
 #define configUSE_TICK_HOOK                       1 /* 1: use Tick hook; 0: no Tick hook */
-#define configUSE_TICK_HOOK_NAME                  FRTOS1_vApplicationTickHook
 #define configUSE_MALLOC_FAILED_HOOK              1 /* 1: use MallocFailed hook; 0: no MallocFailed hook */
-#define configUSE_MALLOC_FAILED_HOOK_NAME         FRTOS1_vApplicationMallocFailedHook
 #define configTICK_RATE_HZ                        ((TickType_t)100) /* frequency of tick interrupt */
 #define configSYSTICK_USE_LOW_POWER_TIMER         1 /* If using Kinetis Low Power Timer (LPTMR) instead of SysTick timer */
 #define configSYSTICK_LOW_POWER_TIMER_CLOCK_HZ    1000 /* 1 kHz LPO timer. Set to 1 if not used */
 #if configPEX_KINETIS_SDK
 /* The SDK variable SystemCoreClock contains the current clock speed */
-  #include <stdint.h>
-  extern uint32_t SystemCoreClock;
-  #define configCPU_CLOCK_HZ                      SystemCoreClock /* CPU clock frequency */
-  #define configBUS_CLOCK_HZ                      SystemCoreClock /* Bus clock frequency */
+#define configCPU_CLOCK_HZ                        SystemCoreClock /* CPU clock frequency */
+#define configBUS_CLOCK_HZ                        SystemCoreClock /* Bus clock frequency */
 #else
-  #if configCPU_FAMILY_IS_ARM(configCPU_FAMILY) /* Kinetis defines this one in Cpu.h */
-    #define configCPU_CLOCK_HZ                    CPU_CORE_CLK_HZ /* CPU core clock defined in Cpu.h */
-  #else
-    #define configCPU_CLOCK_HZ                    CPU_INSTR_CLK_HZ /* CPU core clock defined in Cpu.h */
-  #endif
-  #define configBUS_CLOCK_HZ                      CPU_BUS_CLK_HZ /* CPU bus clock defined in Cpu.h */
+#if configCPU_FAMILY_IS_ARM(configCPU_FAMILY) /* Kinetis defines this one in Cpu.h */
+#define configCPU_CLOCK_HZ                        CPU_CORE_CLK_HZ /* CPU core clock defined in Cpu.h */
+#else
+#define configCPU_CLOCK_HZ                        CPU_INSTR_CLK_HZ /* CPU core clock defined in Cpu.h */
+#endif
+#define configBUS_CLOCK_HZ                        CPU_BUS_CLK_HZ /* CPU bus clock defined in Cpu.h */
 #endif /* configPEX_KINETIS_SDK */
 #define configSYSTICK_USE_CORE_CLOCK              1 /* System Tick is using core clock  */
 #define configSYSTICK_CLOCK_DIVIDER               1 /* no divider */
@@ -178,8 +158,6 @@
 #define configHEAP_SECTION_NAME_STRING            ".m_data_20000000" /* heap section name (use e.g. ".m_data_20000000" for gcc and "m_data_20000000" for IAR). Check your linker file for the name used. */
 #endif
 #define configAPPLICATION_ALLOCATED_HEAP          0 /* set to one if application is defining heap ucHeap[] variable, 0 otherwise */
-#define configSUPPORT_DYNAMIC_ALLOCATION          1 /* 1: make dynamic allocation functions for RTOS available. 0: only static functions are allowed */
-#define configSUPPORT_STATIC_ALLOCATION           0 /* 1: make static allocation functions for RTOS available. 0: only dynamic functions are allowed */
 /*----------------------------------------------------------*/
 #define configMAX_TASK_NAME_LEN                   12 /* task name length in bytes */
 #define configUSE_TRACE_FACILITY                  0 /* 1: include additional structure members and functions to assist with execution visualization and tracing, 0: no runtime stats/trace */
@@ -191,7 +169,6 @@
 #define configUSE_CO_ROUTINES                     0
 #define configUSE_MUTEXES                         1
 #define configCHECK_FOR_STACK_OVERFLOW            1 /* 0 is disabling stack overflow. Set it to 1 for Method1 or 2 for Method2 */
-#define configCHECK_FOR_STACK_OVERFLOW_NAME       FRTOS1_vApplicationStackOverflowHook
 #define configUSE_RECURSIVE_MUTEXES               1
 #define configQUEUE_REGISTRY_SIZE                 5
 #define configUSE_QUEUE_SETS                      0
@@ -210,19 +187,19 @@
 #define configTASK_RETURN_ADDRESS   0  /* return address of task is zero */
 
 /* Software timer definitions. */
-#define configUSE_TIMERS                          0 /* set to 1 to enable sofware timers */
-#define configTIMER_TASK_PRIORITY                 (configMAX_PRIORITIES-1U)
-#define configTIMER_QUEUE_LENGTH                  10U
-#define configTIMER_TASK_STACK_DEPTH              (configMINIMAL_STACK_SIZE)
+#define configUSE_TIMERS                          0
+#define configTIMER_TASK_PRIORITY                 0
+#define configTIMER_QUEUE_LENGTH                  0
+#define configTIMER_TASK_STACK_DEPTH              0
 #define INCLUDE_xEventGroupSetBitFromISR          0
 #define INCLUDE_xTimerPendFunctionCall            0
-#define configUSE_DAEMON_TASK_STARTUP_HOOK        0 /* 1: use application specific vApplicationDaemonTaskStartupHook(), 0: do not use hook */
 
 /* Set configUSE_TASK_FPU_SUPPORT to 0 to omit floating point support even
 if floating point hardware is otherwise supported by the FreeRTOS port in use.
 This constant is not supported by all FreeRTOS ports that include floating
 point support. */
 #define configUSE_TASK_FPU_SUPPORT                1
+
 
 /* Set the following definitions to 1 to include the API function, or zero
    to exclude the API function. */

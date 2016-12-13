@@ -1460,13 +1460,13 @@ PE_DEBUGHALT();
         <Template v="STCP" />
         <Properties>
           <Component_name v="STCP1" />
-          <Pin_for_I_O v="TSI0_CH5/PTA4/I2C1_SDA/TPM0_CH1/NMI_b" />
+          <Pin_for_I_O v="LCD_P47/PTD7/SPI1_MISO/UART0_TX/SPI1_MOSI" />
           <inhrbean type="BitIO_LDD">
             <Enabled v="Y" />
             <Template v="BitIO_LDD" />
             <Properties>
               <Component_name v="BitIoLdd1" />
-              <Pin_for_I_O v="TSI0_CH5/PTA4/I2C1_SDA/TPM0_CH1/NMI_b" />
+              <Pin_for_I_O v="LCD_P47/PTD7/SPI1_MISO/UART0_TX/SPI1_MOSI" />
               <Direction v="Output" />
               <group name="Initialization">
                 <Init__direction v="Output" />
@@ -1588,13 +1588,13 @@ PE_DEBUGHALT();
         <Template v="SHCP" />
         <Properties>
           <Component_name v="SHCP1" />
-          <Pin_for_I_O v="LCD_P47/PTD7/SPI1_MISO/UART0_TX/SPI1_MOSI" />
+          <Pin_for_I_O v="TSI0_CH5/PTA4/I2C1_SDA/TPM0_CH1/NMI_b" />
           <inhrbean type="BitIO_LDD">
             <Enabled v="Y" />
             <Template v="BitIO_LDD" />
             <Properties>
               <Component_name v="BitIoLdd3" />
-              <Pin_for_I_O v="LCD_P47/PTD7/SPI1_MISO/UART0_TX/SPI1_MOSI" />
+              <Pin_for_I_O v="TSI0_CH5/PTA4/I2C1_SDA/TPM0_CH1/NMI_b" />
               <Direction v="Output" />
               <group name="Initialization">
                 <Init__direction v="Output" />
