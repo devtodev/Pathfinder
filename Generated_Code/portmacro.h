@@ -1,5 +1,5 @@
 /*
-    FreeRTOS V8.2.3 - Copyright (C) 2015 Real Time Engineers Ltd.
+    FreeRTOS V9.0.0 - Copyright (C) 2016 Real Time Engineers Ltd.
     All rights reserved
 
     VISIT http://www.FreeRTOS.org TO ENSURE YOU ARE USING THE LATEST VERSION.
@@ -76,6 +76,7 @@ extern "C" {
 #endif
 
 #include "FreeRTOSConfig.h"
+#include "projdefs.h" /* for pdFALSE, pdTRUE */
 #if configGENERATE_STATIC_SOURCES || configPEX_KINETIS_SDK
   #include <stdint.h>
 #else
@@ -117,7 +118,14 @@ extern "C" {
   #define portSTACK_TYPE       unsigned char
 #endif
 typedef portSTACK_TYPE StackType_t;
-#if (configCPU_FAMILY==configCPU_FAMILY_CF1) || (configCPU_FAMILY==configCPU_FAMILY_CF2) || configCPU_FAMILY_IS_ARM(configCPU_FAMILY) || (configCPU_FAMILY==configCPU_FAMILY_DSC)
+
+#define portUSE_CUSTOM_BASE_TYPE  0  /* 1: use custom base type */
+
+#if portUSE_CUSTOM_BASE_TYPE
+  #define portBASE_TYPE          char /* custom port base type */
+  typedef portBASE_TYPE BaseType_t;
+  typedef unsigned portBASE_TYPE UBaseType_t;
+#elif (configCPU_FAMILY==configCPU_FAMILY_CF1) || (configCPU_FAMILY==configCPU_FAMILY_CF2) || configCPU_FAMILY_IS_ARM(configCPU_FAMILY) || (configCPU_FAMILY==configCPU_FAMILY_DSC)
   #define portBASE_TYPE        long
   typedef long BaseType_t;
   typedef unsigned long UBaseType_t;
@@ -172,7 +180,7 @@ extern void vPortClearInterruptMaskFromISR(unsigned portBASE_TYPE);
   #define portPOST_ENABLE_DISABLE_INTERRUPTS() /* nothing special needed */
 #endif
 
-#if configCPU_FAMILY_IS_ARM_M4(configCPU_FAMILY) /* Cortex M4 */
+#if configCPU_FAMILY_IS_ARM_M4_M7(configCPU_FAMILY) /* Cortex M4/M7 */
   #if (configCOMPILER==configCOMPILER_ARM_KEIL)
     __asm uint32_t ulPortSetInterruptMask(void);
     __asm void vPortClearInterruptMask(uint32_t ulNewMask);
@@ -185,26 +193,26 @@ extern void vPortClearInterruptMaskFromISR(unsigned portBASE_TYPE);
      * registers.  r0 is clobbered.
      */
     #define portSET_INTERRUPT_MASK()  \
-	  __asm volatile            \
-	  (                         \
-	    "  mov r0, %0 \n" \
-	    "  msr basepri, r0 \n"  \
-	    : /* no output operands */ \
-	    :"i"(configMAX_SYSCALL_INTERRUPT_PRIORITY) /* input */\
-	    :"r0" /* clobber */    \
-	  )
+      __asm volatile               \
+      (                            \
+        "  mov r0, %0 \n"         \
+        "  msr basepri, r0 \n"     \
+        : /* no output operands */ \
+        :"i"(configMAX_SYSCALL_INTERRUPT_PRIORITY) /* input */\
+        :"r0" /* clobber */    \
+      )
     /*
      * Set basepri back to 0 without effective other registers.
      * r0 is clobbered.
      */
     #define portCLEAR_INTERRUPT_MASK() \
-	  __asm volatile            \
-	  (                         \
-	   "  mov r0, #0      \n"  \
-	   "  msr basepri, r0 \n"  \
-	   : /* no output */       \
-	   : /* no input */        \
-	   :"r0" /* clobber */     \
+      __asm volatile             \
+      (                          \
+         "  mov r0, #0      \n"  \
+         "  msr basepri, r0 \n"  \
+         : /* no output */       \
+         : /* no input */        \
+         :"r0" /* clobber */     \
       )
   #elif (configCOMPILER==configCOMPILER_ARM_IAR) /* IAR */ || (configCOMPILER==configCOMPILER_ARM_FSL) /* legacy FSL ARM Compiler */
     void vPortSetInterruptMask(void); /* prototype, implemented in portasm.s */
@@ -214,7 +222,7 @@ extern void vPortClearInterruptMaskFromISR(unsigned portBASE_TYPE);
   #else
     #error "unknown compiler?"
   #endif
-#else /* Cortex-M0+ */
+#elif configCPU_FAMILY_IS_ARM_M0(configCPU_FAMILY) /* Cortex-M0+ */
   #if configCOMPILER==configCOMPILER_ARM_KEIL
     #define portSET_INTERRUPT_MASK()              __disable_irq()
     #define portCLEAR_INTERRUPT_MASK()            __enable_irq()
@@ -224,21 +232,22 @@ extern void vPortClearInterruptMaskFromISR(unsigned portBASE_TYPE);
   #endif
 #endif
 
-#define portSET_INTERRUPT_MASK_FROM_ISR()     0;portSET_INTERRUPT_MASK()
-#define portCLEAR_INTERRUPT_MASK_FROM_ISR(x)  portCLEAR_INTERRUPT_MASK();(void)x
-
+/* Critical section management. */
 extern void vPortEnterCritical(void);
 extern void vPortExitCritical(void);
-
+#define portSET_INTERRUPT_MASK_FROM_ISR()     0;portSET_INTERRUPT_MASK()
+#define portCLEAR_INTERRUPT_MASK_FROM_ISR(x)  portCLEAR_INTERRUPT_MASK();(void)x
+#define portDISABLE_INTERRUPTS()              portSET_INTERRUPT_MASK()
+#define portENABLE_INTERRUPTS()               portCLEAR_INTERRUPT_MASK()
+#define portENTER_CRITICAL()                  vPortEnterCritical()
+#define portEXIT_CRITICAL()                   vPortExitCritical()
 #if configCOMPILER==configCOMPILER_ARM_KEIL
   #define portDISABLE_ALL_INTERRUPTS()   __disable_irq()
+  #define portENABLE_ALL_INTERRUPTS()    __enable_irq()
 #else /* IAR, CW ARM or GNU ARM gcc */
   #define portDISABLE_ALL_INTERRUPTS()   __asm volatile("cpsid i")
+  #define portENABLE_ALL_INTERRUPTS()    __asm volatile("cpsie i")
 #endif
-#define portDISABLE_INTERRUPTS()   portSET_INTERRUPT_MASK()
-#define portENABLE_INTERRUPTS()    portCLEAR_INTERRUPT_MASK()
-#define portENTER_CRITICAL()       vPortEnterCritical()
-#define portEXIT_CRITICAL()        vPortExitCritical()
 
 /* There are an uneven number of items on the initial stack, so
 portALIGNMENT_ASSERT_pxCurrentTCB() will trigger false positive asserts. */
@@ -248,7 +257,8 @@ portALIGNMENT_ASSERT_pxCurrentTCB() will trigger false positive asserts. */
 
 extern void vPortYieldFromISR(void);
 #define portYIELD()                             vPortYieldFromISR()
-#define portEND_SWITCHING_ISR(xSwitchRequired)  if(xSwitchRequired) vPortYieldFromISR()
+#define portEND_SWITCHING_ISR(xSwitchRequired) { if( xSwitchRequired != pdFALSE ) { traceISR_EXIT_TO_SCHEDULER(); portYIELD(); } else { traceISR_EXIT(); } }
+#define portYIELD_FROM_ISR(x)                   portEND_SWITCHING_ISR(x)
 /*-----------------------------------------------------------*/
 
 /* Architecture specific optimizations. */
@@ -274,14 +284,14 @@ extern void vPortYieldFromISR(void);
 
 	/*-----------------------------------------------------------*/
 
-	#define portGET_HIGHEST_PRIORITY( uxTopPriority, uxReadyPriorities ) uxTopPriority = ( 31 - ucPortCountLeadingZeros( ( uxReadyPriorities ) ) )
+  #define portGET_HIGHEST_PRIORITY( uxTopPriority, uxReadyPriorities ) uxTopPriority = ( 31UL - ( uint32_t ) ucPortCountLeadingZeros( ( uxReadyPriorities ) ) )
 
 #endif /* configUSE_PORT_OPTIMISED_TASK_SELECTION */
 
 /*-----------------------------------------------------------*/
 
 #ifdef configASSERT
-#if configCPU_FAMILY_IS_ARM_M4(configCPU_FAMILY) /* ARM M4(F) core */
+#if configCPU_FAMILY_IS_ARM_M4_M7(configCPU_FAMILY) /* ARM M4/M7(F) core */
   void vPortValidateInterruptPriority( void );
   #define portASSERT_IF_INTERRUPT_PRIORITY_INVALID() 	vPortValidateInterruptPriority()
 #else
@@ -306,7 +316,7 @@ void vPortStartFirstTask(void);
 void vPortYieldHandler(void);
   /* handler for the SWI interrupt */
 
-#if configCPU_FAMILY==configCPU_FAMILY_ARM_M4F /* floating point unit */
+#if configCPU_FAMILY_IS_ARM_FPU(configCPU_FAMILY) /* has floating point unit */
   void vPortEnableVFP(void);
     /* enables floating point support in the CPU */
 #endif
@@ -323,13 +333,93 @@ void vPortYieldHandler(void);
   void vPortTickHandler(void); /* Systick interrupt handler */
 #endif
 
+#if configCPU_FAMILY_IS_ARM_M4_M7(configCPU_FAMILY) && (configCOMPILER==configCOMPILER_ARM_GCC)
+#define portINLINE  __inline
+
+#ifndef portFORCE_INLINE
+  #define portFORCE_INLINE inline __attribute__(( always_inline))
+#endif
+
+portFORCE_INLINE static BaseType_t xPortIsInsideInterrupt( void )
+{
+  uint32_t ulCurrentInterrupt;
+  BaseType_t xReturn;
+
+  /* Obtain the number of the currently executing interrupt. */
+  __asm volatile( "mrs %0, ipsr" : "=r"( ulCurrentInterrupt ) );
+
+  if( ulCurrentInterrupt == 0 )
+  {
+    xReturn = pdFALSE;
+  }
+  else
+  {
+    xReturn = pdTRUE;
+  }
+
+  return xReturn;
+}
+
+/*-----------------------------------------------------------*/
+
+portFORCE_INLINE static void vPortRaiseBASEPRI( void )
+{
+uint32_t ulNewBASEPRI;
+
+  __asm volatile
+  (
+    " mov %0, %1                        \n" \
+    " msr basepri, %0                     \n" \
+    " isb                           \n" \
+    " dsb                           \n" \
+    :"=r" (ulNewBASEPRI) : "i" ( configMAX_SYSCALL_INTERRUPT_PRIORITY )
+  );
+}
+
+/*-----------------------------------------------------------*/
+
+portFORCE_INLINE static uint32_t ulPortRaiseBASEPRI( void )
+{
+uint32_t ulOriginalBASEPRI, ulNewBASEPRI;
+
+  __asm volatile
+  (
+    " mrs %0, basepri                     \n" \
+    " mov %1, %2                        \n" \
+    " msr basepri,                      \n" \
+    " isb                           \n" \
+    " dsb                           \n" \
+    :"=r" (ulOriginalBASEPRI), "=r" (ulNewBASEPRI) : "i" ( configMAX_SYSCALL_INTERRUPT_PRIORITY )
+  );
+
+  /* This return will not be reached but is necessary to prevent compiler
+  warnings. */
+  return ulOriginalBASEPRI;
+}
+/*-----------------------------------------------------------*/
+
+portFORCE_INLINE static void vPortSetBASEPRI( uint32_t ulNewMaskValue )
+{
+  __asm volatile
+  (
+    " msr basepri, %0 " :: "r" ( ulNewMaskValue )
+  );
+}
+/*-----------------------------------------------------------*/
+
+#endif
+
 #if configUSE_TICKLESS_IDLE_DECISION_HOOK /* << EST */
-BaseType_t configUSE_TICKLESS_IDLE_DECISION_HOOK_NAME(void); /* return pdTRUE if RTOS can enter tickless idle mode, pdFALSE otherwise */
+  BaseType_t configUSE_TICKLESS_IDLE_DECISION_HOOK_NAME(void); /* return pdTRUE if RTOS can enter tickless idle mode, pdFALSE otherwise */
 #endif
 
 void prvTaskExitError(void);
   /* handler to catch task exit errors */
 
+#if !configGENERATE_RUN_TIME_STATS_USE_TICKS
+  extern void FRTOS1_AppConfigureTimerForRuntimeStats(void);
+  extern uint32_t FRTOS1_AppGetRuntimeCounterValueFromISR(void);
+#endif
 
 #ifdef __cplusplus
 }

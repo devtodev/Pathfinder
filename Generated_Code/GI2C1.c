@@ -4,10 +4,10 @@
 **     Project     : Pathfinder
 **     Processor   : MKL46Z256VLL4
 **     Component   : GenericI2C
-**     Version     : Component 01.027, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.028, Driver 01.00, CPU db: 3.00.000
 **     Repository  : My Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-13, 15:51, # CodeGen: 68
+**     Date/Time   : 2016-12-17, 19:30, # CodeGen: 69
 **     Abstract    :
 **         This component implements a generic I2C driver wrapper to work both with LDD and non-LDD I2C components.
 **     Settings    :
@@ -26,30 +26,48 @@
 **            Semaphore                                    : yes
 **          Init() on startup                              : yes
 **     Contents    :
-**         SelectSlave       - byte GI2C1_SelectSlave(byte i2cAddr);
-**         UnselectSlave     - byte GI2C1_UnselectSlave(void);
+**         SelectSlave       - uint8_t GI2C1_SelectSlave(uint8_t i2cAddr);
+**         UnselectSlave     - uint8_t GI2C1_UnselectSlave(void);
 **         RequestBus        - void GI2C1_RequestBus(void);
 **         ReleaseBus        - void GI2C1_ReleaseBus(void);
-**         WriteBlock        - byte GI2C1_WriteBlock(void* data, word dataSize, GI2C1_EnumSendFlags flags);
-**         ReadBlock         - byte GI2C1_ReadBlock(void* data, word dataSize, GI2C1_EnumSendFlags flags);
-**         ReadAddress       - byte GI2C1_ReadAddress(byte i2cAddr, byte *memAddr, byte memAddrSize, byte...
-**         WriteAddress      - byte GI2C1_WriteAddress(byte i2cAddr, byte *memAddr, byte memAddrSize, byte...
-**         ReadByteAddress8  - byte GI2C1_ReadByteAddress8(byte i2cAddr, byte memAddr, byte *data);
-**         WriteByteAddress8 - byte GI2C1_WriteByteAddress8(byte i2cAddr, byte memAddr, byte data);
-**         ProbeACK          - byte GI2C1_ProbeACK(void* data, word dataSize, GI2C1_EnumSendFlags flags,...
+**         WriteBlock        - uint8_t GI2C1_WriteBlock(void* data, uint16_t dataSize, GI2C1_EnumSendFlags...
+**         ReadBlock         - uint8_t GI2C1_ReadBlock(void* data, uint16_t dataSize, GI2C1_EnumSendFlags...
+**         ReadAddress       - uint8_t GI2C1_ReadAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t...
+**         WriteAddress      - uint8_t GI2C1_WriteAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t...
+**         ReadByteAddress8  - uint8_t GI2C1_ReadByteAddress8(uint8_t i2cAddr, uint8_t memAddr, uint8_t *data);
+**         WriteByteAddress8 - uint8_t GI2C1_WriteByteAddress8(uint8_t i2cAddr, uint8_t memAddr, uint8_t data);
+**         ProbeACK          - uint8_t GI2C1_ProbeACK(void* data, uint16_t dataSize, GI2C1_EnumSendFlags...
 **         GetSemaphore      - void* GI2C1_GetSemaphore(void);
+**         ScanDevice        - uint8_t GI2C1_ScanDevice(uint8_t i2cAddr);
 **         Deinit            - void GI2C1_Deinit(void);
-**         ScanDevice        - byte GI2C1_ScanDevice(byte i2cAddr);
 **         Init              - void GI2C1_Init(void);
 **
-**     License   :  Open Source (LGPL)
-**     Copyright : (c) Copyright Erich Styger, 2013-2015, all rights reserved.
-**     http          : www.mcuoneclipse.com
-**     This an open source software implementing software using Processor Expert.
-**     This is a free software and is opened for education,  research  and commercial developments under license policy of following terms:
-**     * This is a free software and there is NO WARRANTY.
-**     * No restriction on use. You can use, modify and redistribute it for personal, non-profit or commercial product UNDER YOUR RESPONSIBILITY.
-**     * Redistributions of source code must retain the above copyright notice.
+**     * Copyright (c) 2013-2016, Erich Styger
+**      * Web:         https://mcuoneclipse.com
+**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**      * All rights reserved.
+**      *
+**      * Redistribution and use in source and binary forms, with or without modification,
+**      * are permitted provided that the following conditions are met:
+**      *
+**      * - Redistributions of source code must retain the above copyright notice, this list
+**      *   of conditions and the following disclaimer.
+**      *
+**      * - Redistributions in binary form must reproduce the above copyright notice, this
+**      *   list of conditions and the following disclaimer in the documentation and/or
+**      *   other materials provided with the distribution.
+**      *
+**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file GI2C1.c
@@ -129,7 +147,7 @@ void GI2C1_ReleaseBus(void)
 **         ---             - Error code
 ** ===================================================================
 */
-byte GI2C1_SelectSlave(byte i2cAddr)
+uint8_t GI2C1_SelectSlave(uint8_t i2cAddr)
 {
   GI2C1_RequestBus();
   if (I2C0_SelectSlaveDevice(GI2C1_deviceData.handle, LDD_I2C_ADDRTYPE_7BITS, i2cAddr)!=ERR_OK) {
@@ -149,7 +167,7 @@ byte GI2C1_SelectSlave(byte i2cAddr)
 **         ---             - Error code
 ** ===================================================================
 */
-byte GI2C1_UnselectSlave(void)
+uint8_t GI2C1_UnselectSlave(void)
 {
   GI2C1_ReleaseBus();
   return ERR_OK;
@@ -169,9 +187,9 @@ byte GI2C1_UnselectSlave(void)
 **         ---             - Error code
 ** ===================================================================
 */
-byte GI2C1_ReadBlock(void* data, word dataSize, GI2C1_EnumSendFlags flags)
+uint8_t GI2C1_ReadBlock(void* data, uint16_t dataSize, GI2C1_EnumSendFlags flags)
 {
-  byte res = ERR_OK;
+  uint8_t res = ERR_OK;
   TMOUT1_CounterHandle timeout;
   bool isTimeout=FALSE;
 
@@ -216,11 +234,11 @@ byte GI2C1_ReadBlock(void* data, word dataSize, GI2C1_EnumSendFlags flags)
 **         ---             - Error code
 ** ===================================================================
 */
-byte GI2C1_WriteBlock(void* data, word dataSize, GI2C1_EnumSendFlags flags)
+uint8_t GI2C1_WriteBlock(void* data, uint16_t dataSize, GI2C1_EnumSendFlags flags)
 {
   TMOUT1_CounterHandle timeout;
   bool isTimeout=FALSE;
-  byte res = ERR_OK;
+  uint8_t res = ERR_OK;
 
   for(;;) { /* breaks */
     GI2C1_deviceData.dataTransmittedFlg = FALSE;
@@ -266,9 +284,9 @@ byte GI2C1_WriteBlock(void* data, word dataSize, GI2C1_EnumSendFlags flags)
 **         ---             - Error code
 ** ===================================================================
 */
-byte GI2C1_ReadAddress(byte i2cAddr, byte *memAddr, byte memAddrSize, byte *data, word dataSize)
+uint8_t GI2C1_ReadAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t memAddrSize, uint8_t *data, uint16_t dataSize)
 {
-  byte res = ERR_OK;
+  uint8_t res = ERR_OK;
   TMOUT1_CounterHandle timeout;
   bool isTimeout=FALSE;
 
@@ -345,14 +363,14 @@ byte GI2C1_ReadAddress(byte i2cAddr, byte *memAddr, byte memAddrSize, byte *data
 **         ---             - Error code
 ** ===================================================================
 */
-byte GI2C1_WriteAddress(byte i2cAddr, byte *memAddr, byte memAddrSize, byte *data, word dataSize)
+uint8_t GI2C1_WriteAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t memAddrSize, uint8_t *data, uint16_t dataSize)
 {
-  static byte writeBuf[GI2C1_WRITE_BUFFER_SIZE];
-  byte *p;
-  word i;
+  static uint8_t writeBuf[GI2C1_WRITE_BUFFER_SIZE];
+  uint8_t *p;
+  uint16_t i;
   TMOUT1_CounterHandle timeout;
   bool isTimeout=FALSE;
-  byte res = ERR_OK;
+  uint8_t res = ERR_OK;
 
   if (GI2C1_SelectSlave(i2cAddr)!=ERR_OK) {
     return ERR_FAILED;
@@ -501,7 +519,7 @@ void* GI2C1_GetSemaphore(void)
 **         ---             - Error code
 ** ===================================================================
 */
-byte GI2C1_ReadByteAddress8(byte i2cAddr, byte memAddr, byte *data)
+uint8_t GI2C1_ReadByteAddress8(uint8_t i2cAddr, uint8_t memAddr, uint8_t *data)
 {
   return GI2C1_ReadAddress(i2cAddr, &memAddr, sizeof(memAddr), data, 1);
 }
@@ -521,7 +539,7 @@ byte GI2C1_ReadByteAddress8(byte i2cAddr, byte memAddr, byte *data)
 **         ---             - Error code
 ** ===================================================================
 */
-byte GI2C1_WriteByteAddress8(byte i2cAddr, byte memAddr, byte data)
+uint8_t GI2C1_WriteByteAddress8(uint8_t i2cAddr, uint8_t memAddr, uint8_t data)
 {
   return GI2C1_WriteAddress(i2cAddr, &memAddr, sizeof(memAddr), &data, 1);
 }
@@ -538,13 +556,13 @@ byte GI2C1_WriteByteAddress8(byte i2cAddr, byte memAddr, byte data)
 **         ---             - Error code
 ** ===================================================================
 */
-byte GI2C1_ScanDevice(byte i2cAddr)
+uint8_t GI2C1_ScanDevice(uint8_t i2cAddr)
 {
-  byte res = ERR_OK;
+  uint8_t res = ERR_OK;
   TMOUT1_CounterHandle timeout;
   bool isTimeout=FALSE;
   LDD_I2C_TErrorMask errMask;
-  byte dummy;
+  uint8_t dummy;
 
   if (GI2C1_SelectSlave(i2cAddr)!=ERR_OK) {
     return ERR_FAILED;
@@ -598,9 +616,9 @@ byte GI2C1_ScanDevice(byte i2cAddr)
 **         ---             - Error code
 ** ===================================================================
 */
-byte GI2C1_ProbeACK(void* data, word dataSize, GI2C1_EnumSendFlags flags, word WaitTimeUS)
+uint8_t GI2C1_ProbeACK(void* data, uint16_t dataSize, GI2C1_EnumSendFlags flags, uint16_t WaitTimeUS)
 {
-  byte res = ERR_OK;
+  uint8_t res = ERR_OK;
 
   GI2C1_deviceData.dataTransmittedFlg = FALSE;
   res = I2C0_MasterSendBlock(GI2C1_deviceData.handle, data, dataSize, flags==GI2C1_SEND_STOP?LDD_I2C_SEND_STOP:LDD_I2C_NO_SEND_STOP);

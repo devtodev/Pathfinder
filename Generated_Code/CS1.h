@@ -4,10 +4,10 @@
 **     Project     : Pathfinder
 **     Processor   : MKL46Z256VLL4
 **     Component   : CriticalSection
-**     Version     : Component 01.008, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.009, Driver 01.00, CPU db: 3.00.000
 **     Repository  : My Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-13, 15:51, # CodeGen: 68
+**     Date/Time   : 2016-12-17, 19:30, # CodeGen: 69
 **     Abstract    :
 **
 **     Settings    :
@@ -21,7 +21,7 @@
 **         ExitCritical     - void CS1_ExitCritical(void);
 **
 **     License   : Open Source (LGPL)
-**     Copyright : Erich Styger, 2014, all rights reserved.
+**     Copyright : Erich Styger, 2014-2016, all rights reserved.
 **     Web       : www.mcuoneclipse.com
 **     This an open source software implementing a driver using Processor Expert.
 **     This is a free software and is opened for education, research and commercial developments under license policy of following terms:
@@ -48,7 +48,7 @@
 /* Include inherited beans */
 #include "KSDK1.h"
 
-#if KSDK1_SDK_VERSION_USED == KSDK1_KSDK1_SDK_VERSION_NONE
+#if KSDK1_SDK_VERSION_USED == KSDK1_SDK_VERSION_NONE
 /* Include shared modules, which are used for whole project */
   #include "PE_Types.h"
   #include "PE_Error.h"
@@ -57,7 +57,7 @@
   #include "Cpu.h"
 #endif
 
-/* workaround macros for wrong EnterCritical()/ExitCritical() in the low level drivers. Will be removed once PEx is fixed */
+/* workaround macros for wrong EnterCritical()/ExitCritical() in the low level drivers. */
 #define CS1_CriticalVariableDrv() \
   CS1_CriticalVariable()
 #define CS1_EnterCriticalDrv() \

@@ -17,6 +17,6 @@ void move_turnRight();
 // set the direction of the motors
 void move_Forward();
 void move_Backward();
-void move_Rotate(int direction);
+void move_Rotate(int direction, int angle);
 
 void move_init();
