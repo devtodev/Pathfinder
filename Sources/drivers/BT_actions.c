@@ -129,7 +129,7 @@ void BT_inputChar(char data)
 	}
 
 
-	if ((data == '\n') || (data == '?') ||
+	if ((BT_mode == INPUT) || (data == '\n') || (data == '?') ||
 			((BT_mode == MENU) && ((data >= OPTIONMENUBASE) && (data <= menuMaxOption))))
 	{
 		xSemaphoreGive(xSemaphoreBTRead);

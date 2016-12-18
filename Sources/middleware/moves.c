@@ -24,12 +24,14 @@ void move_SpeedRefresh()
 	int K = 0xFFF;
 	motorSetSpeed(MOTORLEFT, speed_Left * K);
 	motorSetSpeed(MOTORRIGHT, speed_Right * K);
+	FRTOS1_vTaskDelay(SMOTH_SPEEDCHANGE_MS/portTICK_RATE_MS);
 }
 
 void move_DirectionRefresh()
 {
 	motorSetSpeed(MOTORLEFT, speed_Left);
 	motorSetSpeed(MOTORRIGHT, speed_Right);
+	FRTOS1_vTaskDelay(SMOTH_SPEEDCHANGE_MS/portTICK_RATE_MS);
 }
 
 
@@ -117,12 +119,10 @@ void move_stop()
 {
 	while ((speed_Left != 0) && (speed_Right != 0))
 	{
-		FRTOS1_vTaskDelay(SMOTH_SPEEDCHANGE_MS/portTICK_RATE_MS);
 		if (speed_Left != 0) speed_Left = (speed_Left < 0)?speed_Left+1:speed_Left-1;
 		if (speed_Right != 0) speed_Right = (speed_Right < 0)?speed_Right+1:speed_Right-1;
 		move_SpeedRefresh();
 	}
-	FRTOS1_vTaskDelay(SMOTH_SPEEDCHANGE_MS/portTICK_RATE_MS);
 	direction_Left = RELEASE;
 	direction_Right = RELEASE;
 	move_DirectionRefresh();
