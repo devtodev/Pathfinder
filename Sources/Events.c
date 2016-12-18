@@ -215,7 +215,9 @@ void BT_OnError(void)
 */
 void BT_OnRxChar(void)
 {
-  /* Write your code here ... */
+	char data;
+	BT_RecvChar(&data);
+	BT_inputChar(data);
 }
 
 /*

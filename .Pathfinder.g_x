@@ -48,8 +48,8 @@
       <File Name="Generated_Code/FRTOS1.h" FileDate="2016-12-17, 19:30:43" FileAge="1482013843000" FileType="45637" CompNumb="3" />
       <File Name="Generated_Code/STCP1.c" FileDate="2016-12-10, 18:39:39" FileAge="1481405979000" FileType="45637" CompNumb="144" />
       <File Name="Generated_Code/FRTOS1.c" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="45637" CompNumb="3" />
-      <File Name="Generated_Code/BitIoLdd3.h" FileDate="2016-12-10, 18:39:40" FileAge="1481405980000" FileType="45637" CompNumb="149" />
       <File Name="Generated_Code/PE_Error.h" FileDate="2016-12-05, 21:22:24" FileAge="1480983744000" FileType="45637" />
+      <File Name="Generated_Code/BitIoLdd3.h" FileDate="2016-12-10, 18:39:40" FileAge="1481405980000" FileType="45637" CompNumb="149" />
       <File Name="Documentation/doxygen/PwmLdd2_component.txt" FileDate="2016-12-10, 11:46:23" FileAge="1481381183000" FileType="45637" CompNumb="125" />
       <File Name="Generated_Code/BitIoLdd3.c" FileDate="2016-12-10, 18:39:40" FileAge="1481405980000" FileType="45637" CompNumb="149" />
       <File Name="Generated_Code/BitIoLdd1.h" FileDate="2016-12-10, 18:39:39" FileAge="1481405979000" FileType="45637" CompNumb="145" />
@@ -79,10 +79,10 @@
       <File Name="Generated_Code/ASerialLdd1.h" FileDate="2016-12-05, 21:22:24" FileAge="1480983744000" FileType="45637" CompNumb="66" />
       <File Name="Generated_Code/portmacro.h" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="45637" CompNumb="3" />
       <File Name="Sources/Events.h" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="131328" />
-      <File Name="ProjectInfo.xml" FileDate="2016-12-17, 19:30:46" FileAge="1482013846000" FileType="45637" />
+      <File Name="ProjectInfo.xml" FileDate="2016-12-18, 14:35:16" FileAge="1482082516000" FileType="45637" />
       <File Name="Generated_Code/ASerialLdd1.c" FileDate="2016-12-05, 21:22:24" FileAge="1480983744000" FileType="45637" CompNumb="66" />
       <File Name="Sources/Events.c" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="131328" />
-      <File Name="Documentation/Pathfinder_SIGNALS.txt" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="3072" />
+      <File Name="Documentation/Pathfinder_SIGNALS.txt" FileDate="2016-12-18, 14:35:15" FileAge="1482082515000" FileType="3072" />
       <File Name="Generated_Code/mpu_wrappers.h" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="45637" CompNumb="3" />
       <File Name="Static_Code/PDD/UART0_PDD.h" FileDate="2016-12-05, 21:22:24" FileAge="1480983744000" FileType="1048576" />
       <File Name="Generated_Code/queue.h" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="45637" CompNumb="3" />
@@ -108,9 +108,9 @@
       <File Name="Generated_Code/TU1.h" FileDate="2016-12-10, 11:34:57" FileAge="1481380497000" FileType="45637" CompNumb="132" />
       <File Name="Documentation/Pathfinder.txt" FileDate="2016-12-17, 19:30:46" FileAge="1482013846000" FileType="3072" />
       <File Name="Documentation/doxygen/I2C0_component.txt" FileDate="2016-12-05, 21:22:24" FileAge="1480983744000" FileType="45637" CompNumb="22" />
-      <File Name="Static_Code/PDD/OSC_PDD.h" FileDate="2016-12-05, 21:22:24" FileAge="1480983744000" FileType="1048576" />
       <File Name="Generated_Code/GI2C1.c" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="45637" CompNumb="18" />
       <File Name="Generated_Code/TU1.c" FileDate="2016-12-10, 11:34:57" FileAge="1481380497000" FileType="45637" CompNumb="132" />
+      <File Name="Static_Code/PDD/OSC_PDD.h" FileDate="2016-12-05, 21:22:24" FileAge="1480983744000" FileType="1048576" />
       <File Name="Generated_Code/UTIL1.h" FileDate="2016-12-17, 19:30:43" FileAge="1482013843000" FileType="45637" CompNumb="36" />
       <File Name="Static_Code/PDD/USB_PDD.h" FileDate="2016-12-05, 21:22:24" FileAge="1480983744000" FileType="1048576" />
       <File Name="Generated_Code/UTIL1.c" FileDate="2016-12-17, 19:30:43" FileAge="1482013843000" FileType="45637" CompNumb="36" />
@@ -173,5 +173,5 @@
       <File Name="Generated_Code/.gdbinit-FreeRTOS-helpers" FileDate="2016-12-05, 21:22:24" FileAge="1480983744000" FileType="45637" CompNumb="3" />
     </GeneratedByPE>
   </GeneratedFilesList>
-  <CodeGenReference>70</CodeGenReference>
+  <CodeGenReference>71</CodeGenReference>
 </CodeGenerationInfo>

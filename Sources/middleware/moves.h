@@ -9,8 +9,8 @@
 #define RIGHT 0
 
 // increase or decrease the speed
-void move_SpeedMore();
-void move_SpeedLess();
+void move_SpeedUp();
+void move_SpeedDown();
 void move_turnLeft();
 void move_turnRight();
 

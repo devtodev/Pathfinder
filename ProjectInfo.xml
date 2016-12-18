@@ -46,6 +46,7 @@
       <Path>/home/karl/workspace/Pathfinder/Generated_Code/</Path>
       <Path>/home/karl/workspace/Pathfinder/Project_Settings/Startup_Code/</Path>
       <Path>/home/karl/workspace/Pathfinder/Sources/</Path>
+      <Path>/home/karl/workspace/Pathfinder/Sources/HMI/</Path>
       <Path>/home/karl/workspace/Pathfinder/Sources/drivers/</Path>
       <Path>/home/karl/workspace/Pathfinder/Sources/middleware/</Path>
     </SourceCodePaths>
@@ -97,6 +98,8 @@
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/timers.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Project_Settings/Startup_Code/startup.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Events.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/HMI/ActionManager.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/HMI/BT_frontend.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/drivers/BT_actions.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/drivers/Ultrasonic.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/drivers/acelerometro.c</PathName>
@@ -158,6 +161,8 @@
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/task.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/timers.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Events.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/HMI/ActionManager.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/HMI/BT_frontend.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/drivers/BT_actions.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/drivers/Ultrasonic.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/drivers/acelerometro.h</PathName>

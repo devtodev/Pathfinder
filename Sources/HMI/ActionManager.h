@@ -5,6 +5,14 @@
  *      Author: Carlos Miguens
  */
 
+#define SPEED_UP	 'w'
+#define SPEED_DOWN	 's'
+#define TURN_LEFT	 'a'
+#define TURN_RIGHT   'd'
+#define GOFORDWARD	 'i'
+#define GOBACKWARD	 'k'
+#define ROTATE_LEFT  'j'
+#define ROTATE_RIGHT 'l'
 
-
-void pushAction();
+void pushAction(char action);
+void doAction();

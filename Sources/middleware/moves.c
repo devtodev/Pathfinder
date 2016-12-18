@@ -9,9 +9,7 @@
 #include "../drivers/motor.h"
 #include "FRTOS1.h"
 
-#define LEFT 1
-#define RIGHT 0
-#define SMOTH_SPEEDCHANGE_MS 75
+#define SMOTH_SPEEDCHANGE_MS 1000
 
 int speed_Left = 0;
 int speed_Right = 0;
@@ -29,8 +27,8 @@ void move_SpeedRefresh()
 
 void move_DirectionRefresh()
 {
-	motorSetSpeed(MOTORLEFT, speed_Left);
-	motorSetSpeed(MOTORRIGHT, speed_Right);
+	motorDirection(MOTORLEFT, direction_Left);
+	motorDirection(MOTORRIGHT, direction_Right);
 	FRTOS1_vTaskDelay(SMOTH_SPEEDCHANGE_MS/portTICK_RATE_MS);
 }
 
@@ -66,14 +64,14 @@ void move_SpeedRightDecrease()
 }
 
 // increase or decrease the speed
-void move_SpeedMore()
+void move_SpeedUp()
 {
 	move_SpeedLeftIncrease();
 	move_SpeedRightIncrease();
 	move_SpeedRefresh();
 }
 
-void move_SpeedLess()
+void move_SpeedDown()
 {
 	move_SpeedLeftDecrease();
 	move_SpeedRightDecrease();
@@ -117,6 +115,7 @@ void move_Backward()
 
 void move_stop()
 {
+	move_SpeedRefresh();
 	while ((speed_Left != 0) && (speed_Right != 0))
 	{
 		if (speed_Left != 0) speed_Left = (speed_Left < 0)?speed_Left+1:speed_Left-1;

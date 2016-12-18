@@ -5,15 +5,7 @@
  *      Author: Carlos Miguens
  */
 
-#include "../drivers/BT_actions.h"
-
-void hmi_bt_init()
-{
-}
-
-void hmi_bt_task()
-{
-	//BT_showMenu
-}
+void hmi_bt_init();
+void hmi_bt_task();
 
 
