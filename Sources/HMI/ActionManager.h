@@ -5,6 +5,7 @@
  *      Author: Carlos Miguens
  */
 
+#define MOVE_STOP	 'x'
 #define SPEED_UP	 'w'
 #define SPEED_DOWN	 's'
 #define TURN_LEFT	 'a'

@@ -44,6 +44,9 @@ void doAction()
 		case TURN_RIGHT:
 			move_turnRight();
 			break;
+		case MOVE_STOP:
+			move_stop();
+			break;
 		case GOFORDWARD:
 			move_Forward();
 			break;

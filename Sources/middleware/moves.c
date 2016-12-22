@@ -9,7 +9,7 @@
 #include "../drivers/motor.h"
 #include "FRTOS1.h"
 
-#define SMOTH_SPEEDCHANGE_MS 1000
+#define SMOTH_SPEEDCHANGE_MS 200
 
 int speed_Left = 0;
 int speed_Right = 0;
