@@ -55,8 +55,6 @@ static portTASK_FUNCTION(directionTask, pvParameters) {
 	vTaskDelete(directionTask);
 }
 static portTASK_FUNCTION(HMI_BT_Task, pvParameters) {
-
-  /* Write your task initialization code here ... */
   hmi_bt_init();
   char option;
   for(;;) {
@@ -66,13 +64,17 @@ static portTASK_FUNCTION(HMI_BT_Task, pvParameters) {
   vTaskDelete(HMI_BT_Task);
 }
 static portTASK_FUNCTION(SensorUltrasonidoTask, pvParameters) {
-
-  /* Write your task initialization code here ... */
-  char bufferText[20];
+  int distanceFront;
   Distance_init();
   for(;;) {
 	    Distance_doMeaseure();
-		vTaskDelay(10/portTICK_RATE_MS);
+	    distanceFront = Distance_getFront();
+	    if (distanceFront < 50)
+	    {
+	    	pushAction(MOVE_STOP);
+	    	// TODO: ROTATE
+	    }
+	    vTaskDelay(10/portTICK_RATE_MS);
   }
   /* Destroy the task */
   vTaskDelete(SensorUltrasonidoTask);
