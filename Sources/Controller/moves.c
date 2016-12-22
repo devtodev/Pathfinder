@@ -6,12 +6,7 @@
  */
 
 #include <Driver/motor.h>
-#include <Model/moves.h>
-
-int speed_Left = 0;
-int speed_Right = 0;
-int direction_Left = RELEASE;
-int direction_Right = RELEASE;
+#include <Controller/moves.h>
 
 
 void move_SpeedRefresh()

@@ -6,6 +6,5 @@
  */
 
 void hmi_bt_init();
-void hmi_bt_task();
-
+char hmi_bt_getOption();
 

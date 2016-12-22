@@ -5,7 +5,7 @@
  *      Author: Carlos Miguens
  */
 #include <Driver/Ultrasonic.h>
-#include <Model/Distance.h>
+#include <Controller/Distance.h>
 
 #define BUFFERDISTANCESIZE 20
 

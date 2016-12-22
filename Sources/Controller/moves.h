@@ -8,6 +8,11 @@
 #define LEFT 1
 #define RIGHT 0
 
+int speed_Left;
+int speed_Right;
+int direction_Left;
+int direction_Right;
+
 // increase or decrease the speed
 void move_SpeedUp();
 void move_SpeedDown();

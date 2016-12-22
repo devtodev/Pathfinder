@@ -5,6 +5,11 @@
  *      Author: Carlos Miguens
  */
 
+#include "FRTOS1.h"
+#include "FreeRTOS.h"
+#include "queue.h"
+
+
 #define MOVE_STOP	 'x'
 #define SPEED_UP	 'w'
 #define SPEED_DOWN	 's'
@@ -18,6 +23,8 @@
 void initActions();
 void doAction(char action);
 void pushAction(char action);
+
+QueueHandle_t queueSpeed, queueDirection;
 
 typedef struct {
 	char type;

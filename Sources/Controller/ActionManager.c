@@ -5,15 +5,13 @@
  *      Author: Carlos Miguens
  */
 
-#include <Model/moves.h>
+#include "Controller/moves.h"
 #include "ActionManager.h"
-#include "queue.h"
 
 #define MAXACTIONS 		   		20
 #define DELAY_SPEED_CHANGE 		25
 #define DELAY_DIRECTION_CHANGE  25
 
-QueueHandle_t queueSpeed, queueDirection;
 
 void initActions()
 {
@@ -23,7 +21,7 @@ void initActions()
 
 void pushAction(char action)
 {
-	Action reg = malloc(sizeof(Action));
+	Action *reg = malloc(sizeof(Action));
 	switch(action)
 	{
 		case SPEED_UP:

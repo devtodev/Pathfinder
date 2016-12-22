@@ -15,6 +15,10 @@
 #include "MMA1.h"
 #include "Controller/ActionManager.h"
 #include "Driver/acelerometro.h"
+#include "Controller/moves.h"
+#include "Driver/BT_actions.h"
+#include "Controller/Distance.h"
+#include "HMI/BT_frontend.h"
 
 #define ACCEL_ANTIREBOTE		 30
 #define DELAY_BETWEEN_ACTIONS_MS 25
@@ -27,14 +31,13 @@ static portTASK_FUNCTION(speedTask, pvParameters) {
 
 	queueSpeed = xQueueCreate( 20, sizeof( Action ) );
 	for(;;) {
-		// TODO: change the circular buffer for a
 		if( xQueuePeek( queueSpeed, &( action ), portMAX_DELAY ) )
 		{
-			doAction(action->type);
-			vTaskDelay(action->delayms/portTICK_RATE_MS);
+			doAction(action.type);
+			vTaskDelay(action.delayms/portTICK_RATE_MS);
 		}
 	}
-	vTaskDelete(ActionManagerTask);
+	vTaskDelete(speedTask);
 }
 static portTASK_FUNCTION(directionTask, pvParameters) {
 	uint16_t SERVO1_position;
@@ -42,15 +45,14 @@ static portTASK_FUNCTION(directionTask, pvParameters) {
 
 	queueDirection = xQueueCreate( 20, sizeof( Action ) );
 	for(;;) {
-		// TODO: change the circular buffer for a
 		if ((xQueuePeek( queueDirection, &( action ), portMAX_DELAY ) ) && (speed_Left == 0) && (speed_Right == 0))
 		{
-			doAction(action->type);
-			vTaskDelay(action->delayms/portTICK_RATE_MS);
+			doAction(action.type);
+			vTaskDelay(action.delayms/portTICK_RATE_MS);
 		}
 		vTaskDelay(25/portTICK_RATE_MS);
 	}
-	vTaskDelete(ActionManagerTask);
+	vTaskDelete(directionTask);
 }
 static portTASK_FUNCTION(HMI_BT_Task, pvParameters) {
 
@@ -61,7 +63,7 @@ static portTASK_FUNCTION(HMI_BT_Task, pvParameters) {
 	option = hmi_bt_getOption();
 	pushAction(option);
   }
-  vTaskDelete(SensorUltrasonidoTask);
+  vTaskDelete(HMI_BT_Task);
 }
 static portTASK_FUNCTION(SensorUltrasonidoTask, pvParameters) {
 
