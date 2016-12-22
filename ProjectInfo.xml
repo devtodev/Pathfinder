@@ -45,10 +45,11 @@
     <SourceCodePaths>
       <Path>/home/karl/workspace/Pathfinder/Generated_Code/</Path>
       <Path>/home/karl/workspace/Pathfinder/Project_Settings/Startup_Code/</Path>
+      <Path>/home/karl/workspace/Pathfinder/Sources/Controller/</Path>
+      <Path>/home/karl/workspace/Pathfinder/Sources/Driver/</Path>
       <Path>/home/karl/workspace/Pathfinder/Sources/</Path>
-      <Path>/home/karl/workspace/Pathfinder/Sources/HMI/</Path>
-      <Path>/home/karl/workspace/Pathfinder/Sources/drivers/</Path>
-      <Path>/home/karl/workspace/Pathfinder/Sources/middleware/</Path>
+      <Path>/home/karl/workspace/Pathfinder/Sources/Model/</Path>
+      <Path>/home/karl/workspace/Pathfinder/Sources/View/</Path>
     </SourceCodePaths>
   </PATHS>
   <FILES>
@@ -97,17 +98,17 @@
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/tasks.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/timers.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Project_Settings/Startup_Code/startup.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/ActionManager.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/BT_actions.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/Ultrasonic.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/acelerometro.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/motor.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Events.c</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/HMI/ActionManager.c</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/HMI/BT_frontend.c</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/drivers/BT_actions.c</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/drivers/Ultrasonic.c</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/drivers/acelerometro.c</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/drivers/motor.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Model/Distance.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Model/moves.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/View/BT_frontend.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/frtos_tasks.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/main.c</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/middleware/Distance.c</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/middleware/moves.c</PathName>
     </GeneratedCs>
     <GeneratedHs>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/ASerialLdd1.h</PathName>
@@ -160,16 +161,16 @@
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/semphr.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/task.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/timers.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/ActionManager.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/BT_actions.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/Ultrasonic.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/acelerometro.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/motor.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Events.h</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/HMI/ActionManager.h</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/HMI/BT_frontend.h</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/drivers/BT_actions.h</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/drivers/Ultrasonic.h</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/drivers/acelerometro.h</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/drivers/motor.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Model/Distance.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Model/moves.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/View/BT_frontend.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/frtos_tasks.h</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/middleware/Distance.h</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/middleware/moves.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Static_Code/IO_Map/MKL46Z4.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Static_Code/PDD/ADC_PDD.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Static_Code/PDD/CMP_PDD.h</PathName>

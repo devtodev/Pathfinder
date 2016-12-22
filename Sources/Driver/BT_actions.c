@@ -5,7 +5,7 @@
  *      Author: Carlos Miguens
  */
 
-#include "BT_actions.h"
+#include <Driver/BT_actions.h>
 #include "BT.h"
 #include "FreeRTOS.h"
 #include "semphr.h"

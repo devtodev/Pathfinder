@@ -15,5 +15,11 @@
 #define ROTATE_LEFT  'j'
 #define ROTATE_RIGHT 'l'
 
+void initActions();
+void doAction(char action);
 void pushAction(char action);
-void doAction();
+
+typedef struct {
+	char type;
+	int delayms;
+} Action;

@@ -27,7 +27,7 @@
 #define ACCEL_ASLP_RATE0	  1 << 6
 #define ACCEL_ASLP_RATE1	  1 << 7
 
-#include "acelerometro.h"
+#include <Driver/acelerometro.h>
 #include "MMA1.h"
 #include "GI2C1.h"
 #include "FreeRTOS.h"

@@ -13,30 +13,56 @@
 /* End <includes> initialization, DO NOT MODIFY LINES ABOVE */
 
 #include "MMA1.h"
-#include "drivers/acelerometro.h"
-#include "drivers/BT_actions.h"
-#include "middleware/Distance.h"
-#include "middleware/moves.h"
-#include "HMI/ActionManager.h"
-#include "HMI/BT_frontend.h"
+#include "Controller/ActionManager.h"
+#include "Driver/acelerometro.h"
 
 #define ACCEL_ANTIREBOTE		 30
 #define DELAY_BETWEEN_ACTIONS_MS 25
 
+#define BUFFERDISTANCESIZE 		 5
 
-static portTASK_FUNCTION(LocomotionTask, pvParameters) {
+static portTASK_FUNCTION(speedTask, pvParameters) {
 	uint16_t SERVO1_position;
+	Action action;
 
-	initActions();
+	queueSpeed = xQueueCreate( 20, sizeof( Action ) );
 	for(;;) {
 		// TODO: change the circular buffer for a
-		doAction();
-		vTaskDelay(DELAY_BETWEEN_ACTIONS_MS/portTICK_RATE_MS);
+		if( xQueuePeek( queueSpeed, &( action ), portMAX_DELAY ) )
+		{
+			doAction(action->type);
+			vTaskDelay(action->delayms/portTICK_RATE_MS);
+		}
 	}
-	vTaskDelete(LocomotionTask);
+	vTaskDelete(ActionManagerTask);
 }
+static portTASK_FUNCTION(directionTask, pvParameters) {
+	uint16_t SERVO1_position;
+	Action action;
 
-#define BUFFERDISTANCESIZE 5
+	queueDirection = xQueueCreate( 20, sizeof( Action ) );
+	for(;;) {
+		// TODO: change the circular buffer for a
+		if ((xQueuePeek( queueDirection, &( action ), portMAX_DELAY ) ) && (speed_Left == 0) && (speed_Right == 0))
+		{
+			doAction(action->type);
+			vTaskDelay(action->delayms/portTICK_RATE_MS);
+		}
+		vTaskDelay(25/portTICK_RATE_MS);
+	}
+	vTaskDelete(ActionManagerTask);
+}
+static portTASK_FUNCTION(HMI_BT_Task, pvParameters) {
+
+  /* Write your task initialization code here ... */
+  hmi_bt_init();
+  char option;
+  for(;;) {
+	option = hmi_bt_getOption();
+	pushAction(option);
+  }
+  vTaskDelete(SensorUltrasonidoTask);
+}
 static portTASK_FUNCTION(SensorUltrasonidoTask, pvParameters) {
 
   /* Write your task initialization code here ... */
@@ -49,22 +75,6 @@ static portTASK_FUNCTION(SensorUltrasonidoTask, pvParameters) {
   /* Destroy the task */
   vTaskDelete(SensorUltrasonidoTask);
 }
-
-static portTASK_FUNCTION(HMI_BT_Task, pvParameters) {
-
-  /* Write your task initialization code here ... */
-  hmi_bt_init();
-  char option;
-  for(;;) {
-	option = hmi_bt_getOption();
-	pushAction(option);
-	vTaskDelay(10/portTICK_RATE_MS);
-  }
-  /* Destroy the task */
-  vTaskDelete(SensorUltrasonidoTask);
-}
-
-
 static portTASK_FUNCTION(AcelerometroTask, pvParameters) {
 	int16_t xyz[3], xyzold[3], cambioEstado;
 	Movimiento movimiento;
@@ -121,12 +131,12 @@ static portTASK_FUNCTION(AcelerometroTask, pvParameters) {
 	vTaskDelete(AcelerometroTask);
 }
 
-
 void CreateTasks(void) {
+  move_init();
   BT_init();
   if (FRTOS1_xTaskCreate(
-        LocomotionTask,  /* pointer to the task */
-        "LocomotionTask", /* task name for kernel awareness debugging */
+		speedTask,  /* pointer to the task */
+        "speedTask", /* task name for kernel awareness debugging */
         configMINIMAL_STACK_SIZE, /* task stack size */
         (void*)NULL, /* optional task startup argument */
         tskIDLE_PRIORITY + 3,  /* initial priority */
@@ -137,17 +147,29 @@ void CreateTasks(void) {
         /*lint +e527 */
     }
   if (FRTOS1_xTaskCreate(
-		HMI_BT_Task,  /* pointer to the task */
-        "HMI_BT_Task", /* task name for kernel awareness debugging */
-        configMINIMAL_STACK_SIZE, /* task stack size */
-        (void*)NULL, /* optional task startup argument */
-        tskIDLE_PRIORITY + 1,  /* initial priority */
-        (xTaskHandle*)NULL /* optional task handle to create */
-      ) != pdPASS) {
-        /*lint -e527 */
-        for(;;){}; /* error! probably out of memory */
-        /*lint +e527 */
-    }
+  		  directionTask,  /* pointer to the task */
+          "directionTask", /* task name for kernel awareness debugging */
+          configMINIMAL_STACK_SIZE, /* task stack size */
+          (void*)NULL, /* optional task startup argument */
+          tskIDLE_PRIORITY + 3,  /* initial priority */
+          (xTaskHandle*)NULL /* optional task handle to create */
+        ) != pdPASS) {
+          /*lint -e527 */
+          for(;;){}; /* error! probably out of memory */
+          /*lint +e527 */
+      }
+  if (FRTOS1_xTaskCreate(
+		  HMI_BT_Task,  /* pointer to the task */
+          "HMI_BT_Task", /* task name for kernel awareness debugging */
+          configMINIMAL_STACK_SIZE, /* task stack size */
+          (void*)NULL, /* optional task startup argument */
+          tskIDLE_PRIORITY + 1,  /* initial priority */
+          (xTaskHandle*)NULL /* optional task handle to create */
+        ) != pdPASS) {
+          /*lint -e527 */
+          for(;;){}; /* error! probably out of memory */
+          /*lint +e527 */
+      }
   if (FRTOS1_xTaskCreate(
 	  SensorUltrasonidoTask,  /* pointer to the task */
       "SensorUltrasonidoTask", /* task name for kernel awareness debugging */

@@ -5,11 +5,8 @@
  *      Author: Carlos Miguens
  */
 
-#include "moves.h"
-#include "../drivers/motor.h"
-#include "FRTOS1.h"
-
-#define SMOTH_SPEEDCHANGE_MS 200
+#include <Driver/motor.h>
+#include <Model/moves.h>
 
 int speed_Left = 0;
 int speed_Right = 0;
@@ -19,17 +16,14 @@ int direction_Right = RELEASE;
 
 void move_SpeedRefresh()
 {
-	int K = 0xFFF;
-	motorSetSpeed(MOTORLEFT, speed_Left * K);
-	motorSetSpeed(MOTORRIGHT, speed_Right * K);
-	FRTOS1_vTaskDelay(SMOTH_SPEEDCHANGE_MS/portTICK_RATE_MS);
+	motorSetSpeed(MOTORLEFT, speed_Left);
+	motorSetSpeed(MOTORRIGHT, speed_Right);
 }
 
 void move_DirectionRefresh()
 {
 	motorDirection(MOTORLEFT, direction_Left);
 	motorDirection(MOTORRIGHT, direction_Right);
-	FRTOS1_vTaskDelay(SMOTH_SPEEDCHANGE_MS/portTICK_RATE_MS);
 }
 
 
@@ -96,7 +90,6 @@ void move_Forward()
 	if ((direction_Left == FORWARD) && (direction_Right == FORWARD))
 		return;
 	move_stop();
-	FRTOS1_vTaskDelay(SMOTH_SPEEDCHANGE_MS/portTICK_RATE_MS);
 	direction_Left = FORWARD;
 	direction_Right = FORWARD;
 	move_DirectionRefresh();
@@ -107,7 +100,6 @@ void move_Backward()
 	if ((direction_Left == BACKWARD) && (direction_Right == BACKWARD))
 		return;
 	move_stop();
-	FRTOS1_vTaskDelay(SMOTH_SPEEDCHANGE_MS/portTICK_RATE_MS);
 	direction_Left = BACKWARD;
 	direction_Right = BACKWARD;
 	move_DirectionRefresh();
@@ -130,7 +122,6 @@ void move_stop()
 void move_Rotate(int direction, int angle)
 {
 	move_stop();
-	FRTOS1_vTaskDelay(SMOTH_SPEEDCHANGE_MS/portTICK_RATE_MS);
 	switch(direction)
 	{
 		case LEFT:

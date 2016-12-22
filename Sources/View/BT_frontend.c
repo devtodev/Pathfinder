@@ -5,7 +5,7 @@
  *      Author: Carlos Miguens
  */
 
-#include "../drivers/BT_actions.h"
+#include <Driver/BT_actions.h>
 
 char menuBT[8][64] = {"w) + Speed\n\0",
 					"s) - Speed\n\0",

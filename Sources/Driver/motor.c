@@ -5,7 +5,7 @@
  *      Author: Carlos Miguens
  */
 
-#include "motor.h"
+#include <Driver/motor.h>
 #include "MotorSpeed_4.h"
 #include "MotorSpeed_3.h"
 #include "MotorsDirection.h"

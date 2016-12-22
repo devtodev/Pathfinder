@@ -26,9 +26,9 @@
 */         
 /* MODULE Events */
 
+#include <Driver/Ultrasonic.h>
 #include "Cpu.h"
 #include "Events.h"
-#include "drivers/Ultrasonic.h"
 
 #ifdef __cplusplus
 extern "C" {

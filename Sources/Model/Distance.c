@@ -4,8 +4,8 @@
  *  Created on: 03/11/2016
  *      Author: Carlos Miguens
  */
-#include <middleware/Distance.h>
-#include "drivers/Ultrasonic.h"
+#include <Driver/Ultrasonic.h>
+#include <Model/Distance.h>
 
 #define BUFFERDISTANCESIZE 20
 
