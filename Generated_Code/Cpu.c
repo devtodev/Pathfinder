@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : KL46P121M48SF4RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 12:54, # CodeGen: 64
+**     Date/Time   : 2016-12-23, 01:29, # CodeGen: 78
 **     Abstract    :
 **
 **     Settings    :
@@ -509,6 +509,10 @@
 #include "BitIoLdd3.h"
 #include "OE1.h"
 #include "BitIoLdd4.h"
+#include "MAG1.h"
+#include "MINT1.h"
+#include "ExtIntLdd1.h"
+#include "CLS1.h"
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
@@ -1766,6 +1770,8 @@ void PE_low_level_init(void)
                SMC_PMPROT_ALLS_MASK |
                SMC_PMPROT_AVLLS_MASK;  /* Setup Power mode protection register */
   /* Common initialization of the CPU registers */
+  /* GPIOD_PDDR: PDD&=~2 */
+  GPIOD_PDDR &= (uint32_t)~(uint32_t)(GPIO_PDDR_PDD(0x02));
   /* PORTA_PCR20: ISF=0,MUX=7 */
   PORTA_PCR20 = (uint32_t)((PORTA_PCR20 & (uint32_t)~(uint32_t)(
                  PORT_PCR_ISF_MASK
@@ -1807,6 +1813,12 @@ void PE_low_level_init(void)
   (void)BitIoLdd4_Init(NULL);
   /* ### 74HC595 "MotorsDirection" init code ... */
   MotorsDirection_Init();
+  /* ### Shell "CLS1" init code ... */
+  CLS1_Init(); /* initialize shell */
+  /* ### ExtInt_LDD "ExtIntLdd1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)ExtIntLdd1_Init(NULL);
+  /* ### MAG3110 "MAG1" init code ... */
+  /* Write code here ... */
 }
   /* Flash configuration field */
   __attribute__ ((section (".cfmconfig"))) const uint8_t _cfm[0x10] = {

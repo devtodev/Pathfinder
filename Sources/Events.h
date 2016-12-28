@@ -53,6 +53,10 @@
 #include "BitIoLdd3.h"
 #include "OE1.h"
 #include "BitIoLdd4.h"
+#include "MAG1.h"
+#include "MINT1.h"
+#include "ExtIntLdd1.h"
+#include "CLS1.h"
 #include "BT.h"
 #include "ASerialLdd1.h"
 #include "TRIG.h"
@@ -286,6 +290,20 @@ void TU1_OnCounterRestart(LDD_TUserData *UserDataPtr);
 */
 /* ===================================================================*/
 void TU1_OnChannel0(LDD_TUserData *UserDataPtr);
+
+void MINT1_OnInterrupt(void);
+/*
+** ===================================================================
+**     Event       :  MINT1_OnInterrupt (module Events)
+**
+**     Component   :  MINT1 [ExtInt]
+**     Description :
+**         This event is called when an active signal edge/level has
+**         occurred.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
 
 /* END Events */
 

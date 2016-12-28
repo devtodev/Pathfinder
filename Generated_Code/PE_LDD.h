@@ -6,7 +6,7 @@
 **     Version     : Component 01.003, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 12:54, # CodeGen: 64
+**     Date/Time   : 2016-12-23, 01:29, # CodeGen: 78
 **     Abstract    :
 **
 **     Settings    :
@@ -89,6 +89,10 @@
 #include "BitIoLdd3.h"
 #include "OE1.h"
 #include "BitIoLdd4.h"
+#include "MAG1.h"
+#include "MINT1.h"
+#include "ExtIntLdd1.h"
+#include "CLS1.h"
 
 
 /*

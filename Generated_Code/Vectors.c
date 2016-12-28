@@ -6,7 +6,7 @@
 **     Version     : Component 01.003, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-17, 19:30, # CodeGen: 69
+**     Date/Time   : 2016-12-23, 01:29, # CodeGen: 78
 **     Abstract    :
 **
 **     Settings    :
@@ -83,6 +83,10 @@
   #include "BitIoLdd3.h"
   #include "OE1.h"
   #include "BitIoLdd4.h"
+  #include "MAG1.h"
+  #include "MINT1.h"
+  #include "ExtIntLdd1.h"
+  #include "CLS1.h"
   #include "Events.h"
 
 
@@ -149,7 +153,7 @@
     (tIsrFunc)&vPortTickHandler,       /* 0x2C  0x000000B0   -   ivINT_LPTimer                 used by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x2D  0x000000B4   -   ivINT_LCD                     unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x2E  0x000000B8   -   ivINT_PORTA                   unused by PE */
-    (tIsrFunc)&Cpu_Interrupt           /* 0x2F  0x000000BC   -   ivINT_PORTC_PORTD             unused by PE */
+    (tIsrFunc)&ExtIntLdd1_Interrupt    /* 0x2F  0x000000BC   2   ivINT_PORTC_PORTD             used by PE */
     }
   };
   /*lint -restore Enable MISRA rule (11.4) checking. */

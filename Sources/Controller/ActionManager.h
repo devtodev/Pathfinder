@@ -24,9 +24,10 @@ void initActions();
 void doAction(char action);
 void pushAction(char action);
 
-QueueHandle_t queueSpeed, queueDirection;
 
-typedef struct {
+struct Action {
 	char type;
 	int delayms;
-} Action;
+} tAction;
+
+QueueHandle_t queueSpeed, queueDirection;

@@ -48,8 +48,7 @@
       <Path>/home/karl/workspace/Pathfinder/Sources/Controller/</Path>
       <Path>/home/karl/workspace/Pathfinder/Sources/Driver/</Path>
       <Path>/home/karl/workspace/Pathfinder/Sources/</Path>
-      <Path>/home/karl/workspace/Pathfinder/Sources/Model/</Path>
-      <Path>/home/karl/workspace/Pathfinder/Sources/View/</Path>
+      <Path>/home/karl/workspace/Pathfinder/Sources/HMI/</Path>
     </SourceCodePaths>
   </PATHS>
   <FILES>
@@ -60,13 +59,17 @@
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/BitIoLdd2.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/BitIoLdd3.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/BitIoLdd4.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Generated_Code/CLS1.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/CS1.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/Cpu.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/DS1.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Generated_Code/ExtIntLdd1.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/FRTOS1.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/GI2C1.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/I2C0.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/KSDK1.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Generated_Code/MAG1.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Generated_Code/MINT1.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/MMA1.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/MotorSpeed_3.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/MotorSpeed_4.c</PathName>
@@ -99,14 +102,14 @@
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/timers.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Project_Settings/Startup_Code/startup.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/ActionManager.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/Distance.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/moves.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/BT_actions.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/Ultrasonic.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/acelerometro.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/motor.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Events.c</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/Model/Distance.c</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/Model/moves.c</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/View/BT_frontend.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/HMI/BT_frontend.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/frtos_tasks.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/main.c</PathName>
     </GeneratedCs>
@@ -117,9 +120,11 @@
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/BitIoLdd2.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/BitIoLdd3.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/BitIoLdd4.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Generated_Code/CLS1.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/CS1.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/Cpu.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/DS1.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Generated_Code/ExtIntLdd1.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/FRTOS1.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/FreeRTOS.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/FreeRTOSConfig.h</PathName>
@@ -127,6 +132,8 @@
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/I2C0.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/IO_Map.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/KSDK1.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Generated_Code/MAG1.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Generated_Code/MINT1.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/MMA1.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/MotorSpeed_3.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/MotorSpeed_4.h</PathName>
@@ -162,14 +169,14 @@
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/task.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/timers.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/ActionManager.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/Distance.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/moves.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/BT_actions.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/Ultrasonic.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/acelerometro.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/motor.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Events.h</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/Model/Distance.h</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/Model/moves.h</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/View/BT_frontend.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/HMI/BT_frontend.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/frtos_tasks.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Static_Code/IO_Map/MKL46Z4.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Static_Code/PDD/ADC_PDD.h</PathName>

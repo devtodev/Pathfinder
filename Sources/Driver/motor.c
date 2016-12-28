@@ -93,11 +93,11 @@ int motorDirection(int motornum, int cmd) {
    * calling tx_latch() to send latch_state to the chip.
    */
   switch (cmd) {
-  case FORWARD:               // high/low
+  case BACKWARD:               // high/low
     latch_state |= (1 << a);
     latch_state &= ~(1 << b);
     break;
-  case BACKWARD:              // low/high
+  case FORWARD:              // low/high
     latch_state &= ~ (1 << a);
     latch_state |= (1 << b);
     break;

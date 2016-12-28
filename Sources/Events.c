@@ -319,6 +319,23 @@ void TU1_OnChannel0(LDD_TUserData *UserDataPtr)
 	US_EventEchoCapture(UserDataPtr);
 }
 
+/*
+** ===================================================================
+**     Event       :  MINT1_OnInterrupt (module Events)
+**
+**     Component   :  MINT1 [ExtInt]
+**     Description :
+**         This event is called when an active signal edge/level has
+**         occurred.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void MINT1_OnInterrupt(void)
+{
+  /* Write your code here ... */
+}
+
 /* END Events */
 
 #ifdef __cplusplus

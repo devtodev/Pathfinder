@@ -19,19 +19,23 @@
 #include "Driver/BT_actions.h"
 #include "Controller/Distance.h"
 #include "HMI/BT_frontend.h"
+#include "MAG1.h"
+#include "Driver/motor.h"
+
+#include "math.h"
 
 #define ACCEL_ANTIREBOTE		 30
 #define DELAY_BETWEEN_ACTIONS_MS 25
+#define MAX_ACTION_BUFFER 		 20
+#define MAX_DISTANCE_TO_STOP	 35
 
 #define BUFFERDISTANCESIZE 		 5
 
 static portTASK_FUNCTION(speedTask, pvParameters) {
-	uint16_t SERVO1_position;
-	Action action;
+	struct Action action;
 
-	queueSpeed = xQueueCreate( 20, sizeof( Action ) );
 	for(;;) {
-		if( xQueuePeek( queueSpeed, &( action ), portMAX_DELAY ) )
+		if( xQueueReceive( queueSpeed, &( action ), portMAX_DELAY ) )
 		{
 			doAction(action.type);
 			vTaskDelay(action.delayms/portTICK_RATE_MS);
@@ -40,12 +44,9 @@ static portTASK_FUNCTION(speedTask, pvParameters) {
 	vTaskDelete(speedTask);
 }
 static portTASK_FUNCTION(directionTask, pvParameters) {
-	uint16_t SERVO1_position;
-	Action action;
-
-	queueDirection = xQueueCreate( 20, sizeof( Action ) );
+	struct Action action;
 	for(;;) {
-		if ((xQueuePeek( queueDirection, &( action ), portMAX_DELAY ) ) && (speed_Left == 0) && (speed_Right == 0))
+		if (xQueueReceive( queueDirection, &( action ), portMAX_DELAY ))
 		{
 			doAction(action.type);
 			vTaskDelay(action.delayms/portTICK_RATE_MS);
@@ -65,14 +66,14 @@ static portTASK_FUNCTION(HMI_BT_Task, pvParameters) {
 }
 static portTASK_FUNCTION(SensorUltrasonidoTask, pvParameters) {
   int distanceFront;
+  char temp[10];
   Distance_init();
   for(;;) {
 	    Distance_doMeaseure();
 	    distanceFront = Distance_getFront();
-	    if (distanceFront < 50)
+	    if ((distanceFront < MAX_DISTANCE_TO_STOP) && (direction_Left == FORWARD) && (direction_Right == FORWARD))
 	    {
 	    	pushAction(MOVE_STOP);
-	    	// TODO: ROTATE
 	    }
 	    vTaskDelay(10/portTICK_RATE_MS);
   }
@@ -135,13 +136,68 @@ static portTASK_FUNCTION(AcelerometroTask, pvParameters) {
 	vTaskDelete(AcelerometroTask);
 }
 
+#define MAXMAGDATA 10
+static portTASK_FUNCTION(MagnetometerTask, pvParameters) {
+  int16_t i = 0, x, y, z, xi, yi, zi, degree;
+  int16_t data[3][MAXMAGDATA];
+  char temp[10];
+  MAG1_Enable(); /* enable magnetometer */
+  MAG1_GetX(&xi);
+  MAG1_GetY(&yi);
+  MAG1_GetZ(&zi);
+  for(;;) {
+	   	MAG1_GetX(&data[0][i]);
+		MAG1_GetY(&data[1][i]);
+		MAG1_GetZ(&data[2][i]);
+		if (i >= MAXMAGDATA)
+		{
+			x = 0;
+			y = 0;
+			z = 0;
+			for (i = 0; i < MAXMAGDATA; i++)
+			{
+				x =+ xi - data[0][i];
+				y =+ yi - data[1][i];
+				z =+ zi - data[2][i];
+			}
+			x = x / MAXMAGDATA;
+			y = y / MAXMAGDATA;
+			z = z / MAXMAGDATA;
+			UTIL1_Num16sToStr(&temp[0], 20, x);
+			BT_showString(temp);
+			BT_showString(" ");
+			UTIL1_Num16sToStr(&temp[0], 20, y);
+			BT_showString(temp);
+			BT_showString(" ");
+			UTIL1_Num16sToStr(&temp[0], 20, z);
+			BT_showString(temp);
+
+			degree = 90-atan(y/x)*180/3.1416;
+			BT_showString(" ");
+			UTIL1_Num16sToStr(&temp[0], 20, degree);
+			BT_showString(temp);
+
+			BT_showString("\r\n");
+			i = 0;
+		} else {
+			i++;
+		}
+	    vTaskDelay(10/portTICK_RATE_MS);
+  }
+  /* Destroy the task */
+  vTaskDelete(MagnetometerTask);
+}
+
 void CreateTasks(void) {
-  move_init();
-  BT_init();
+	BT_init();
+	//move_init();
+	queueSpeed = xQueueCreate( MAX_ACTION_BUFFER, sizeof( struct Action ) );
+	queueDirection = xQueueCreate( MAX_ACTION_BUFFER, sizeof( struct Action ) );
+	pushAction(MOVE_STOP);
   if (FRTOS1_xTaskCreate(
 		speedTask,  /* pointer to the task */
         "speedTask", /* task name for kernel awareness debugging */
-        configMINIMAL_STACK_SIZE, /* task stack size */
+		configMINIMAL_STACK_SIZE, /* task stack size */
         (void*)NULL, /* optional task startup argument */
         tskIDLE_PRIORITY + 3,  /* initial priority */
         (xTaskHandle*)NULL /* optional task handle to create */
@@ -153,7 +209,7 @@ void CreateTasks(void) {
   if (FRTOS1_xTaskCreate(
   		  directionTask,  /* pointer to the task */
           "directionTask", /* task name for kernel awareness debugging */
-          configMINIMAL_STACK_SIZE, /* task stack size */
+		  configMINIMAL_STACK_SIZE, /* task stack size */
           (void*)NULL, /* optional task startup argument */
           tskIDLE_PRIORITY + 3,  /* initial priority */
           (xTaskHandle*)NULL /* optional task handle to create */
@@ -187,6 +243,18 @@ void CreateTasks(void) {
       /*lint +e527 */
   }
   if (FRTOS1_xTaskCreate(
+	  MagnetometerTask,  /* pointer to the task */
+      "MagnetometerTask", /* task name for kernel awareness debugging */
+      configMINIMAL_STACK_SIZE , /* task stack size */
+      (void*)NULL, /* optional task startup argument */
+      tskIDLE_PRIORITY + 2,  /* initial priority */
+      (xTaskHandle*)NULL /* optional task handle to create */
+    ) != pdPASS) {
+      /*lint -e527 */
+      for(;;){}; /* error! probably out of memory */
+      /*lint +e527 */
+  }
+  if (FRTOS1_xTaskCreate(
      AcelerometroTask,  /* pointer to the task */
       "AcelerometroTask", /* task name for kernel awareness debugging */
       configMINIMAL_STACK_SIZE , /* task stack size */
@@ -198,5 +266,6 @@ void CreateTasks(void) {
       for(;;){}; /* error! probably out of memory */
       /*lint +e527 */
   }
+
 }
 

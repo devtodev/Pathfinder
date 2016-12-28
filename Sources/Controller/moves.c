@@ -7,12 +7,18 @@
 
 #include <Driver/motor.h>
 #include <Controller/moves.h>
+#include "FRTOS1.h"
+
+int speed_Left = 0;
+int speed_Right = 0;
+int direction_Left = RELEASE;
+int direction_Right = RELEASE;
 
 
 void move_SpeedRefresh()
 {
-	motorSetSpeed(MOTORLEFT, speed_Left);
-	motorSetSpeed(MOTORRIGHT, speed_Right);
+	motorSetSpeed(MOTORLEFT, (~speed_Left) * 0xFFF * 2);
+	motorSetSpeed(MOTORRIGHT, (~speed_Right) * 0xFFF * 2);
 }
 
 void move_DirectionRefresh()
@@ -34,22 +40,22 @@ void move_init()
 
 void move_SpeedLeftIncrease()
 {
-	speed_Left = (speed_Left<10)?speed_Left+1:speed_Left;
+	speed_Left = (speed_Left<5)?speed_Left+1:speed_Left;
 }
 
 void move_SpeedLeftDecrease()
 {
-	speed_Left = (speed_Left>-10)?speed_Left-1:speed_Left;
+	speed_Left = (speed_Left>0)?speed_Left-1:speed_Left;
 }
 
 void move_SpeedRightIncrease()
 {
-	speed_Right = (speed_Right<10)?speed_Right+1:speed_Right;
+	speed_Right = (speed_Right<5)?speed_Right+1:speed_Right;
 }
 
 void move_SpeedRightDecrease()
 {
-	speed_Right = (speed_Right>-10)?speed_Right-1:speed_Right;
+	speed_Right = (speed_Right>0)?speed_Right-1:speed_Right;
 }
 
 // increase or decrease the speed
@@ -82,9 +88,6 @@ void move_turnRight()
 // set the direction of the motors
 void move_Forward()
 {
-	if ((direction_Left == FORWARD) && (direction_Right == FORWARD))
-		return;
-	move_stop();
 	direction_Left = FORWARD;
 	direction_Right = FORWARD;
 	move_DirectionRefresh();
@@ -92,9 +95,6 @@ void move_Forward()
 
 void move_Backward()
 {
-	if ((direction_Left == BACKWARD) && (direction_Right == BACKWARD))
-		return;
-	move_stop();
 	direction_Left = BACKWARD;
 	direction_Right = BACKWARD;
 	move_DirectionRefresh();
@@ -108,6 +108,7 @@ void move_stop()
 		if (speed_Left != 0) speed_Left = (speed_Left < 0)?speed_Left+1:speed_Left-1;
 		if (speed_Right != 0) speed_Right = (speed_Right < 0)?speed_Right+1:speed_Right-1;
 		move_SpeedRefresh();
+		vTaskDelay(50/portTICK_RATE_MS);
 	}
 	direction_Left = RELEASE;
 	direction_Right = RELEASE;
@@ -116,7 +117,6 @@ void move_stop()
 
 void move_Rotate(int direction, int angle)
 {
-	move_stop();
 	switch(direction)
 	{
 		case LEFT:

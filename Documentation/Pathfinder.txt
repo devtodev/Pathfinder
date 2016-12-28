@@ -801,6 +801,79 @@ Module "MotorsDirection" (component 74HC595)
    - MotorsDirection_Deinit -Deinitializes the driver
    - MotorsDirection_Init -Initializes the driver
 
+Module "MAG1"      (component MAG3110)
+   - MAG1_Enable -Enables the device with setting the ACTIVE bit in the CTRL register 1
+   - MAG1_Disable -Disables the device with clearing the ACTIVE bit in the CTRL register 1
+   - MAG1_GetXYZ8 -Returns in an array the x, y and z sensor values as 8bit values. Note that for this method the FAST_READ 
+                flag *shall* be set.
+   - MAG1_GetXYZ16 -Returns in an array the x, y and z sensor values as 16bit values. Note that for this method the FAST_READ 
+                flag shall not be set.
+   - MAG1_GetX -Returns the X magnetometer value.
+   - MAG1_GetY -Returns the Y magnetometer value.
+   - MAG1_GetZ -Returns the Z magnetometer value.
+   - MAG1_SetFastReadMode -Turns the FR (Fast Read Mode) bit in CTRL_REG_1 on or off
+   - MAG1_GetFastReadMode -Returns the FR (Fast Read Mode) status in the CTRL_REG_1 register
+   - MAG1_SetTriggerImmediateMode -Turns the TM (Trigger Immediate Measurement) bit in CTRL_REG_1 on or off
+   - MAG1_GetTriggerImmediateMode -Returns if TM (Trigger Immediate Mode) in the CTRL_REG_1 register is on or off
+   - MAG1_SetOversamplingMode -Sets the OS (oversampling selection) bits in the CTRL_REG_1 register.
+   - MAG1_GetOversamplingMode -Returns the OS (oversampling selection) bits in the CTRL_REG_1 register.
+   - MAG1_SetDataRateMode -Sets the DR (data rate) bits in the CTRL_REG_1 register.
+   - MAG1_GetDataRateMode -Returns the DR (data rate) bits in the CTRL_REG_1 register.
+   - MAG1_SetRawMode -Turns the RAW (Raw or data output correction) bit in CTRL_REG_2 on or off
+   - MAG1_GetRawMode -Returns the RAW (raw or data output correction) status in the CTRL_REG_2 register
+   - MAG1_WhoAmI -Returns the value of the WHO_AM_I (0x07) register
+   - MAG1_GetTemperature -Returns the temperature of the die as signed 8bit values in degree Celsius
+   - MAG1_GetSysMode -Returns the SYSMOD (0x08) status
+   - MAG1_SetSysMode -Sets the SYSMOD (0x08) status register
+   - MAG1_GetUserOffsetCorrection -Returns the user offset correction values from the device
+   - MAG1_SetUserOffsetCorrection -Sets the user offset correction values
+   - MAG1_WriteReg -Writes to a device register address
+   - MAG1_ReadReg -Reads from a device register address
+   - MAG1_ParseCommand -Shell Command Line parser. This method is enabled/disabled depending on if you have the Shell 
+                enabled/disabled in the properties.
+   - MAG1_MagneticSensorReset -Initiates a magnetic sensor reset cycle that will restore correct operation after exposure to an 
+                excessive magnetic field which exceeds the Full Scale Range but is less than the Maximum Applied Magnetic Field.
+   - MAG1_Init -Initializes the device driver
+   - MAG1_Deinit -Counterpart to Init() method.
+
+Module "CLS1"      (component Shell)
+   - CLS1_PrintPrompt -Prints the prompt to the stdOut channel
+   - CLS1_SendNum8u -Sends an 8bit unsigned number to the given I/O
+   - CLS1_SendNum8s -Sends an 8bit signed number to the given I/O
+   - CLS1_SendNum16u -Sends a 16bit unsigned number to the given I/O
+   - CLS1_SendNum16s -Sends a 16bit signed number to the given I/O
+   - CLS1_SendNum32u -Sends a 32bit unsigned number to the given I/O
+   - CLS1_SendNum32s -Sends a 32bit signed number to the given I/O
+   - CLS1_SendCh -Prints a character using an I/O function
+   - CLS1_SendStr -Prints a string using an I/O function
+   - CLS1_SendData -Sends data using an I/O function. Unlike SendStr(), with this method it is possible to send binary data, 
+                including zero bytes.
+   - CLS1_PrintStatus -Prints various available system status information
+   - CLS1_ParseCommand -Parses a shell command. Use 'help' to get a list of supported commands.
+   - CLS1_IsHistoryCharacter -Returns TRUE if character is a history character
+   - CLS1_ReadLine -Reads a line from stdIn and returns TRUE if we have a line, FALSE otherwise.
+   - CLS1_PrintCommandFailed -Prints a standard message for failed or unknown commands
+   - CLS1_IterateTable -Parses a shell command. It handles first the internal commands and will call the provided callback.
+   - CLS1_SetStdio -Sets an StdIO structure which is returned by GetStdio()
+   - CLS1_GetStdio -Returns the default stdio channel. This method is only available if a shell is enabled in the component 
+                properties.
+   - CLS1_RequestSerial -Used to get mutual access to the shell console. Only has an effect if using an RTOS with semaphore for 
+                the console access.
+   - CLS1_ReleaseSerial -Used to release mutual access to the shell console. Only has an effect if using an RTOS with semaphore 
+                for the console access.
+   - CLS1_ReadAndParseWithCommandTable -Reads characters from the default input channel and appends it to the buffer. Once a 
+                new line has been detected, the line will be parsed using the handlers in the table.
+   - CLS1_ParseWithCommandTable -Parses a shell command. It handles first the internal commands and will call the provided 
+                callback.
+   - CLS1_GetSemaphore -Return the semaphore of the shell.
+   - CLS1_SendStatusStr -Prints a status string using an I/O function, formated for the 'status' command
+   - CLS1_SendHelpStr -Prints a string using an I/O function, formated for the 'help' command
+   - CLS1_ReadChar -Reads a character (blocking)
+   - CLS1_SendChar -Sends a character (blocking)
+   - CLS1_KeyPressed -Checks if a key has been pressed (a character is present in the input buffer)
+   - CLS1_Init -Initializes the module, especially creates the mutex semaphore if an RTOS is used.
+   - CLS1_Deinit -De-Initializes the module, especially frees the mutex semaphore if an RTOS is used.
+
 Module "Cpu"       (component MKL46Z256LL4)
    - Cpu_SetClockConfiguration -Calling of this method will cause the clock configuration change and reconfiguration of all 
                 components according to the requested clock configuration setting.
