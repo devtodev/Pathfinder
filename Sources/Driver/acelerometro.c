@@ -27,10 +27,15 @@
 #define ACCEL_ASLP_RATE0	  1 << 6
 #define ACCEL_ASLP_RATE1	  1 << 7
 
+#define ACCEL_ANTIREBOTE 30
+
+
 #include <Driver/acelerometro.h>
 #include "MMA1.h"
 #include "GI2C1.h"
 #include "FreeRTOS.h"
+
+
 /*
 	1. Register 0x2B bit 2 – SLPE Enable Sleep bit
 	2. Register 0x2B Set the Sleep Mode Oversampling Rate
@@ -115,7 +120,12 @@ FS1 FS0 g Range
 #define ACCEL_LOW_POWER 		0
 #define ACCEL_HIGH_RESOLUTION 	1
 
-void Accel_Init(void)
+void Accel_Init()
+{
+	MMA1_Init();
+}
+
+void Accel_Init_old(void)
 {
 	unsigned char ctrl_reg_1 = 0,  ctrl_reg_2 = 0,  ctrl_reg_3 = 0, ctrl_reg_5 = 0,  ctrl_reg_4 = 0, ctrl_reg_range = 0;
 	unsigned char ff_mm_cfg = 0;
@@ -222,9 +232,60 @@ void Accel_Init(void)
 }
 
 // detecta si hay movimiento
+int getMovimiento()
+{
+	int16_t xyz[3], xyzold[3], cambioEstado;
+	Movimiento movimiento;
+
+			xyzold[0] = MMA1_GetX();
+			xyzold[1] = MMA1_GetY();
+			xyzold[2] = MMA1_GetZ();
+
+			FRTOS1_vTaskDelay(100/portTICK_RATE_MS);
+
+			xyz[0] = MMA1_GetX();
+			xyz[1] = MMA1_GetY();
+			xyz[2] = MMA1_GetZ();
+
+			movimiento.x = (xyz[0] > xyzold[0])?xyz[0]-xyzold[0]:xyzold[0]-xyz[0];
+			movimiento.y = (xyz[1] > xyzold[1])?xyz[1]-xyzold[1]:xyzold[1]-xyz[1];
+			movimiento.z = (xyz[2] > xyzold[2])?xyz[2]-xyzold[2]:xyzold[2]-xyz[2];
+
+			movimiento.x = (movimiento.x<0)?movimiento.x*-1:movimiento.x;
+			movimiento.y = (movimiento.y<0)?movimiento.y*-1:movimiento.y;
+			movimiento.z = (movimiento.z<0)?movimiento.z*-1:movimiento.z;
+
+			if ((movimiento.x< ACCEL_ANTIREBOTE)&&
+				(movimiento.y< ACCEL_ANTIREBOTE)&&
+				(movimiento.z< ACCEL_ANTIREBOTE))
+			{
+				if (cambioEstado == 1)
+				{
+					// poner en cola mensaje de quieto
+					cambioEstado = 0;
+//!!!!!!					BT_showString("Quieto\r\n\0");
+				}
+			}
+			if ((movimiento.x> ACCEL_ANTIREBOTE)&&
+				(movimiento.y> ACCEL_ANTIREBOTE)&&
+				(movimiento.z> ACCEL_ANTIREBOTE))
+			{
+				// en movimiento
+				if (cambioEstado == 0)
+				{
+					cambioEstado = 1;
+//!!!!!!					BT_showString("Movimiento\r\n\0");
+				}
+			}
+
+	return cambioEstado;
+}
+
+/*
+ *
 Movimiento getMovimiento()
 {
-	Movimiento resultado;
+    Movimiento resultado;
 	unsigned char lectura;
 	uint8_t buf;
 	static const uint8_t addr = ACCEL_FF_MT_SRC;
@@ -244,7 +305,7 @@ Movimiento getMovimiento()
 	 ZHE YHE XHE Motion event detected
 	 ZHP YHP XHP Motion Polarity Flag
 
-	 * */
+	 * *
 
 	if (!lectura && (1 << 7))
 	{
@@ -279,7 +340,8 @@ Movimiento getMovimiento()
 	}
 
 	return resultado;
-}
+	*/
+
 
 void Accel_Wake()
 {

@@ -4,6 +4,7 @@
  *  Created on: 12/12/2016
  *      Author: Carlos Miguens
  */
+#include "stdint.h"
 
 #define LEFT 1
 #define RIGHT 0
@@ -29,3 +30,5 @@ void move_Rotate(int direction, int angle);
 void move_stop();
 
 void move_init();
+
+void point2string(int16_t *point, char *str);

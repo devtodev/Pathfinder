@@ -489,9 +489,9 @@ PE_DEBUGHALT();
       <I2C_Bus v="GI2C1" />
       <Wait v="WAIT1" />
       <boolgroup name="Constant Offsets" v="Enabled">
-        <X_offset v="-488" />
-        <Y_offset v="336" />
-        <Z_offset v="-326" />
+        <X_offset v="0" />
+        <Y_offset v="0" />
+        <Z_offset v="0" />
       </boolgroup>
       <boolgroup name="Shell" v="Disabled" />
     </Properties>
@@ -837,10 +837,10 @@ PE_DEBUGHALT();
         <Width v="8 bits" />
         <Stop_bit v="1" />
         <boolgroup name="Receiver" v="Enabled">
-          <RxD v="LCD_P60/ADC0_DM0/ADC0_SE4a/PTE21/TPM1_CH1/UART0_RX" />
+          <RxD v="TSI0_CH2/PTA1/UART0_RX/TPM2_CH0" />
         </boolgroup>
         <boolgroup name="Transmitter" v="Enabled">
-          <TxD v="LCD_P59/ADC0_DP0/ADC0_SE0/PTE20/TPM1_CH0/UART0_TX" />
+          <TxD v="TSI0_CH3/PTA2/UART0_TX/TPM2_CH1" />
         </boolgroup>
         <Baud_rate v="9600 baud" />
         <Break_signal v="Disabled" />
@@ -887,10 +887,10 @@ PE_DEBUGHALT();
               <Receiver_input v="Not inverted" />
               <Break_generation_length v="10/11 bits" />
               <boolgroup name="Receiver" v="Enabled">
-                <RxD v="LCD_P60/ADC0_DM0/ADC0_SE4a/PTE21/TPM1_CH1/UART0_RX" />
+                <RxD v="TSI0_CH2/PTA1/UART0_RX/TPM2_CH0" />
               </boolgroup>
               <boolgroup name="Transmitter" v="Enabled">
-                <TxD v="LCD_P59/ADC0_DP0/ADC0_SE0/PTE20/TPM1_CH0/UART0_TX" />
+                <TxD v="TSI0_CH3/PTA2/UART0_TX/TPM2_CH1" />
               </boolgroup>
               <enumgroup name="Flow control" v="None">
                 <EmptySection_DummyValue />

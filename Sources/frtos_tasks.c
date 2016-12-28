@@ -24,7 +24,7 @@
 
 #include "math.h"
 
-#define ACCEL_ANTIREBOTE		 30
+
 #define DELAY_BETWEEN_ACTIONS_MS 25
 #define MAX_ACTION_BUFFER 		 20
 #define MAX_DISTANCE_TO_STOP	 35
@@ -81,56 +81,28 @@ static portTASK_FUNCTION(SensorUltrasonidoTask, pvParameters) {
   vTaskDelete(SensorUltrasonidoTask);
 }
 static portTASK_FUNCTION(AcelerometroTask, pvParameters) {
-	int16_t xyz[3], xyzold[3], cambioEstado;
-	Movimiento movimiento;
+	int16_t xyz[3];
+	char str[20];
+	char temp[20];
+	Accel_Init();
 
-	MMA1_Init();
-
-	xyzold[0] = xyz[0];
-	xyzold[1] = xyz[1];
-	xyzold[2] = xyz[2];
+	/* TODO: Wall-E
+	 *
+	 * Rx PTE21
+	 * Tx PTE20
+	 *
+	 */
 	for(;;)
 	{
-			xyz[0] = MMA1_GetX();
-			xyz[1] = MMA1_GetY();
-			xyz[2] = MMA1_GetZ();
+		xyz[0] = MMA1_GetX();
+		xyz[1] = MMA1_GetY();
+		xyz[2] = MMA1_GetZ();
 
-			movimiento.x = (xyz[0] > xyzold[0])?xyz[0]-xyzold[0]:xyzold[0]-xyz[0];
-			movimiento.y = (xyz[1] > xyzold[1])?xyz[1]-xyzold[1]:xyzold[1]-xyz[1];
-			movimiento.z = (xyz[2] > xyzold[2])?xyz[2]-xyzold[2]:xyzold[2]-xyz[2];
+		point2string(&xyz[0], &str[0]);
+		BT_showString(str);
+		BT_showString("\r\n");
 
-			movimiento.x = (movimiento.x<0)?movimiento.x*-1:movimiento.x;
-			movimiento.y = (movimiento.y<0)?movimiento.y*-1:movimiento.y;
-			movimiento.z = (movimiento.z<0)?movimiento.z*-1:movimiento.z;
-
-			if ((movimiento.x< ACCEL_ANTIREBOTE)&&
-				(movimiento.y< ACCEL_ANTIREBOTE)&&
-				(movimiento.z< ACCEL_ANTIREBOTE))
-			{
-				if (cambioEstado == 1)
-				{
-					// poner en cola mensaje de quieto
-					cambioEstado = 0;
-//!!!!!!					BT_showString("Quieto\r\n\0");
-				}
-			}
-			if ((movimiento.x> ACCEL_ANTIREBOTE)&&
-				(movimiento.y> ACCEL_ANTIREBOTE)&&
-				(movimiento.z> ACCEL_ANTIREBOTE))
-			{
-				// en movimiento
-				if (cambioEstado == 0)
-				{
-					cambioEstado = 1;
-//!!!!!!					BT_showString("Movimiento\r\n\0");
-				}
-			}
-
- 			FRTOS1_vTaskDelay(100/portTICK_RATE_MS);
-			xyzold[0] = xyz[0];
-			xyzold[1] = xyz[1];
-			xyzold[2] = xyz[2];
-
+		FRTOS1_vTaskDelay(100/portTICK_RATE_MS);
 	}
 	/* Destroy the task */
 	vTaskDelete(AcelerometroTask);
@@ -146,6 +118,7 @@ static portTASK_FUNCTION(MagnetometerTask, pvParameters) {
   MAG1_GetY(&yi);
   MAG1_GetZ(&zi);
   for(;;) {
+	  /*
 	   	MAG1_GetX(&data[0][i]);
 		MAG1_GetY(&data[1][i]);
 		MAG1_GetZ(&data[2][i]);
@@ -182,12 +155,12 @@ static portTASK_FUNCTION(MagnetometerTask, pvParameters) {
 		} else {
 			i++;
 		}
+		*/
 	    vTaskDelay(10/portTICK_RATE_MS);
   }
   /* Destroy the task */
   vTaskDelete(MagnetometerTask);
 }
-
 void CreateTasks(void) {
 	BT_init();
 	//move_init();

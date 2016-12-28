@@ -8,6 +8,7 @@
 #include <Driver/motor.h>
 #include <Controller/moves.h>
 #include "FRTOS1.h"
+#include "string.h"
 
 int speed_Left = 0;
 int speed_Right = 0;
@@ -25,6 +26,21 @@ void move_DirectionRefresh()
 {
 	motorDirection(MOTORLEFT, direction_Left);
 	motorDirection(MOTORRIGHT, direction_Right);
+}
+
+void point2string(int16_t point[], char *str)
+{
+	char temp[20];
+	strcpy(str, "{\0");
+	UTIL1_Num16sToStr(&temp[0], 20, point[0]);
+	strcat(&str[0], &temp[0]);
+	strcat(&str[0], ", ");
+	UTIL1_Num16sToStr(&temp[0], 20, point[1]);
+	strcat(&str[0], &temp[0]);
+	strcat(&str[0], ", ");
+	UTIL1_Num16sToStr(&temp[0], 20, point[2]);
+	strcat(&str[0], &temp[0]);
+	strcat(&str[0], "}\0");
 }
 
 

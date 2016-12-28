@@ -8,7 +8,7 @@
 **     Version     : Component 01.036, Driver 01.00, CPU db: 3.00.000
 **     Repository  : My Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-11-03, 14:11, # CodeGen: 39
+**     Date/Time   : 2016-12-28, 02:26, # CodeGen: 85
 **     Abstract    :
 **         Implements a Driver for the MMA8451 accelerometer from Freescale.
 **     Settings    :
@@ -17,9 +17,9 @@
 **          I2C Bus                                        : GI2C1
 **          Wait                                           : WAIT1
 **          Constant Offsets                               : Enabled
-**            X offset                                     : -488
-**            Y offset                                     : 336
-**            Z offset                                     : -326
+**            X offset                                     : 0
+**            Y offset                                     : 0
+**            Z offset                                     : 0
 **          Shell                                          : Disabled
 **     Contents    :
 **         Disable        - uint8_t MMA1_Disable(void);
@@ -85,9 +85,9 @@ typedef struct {
 
 /* default calibration values from component properties */
 static const tAccelCal InitialCalibration = { /* Initial default calibration values */
-  -488, /* X offset */
-  336, /* Y offset */
-  -326, /* Z offset */
+  0, /* X offset */
+  0, /* Y offset */
+  0, /* Z offset */
 };
 static tAccelCal sCalValues; /* calibration values in RAM */
 

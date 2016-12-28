@@ -17,4 +17,4 @@ typedef struct {
 
 void Accel_Init(void);
 void Accel_Wake();
-Movimiento getMovimiento();
+int getMovimiento();

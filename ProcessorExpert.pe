@@ -3,7 +3,7 @@
   <Header>
     <Name>Pathfinder</Name>
     <SavedBy>karl</SavedBy>
-    <ModificationStamp>56</ModificationStamp>
+    <ModificationStamp>58</ModificationStamp>
     <Date>2016-10-15</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.12.2.RT7_b1550-0615</PEversion>
@@ -9417,7 +9417,7 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Value>-488</Value>
+        <Value>0</Value>
         <Base>DEC</Base>
       </ItemState>
       <ItemState>
@@ -9425,7 +9425,7 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Value>336</Value>
+        <Value>0</Value>
         <Base>DEC</Base>
       </ItemState>
       <ItemState>
@@ -9433,7 +9433,7 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Value>-326</Value>
+        <Value>0</Value>
         <Base>DEC</Base>
       </ItemState>
       <ItemState>
@@ -12886,7 +12886,7 @@
         <ItemSymbol>Inp</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>LCD_P60/ADC0_DM0/ADC0_SE4a/PTE21/TPM1_CH1/UART0_RX</Value>
+        <Value>TSI0_CH2/PTA1/UART0_RX/TPM2_CH0</Value>
         <SharedPrphMode>false</SharedPrphMode>
       </ItemState>
       <ItemState>
@@ -12928,7 +12928,7 @@
         <ItemSymbol>Out</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>LCD_P59/ADC0_DP0/ADC0_SE0/PTE20/TPM1_CH0/UART0_TX</Value>
+        <Value>TSI0_CH3/PTA2/UART0_TX/TPM2_CH1</Value>
         <SharedPrphMode>false</SharedPrphMode>
       </ItemState>
       <ItemState>
@@ -13704,7 +13704,7 @@
               <ItemSymbol>Inp</ItemSymbol>
               <ReadOnly>false</ReadOnly>
               <UserReadOnly>false</UserReadOnly>
-              <Value>LCD_P60/ADC0_DM0/ADC0_SE4a/PTE21/TPM1_CH1/UART0_RX</Value>
+              <Value>TSI0_CH2/PTA1/UART0_RX/TPM2_CH0</Value>
               <SharedPrphMode>false</SharedPrphMode>
             </ItemState>
             <ItemState>
@@ -13725,7 +13725,7 @@
               <ItemSymbol>Out</ItemSymbol>
               <ReadOnly>false</ReadOnly>
               <UserReadOnly>false</UserReadOnly>
-              <Value>LCD_P59/ADC0_DP0/ADC0_SE0/PTE20/TPM1_CH0/UART0_TX</Value>
+              <Value>TSI0_CH3/PTA2/UART0_TX/TPM2_CH1</Value>
               <SharedPrphMode>false</SharedPrphMode>
             </ItemState>
             <ItemState>

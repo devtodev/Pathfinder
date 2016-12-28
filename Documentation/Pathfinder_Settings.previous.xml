@@ -837,10 +837,10 @@ PE_DEBUGHALT();
         <Width v="8 bits" />
         <Stop_bit v="1" />
         <boolgroup name="Receiver" v="Enabled">
-          <RxD v="LCD_P60/ADC0_DM0/ADC0_SE4a/PTE21/TPM1_CH1/UART0_RX" />
+          <RxD v="TSI0_CH2/PTA1/UART0_RX/TPM2_CH0" />
         </boolgroup>
         <boolgroup name="Transmitter" v="Enabled">
-          <TxD v="LCD_P59/ADC0_DP0/ADC0_SE0/PTE20/TPM1_CH0/UART0_TX" />
+          <TxD v="TSI0_CH3/PTA2/UART0_TX/TPM2_CH1" />
         </boolgroup>
         <Baud_rate v="9600 baud" />
         <Break_signal v="Disabled" />
@@ -887,10 +887,10 @@ PE_DEBUGHALT();
               <Receiver_input v="Not inverted" />
               <Break_generation_length v="10/11 bits" />
               <boolgroup name="Receiver" v="Enabled">
-                <RxD v="LCD_P60/ADC0_DM0/ADC0_SE4a/PTE21/TPM1_CH1/UART0_RX" />
+                <RxD v="TSI0_CH2/PTA1/UART0_RX/TPM2_CH0" />
               </boolgroup>
               <boolgroup name="Transmitter" v="Enabled">
-                <TxD v="LCD_P59/ADC0_DP0/ADC0_SE0/PTE20/TPM1_CH0/UART0_TX" />
+                <TxD v="TSI0_CH3/PTA2/UART0_TX/TPM2_CH1" />
               </boolgroup>
               <enumgroup name="Flow control" v="None">
                 <EmptySection_DummyValue />
@@ -1730,6 +1730,179 @@ PE_DEBUGHALT();
     </Methods>
     <Events>
       <EmptySection_DummyValue />
+    </Events>
+  </Bean>
+  <Bean name="MAG1" type="MAG3110">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_Name v="MAG1" />
+      <Slave_Address v="0E" />
+      <I2C_Bus v="GI2C1" />
+      <Temperature_offset v="24" />
+      <boolgroup name="INT1 Pin" v="Enabled">
+        <inhrbean type="ExtInt">
+          <Enabled v="Y" />
+          <Template v="Interrupt" />
+          <Properties>
+            <Component_name v="MINT1" />
+            <Pin v="LCD_P41/ADC0_SE5b/PTD1/SPI0_SCK/TPM0_CH1" />
+            <inhrbean type="ExtInt_LDD">
+              <Enabled v="Y" />
+              <Template v="ExtInt_LDD" />
+              <Properties>
+                <Component_name v="ExtIntLdd1" />
+                <Pin v="LCD_P41/ADC0_SE5b/PTD1/SPI0_SCK/TPM0_CH1" />
+                <Generate_interrupt_on v="rising edge" />
+                <Interrupt v="INT_PORTC_PORTD" />
+                <Interrupt_priority v="medium priority" />
+                <group name="Initialization">
+                  <Enabled_in_init__code v="yes" />
+                </group>
+              </Properties>
+              <Methods>
+                <Init v="generate code" />
+                <Deinit v="don&amp;apos;t generate code" />
+                <Enable v="don&amp;apos;t generate code" />
+                <Disable v="don&amp;apos;t generate code" />
+                <GetVal v="generate code" />
+                <SetEdge v="don&amp;apos;t generate code" />
+                <SetOperationMode v="don&amp;apos;t generate code" />
+                <GetDriverState v="don&amp;apos;t generate code" />
+                <ConnectPin v="don&amp;apos;t generate code" />
+              </Methods>
+              <Events>
+                <Event_module_name v="Events" />
+                <event name="OnInterrupt" v="generate code">
+                  <Event_procedure_name v="ExtIntLdd1_OnInterrupt" />
+                </event>
+              </Events>
+            </inhrbean>
+            <Generate_interrupt_on v="rising edge" />
+            <Interrupt v="INT_PORTC_PORTD" />
+            <Interrupt_priority v="medium priority" />
+            <group name="Initialization">
+              <Enabled_in_init__code v="yes" />
+            </group>
+          </Properties>
+          <Methods>
+            <Enable v="don&amp;apos;t generate code" />
+            <Disable v="don&amp;apos;t generate code" />
+            <GetVal v="generate code" />
+            <SetEdge v="don&amp;apos;t generate code" />
+            <ConnectPin v="don&amp;apos;t generate code" />
+          </Methods>
+          <Events>
+            <Event_module_name v="Events" />
+            <event name="OnInterrupt" v="generate code">
+              <Event_procedure_name v="MINT1_OnInterrupt" />
+              <Priority v="same as interrupt" />
+            </event>
+          </Events>
+        </inhrbean>
+      </boolgroup>
+      <boolgroup name="Shell" v="Enabled">
+        <Shell v="CLS1" />
+        <Utility v="UTIL1" />
+      </boolgroup>
+    </Properties>
+    <Methods>
+      <Enable v="generate code" />
+      <Disable v="generate code" />
+      <GetXYZ8 v="generate code" />
+      <GetXYZ16 v="generate code" />
+      <GetX v="generate code" />
+      <GetY v="generate code" />
+      <GetZ v="generate code" />
+      <SetFastReadMode v="generate code" />
+      <GetFastReadMode v="generate code" />
+      <SetTriggerImmediateMode v="generate code" />
+      <GetTriggerImmediateMode v="generate code" />
+      <SetOversamplingMode v="generate code" />
+      <GetOversamplingMode v="generate code" />
+      <SetDataRateMode v="generate code" />
+      <GetDataRateMode v="generate code" />
+      <SetRawMode v="generate code" />
+      <GetRawMode v="generate code" />
+      <WhoAmI v="generate code" />
+      <GetTemperature v="generate code" />
+      <GetSysMode v="generate code" />
+      <SetSysMode v="generate code" />
+      <GetUserOffsetCorrection v="generate code" />
+      <SetUserOffsetCorrection v="generate code" />
+      <WriteReg v="generate code" />
+      <ReadReg v="generate code" />
+      <ParseCommand v="generate code" />
+      <MagneticSensorReset v="generate code" />
+      <Init v="generate code" />
+      <Deinit v="generate code" />
+    </Methods>
+    <Events>
+      <EmptySection_DummyValue />
+    </Events>
+  </Bean>
+  <Bean name="CLS1" type="Shell">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="CLS1" />
+      <Echo v="no" />
+      <Prompt v="&amp;quot;CMD&amp;gt; &amp;quot;" />
+      <Project_Name v="My Project Name" />
+      <Silent_Mode_Prefix v="#" />
+      <Buffer_Size v="48" />
+      <boolgroup name="Blocking Send" v="Enabled">
+        <Wait v="WAIT1" />
+        <Timeout__ms_ v="20" />
+        <Wait_Time__ms_ v="5" />
+        <RTOS_Wait v="yes" />
+      </boolgroup>
+      <Status_Colon_Pos v="13" />
+      <Help_Semicolon_Pos v="26" />
+      <boolgroup name="Multi Command" v="Disabled" />
+      <Utility v="UTIL1" />
+      <boolgroup name="Default Serial" v="Enabled">
+        <Console_Interface v="BT" />
+      </boolgroup>
+      <Semaphore v="no" />
+      <Critical_Section v="CS1" />
+      <boolgroup name="History" v="no" />
+      <Kinetis_SDK v="KSDK1" />
+    </Properties>
+    <Methods>
+      <PrintPrompt v="generate code" />
+      <SendNum8u v="generate code" />
+      <SendNum8s v="generate code" />
+      <SendNum16u v="generate code" />
+      <SendNum16s v="generate code" />
+      <SendNum32u v="generate code" />
+      <SendNum32s v="generate code" />
+      <SendCh v="generate code" />
+      <SendStr v="generate code" />
+      <SendData v="generate code" />
+      <PrintStatus v="generate code" />
+      <ParseCommand v="generate code" />
+      <IsHistoryCharacter v="generate code" />
+      <ReadLine v="generate code" />
+      <PrintCommandFailed v="generate code" />
+      <IterateTable v="generate code" />
+      <SetStdio v="generate code" />
+      <GetStdio v="generate code" />
+      <RequestSerial v="generate code" />
+      <ReleaseSerial v="generate code" />
+      <ReadAndParseWithCommandTable v="generate code" />
+      <ParseWithCommandTable v="generate code" />
+      <GetSemaphore v="generate code" />
+      <SendStatusStr v="generate code" />
+      <SendHelpStr v="generate code" />
+      <ReadChar v="generate code" />
+      <SendChar v="generate code" />
+      <KeyPressed v="generate code" />
+      <Init v="generate code" />
+      <Deinit v="generate code" />
+    </Methods>
+    <Events>
+      <Event_module_name v="Events" />
+      <event name="OnBeforeIterateCmd" v="don&amp;apos;t generate code" />
+      <event name="OnAfterIterateCmd" v="don&amp;apos;t generate code" />
     </Events>
   </Bean>
 </PE_PROJECT_SETTINGS_DOCUMENTATION>
