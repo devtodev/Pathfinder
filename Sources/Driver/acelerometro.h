@@ -1,5 +1,5 @@
 /*
- * Accelerometro_driver.c
+ * acelerometro.c
  *
  *  Created on: Mar 25, 2016
  *      Author: Carlos Miguens
@@ -15,6 +15,8 @@ typedef struct {
 	char flag;
 } Movimiento;
 
-void Accel_Init(void);
+
+void Accel_Init();
 void Accel_Wake();
+void Accel_Sleep();
 int getMovimiento();

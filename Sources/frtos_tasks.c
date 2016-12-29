@@ -19,7 +19,7 @@
 #include "Driver/BT_actions.h"
 #include "Controller/Distance.h"
 #include "HMI/BT_frontend.h"
-#include "MAG1.h"
+#include "Driver/magnetometro.h"
 #include "Driver/motor.h"
 
 #include "math.h"
@@ -82,8 +82,8 @@ static portTASK_FUNCTION(SensorUltrasonidoTask, pvParameters) {
 }
 static portTASK_FUNCTION(AcelerometroTask, pvParameters) {
 	int16_t xyz[3];
-	char str[20];
-	char temp[20];
+	char str[30];
+	char temp[30];
 	Accel_Init();
 
 	/* TODO: Wall-E
@@ -99,8 +99,7 @@ static portTASK_FUNCTION(AcelerometroTask, pvParameters) {
 		xyz[2] = MMA1_GetZ();
 
 		point2string(&xyz[0], &str[0]);
-		BT_showString(str);
-		BT_showString("\r\n");
+	    //BT_showString(str);	BT_showString("\r\n");
 
 		FRTOS1_vTaskDelay(100/portTICK_RATE_MS);
 	}
@@ -110,57 +109,74 @@ static portTASK_FUNCTION(AcelerometroTask, pvParameters) {
 
 #define MAXMAGDATA 10
 static portTASK_FUNCTION(MagnetometerTask, pvParameters) {
-  int16_t i = 0, x, y, z, xi, yi, zi, degree;
-  int16_t data[3][MAXMAGDATA];
-  char temp[10];
-  MAG1_Enable(); /* enable magnetometer */
-  MAG1_GetX(&xi);
-  MAG1_GetY(&yi);
-  MAG1_GetZ(&zi);
+  Posicion position;
+  int16_t Gxyz[3];
+  char str[30];
+  Mag_Init();
   for(;;) {
-	  /*
-	   	MAG1_GetX(&data[0][i]);
-		MAG1_GetY(&data[1][i]);
-		MAG1_GetZ(&data[2][i]);
-		if (i >= MAXMAGDATA)
-		{
-			x = 0;
-			y = 0;
-			z = 0;
-			for (i = 0; i < MAXMAGDATA; i++)
-			{
-				x =+ xi - data[0][i];
-				y =+ yi - data[1][i];
-				z =+ zi - data[2][i];
-			}
-			x = x / MAXMAGDATA;
-			y = y / MAXMAGDATA;
-			z = z / MAXMAGDATA;
-			UTIL1_Num16sToStr(&temp[0], 20, x);
-			BT_showString(temp);
-			BT_showString(" ");
-			UTIL1_Num16sToStr(&temp[0], 20, y);
-			BT_showString(temp);
-			BT_showString(" ");
-			UTIL1_Num16sToStr(&temp[0], 20, z);
-			BT_showString(temp);
+	  	position = getPosicion();
+		Gxyz[0] = MMA1_GetX();
+		Gxyz[1] = MMA1_GetY();
+		Gxyz[2] = MMA1_GetZ();
 
-			degree = 90-atan(y/x)*180/3.1416;
-			BT_showString(" ");
-			UTIL1_Num16sToStr(&temp[0], 20, degree);
-			BT_showString(temp);
+	    point2string(&position.xyz[0], &str[0]);
+	    //BT_showString(str);
+	    eCompass(position.xyz[0], position.xyz[1], position.xyz[2], Gxyz[0], Gxyz[1], Gxyz[2]);
+	    position2string(str);
+	    BT_showString(str);
+	    BT_showString("\r\n");
 
-			BT_showString("\r\n");
-			i = 0;
-		} else {
-			i++;
-		}
-		*/
-	    vTaskDelay(10/portTICK_RATE_MS);
+	  	vTaskDelay(100/portTICK_RATE_MS);
   }
   /* Destroy the task */
   vTaskDelete(MagnetometerTask);
 }
+/*
+int16_t i = 0, x, y, z, xi, yi, zi, degree;
+int16_t data[3][MAXMAGDATA];
+char temp[10];
+MAG1_Enable();
+MAG1_GetX(&xi);
+MAG1_GetY(&yi);
+MAG1_GetZ(&zi);
+for(;;) {
+ 	MAG1_GetX(&data[0][i]);
+	MAG1_GetY(&data[1][i]);
+	MAG1_GetZ(&data[2][i]);
+	if (i >= MAXMAGDATA)
+	{
+		x = 0;
+		y = 0;
+		z = 0;
+		for (i = 0; i < MAXMAGDATA; i++)
+		{
+			x =+ xi - data[0][i];
+			y =+ yi - data[1][i];
+			z =+ zi - data[2][i];
+		}
+		x = x / MAXMAGDATA;
+		y = y / MAXMAGDATA;
+		z = z / MAXMAGDATA;
+		UTIL1_Num16sToStr(&temp[0], 20, x);
+		BT_showString(temp);
+		BT_showString(" ");
+		UTIL1_Num16sToStr(&temp[0], 20, y);
+		BT_showString(temp);
+		BT_showString(" ");
+		UTIL1_Num16sToStr(&temp[0], 20, z);
+		BT_showString(temp);
+
+		degree = 90-atan(y/x)*180/3.1416;
+		BT_showString(" ");
+		UTIL1_Num16sToStr(&temp[0], 20, degree);
+		BT_showString(temp);
+
+		BT_showString("\r\n");
+		i = 0;
+	} else {
+		i++;
+	}
+	*/
 void CreateTasks(void) {
 	BT_init();
 	//move_init();
@@ -191,6 +207,8 @@ void CreateTasks(void) {
           for(;;){}; /* error! probably out of memory */
           /*lint +e527 */
       }
+
+#if TASK_HMI
   if (FRTOS1_xTaskCreate(
 		  HMI_BT_Task,  /* pointer to the task */
           "HMI_BT_Task", /* task name for kernel awareness debugging */
@@ -203,6 +221,8 @@ void CreateTasks(void) {
           for(;;){}; /* error! probably out of memory */
           /*lint +e527 */
       }
+#endif
+#if TASK_ULTRASONIDO
   if (FRTOS1_xTaskCreate(
 	  SensorUltrasonidoTask,  /* pointer to the task */
       "SensorUltrasonidoTask", /* task name for kernel awareness debugging */
@@ -215,18 +235,8 @@ void CreateTasks(void) {
       for(;;){}; /* error! probably out of memory */
       /*lint +e527 */
   }
-  if (FRTOS1_xTaskCreate(
-	  MagnetometerTask,  /* pointer to the task */
-      "MagnetometerTask", /* task name for kernel awareness debugging */
-      configMINIMAL_STACK_SIZE , /* task stack size */
-      (void*)NULL, /* optional task startup argument */
-      tskIDLE_PRIORITY + 2,  /* initial priority */
-      (xTaskHandle*)NULL /* optional task handle to create */
-    ) != pdPASS) {
-      /*lint -e527 */
-      for(;;){}; /* error! probably out of memory */
-      /*lint +e527 */
-  }
+#endif
+
   if (FRTOS1_xTaskCreate(
      AcelerometroTask,  /* pointer to the task */
       "AcelerometroTask", /* task name for kernel awareness debugging */
@@ -240,5 +250,17 @@ void CreateTasks(void) {
       /*lint +e527 */
   }
 
+  if (FRTOS1_xTaskCreate(
+	  MagnetometerTask,  /* pointer to the task */
+      "MagnetometerTask", /* task name for kernel awareness debugging */
+      configMINIMAL_STACK_SIZE , /* task stack size */
+      (void*)NULL, /* optional task startup argument */
+      tskIDLE_PRIORITY + 2,  /* initial priority */
+      (xTaskHandle*)NULL /* optional task handle to create */
+    ) != pdPASS) {
+      /*lint -e527 */
+      for(;;){}; /* error! probably out of memory */
+      /*lint +e527 */
+  }
 }
 

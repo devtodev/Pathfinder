@@ -30,5 +30,10 @@ void move_Rotate(int direction, int angle);
 void move_stop();
 
 void move_init();
-
 void point2string(int16_t *point, char *str);
+void position2string(char *str);
+
+/* ecompas variables */
+float Psi, The, Phi; /* yaw, pitch, roll angles in deg */
+float Vx, Vy, Vz; /* hard iron calibration coefficients */
+void eCompass(float Bx, float By, float Bz, float Gx, float Gy, float Gz);

@@ -1,5 +1,5 @@
 /*
- * Accelerometro_driver.c
+ * acelerometro.c
  *
  *  Created on: Mar 25, 2016
  *      Author: Carlos Miguens
