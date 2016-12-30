@@ -9,11 +9,11 @@
 #define ACCEL_NEUTRO   0
 #define ACCEL_POSITIVO 1
 #define ACCEL_NEGATIVO -1
+#include "stdint.h"
 
 typedef struct {
-	char x, y, z;
-	char flag;
-} Movimiento;
+	int16_t xyz[3];
+} Gforce;
 
 
 void Accel_Init();

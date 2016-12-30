@@ -12,6 +12,13 @@
 #define DELAY_SPEED_CHANGE 		25
 #define DELAY_DIRECTION_CHANGE  500
 
+typedef struct {
+	int16_t magneticFields[3];
+	float Psi, The, Phi; /* yaw, pitch, roll angles in deg */
+	float Vx, Vy, Vz; /* hard iron calibration coefficients */
+} Orientation;
+
+
 int speed_Left;
 int speed_Right;
 int direction_Left;
@@ -31,9 +38,5 @@ void move_stop();
 
 void move_init();
 void point2string(int16_t *point, char *str);
-void position2string(char *str);
-
-/* ecompas variables */
-float Psi, The, Phi; /* yaw, pitch, roll angles in deg */
-float Vx, Vy, Vz; /* hard iron calibration coefficients */
-void eCompass(float Bx, float By, float Bz, float Gx, float Gy, float Gz);
+void orientation2string(Orientation orientation, char *str);
+void angles2string(Orientation orientation, char *str);

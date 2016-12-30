@@ -31,52 +31,36 @@ void move_DirectionRefresh()
 	motorDirection(MOTORRIGHT, direction_Right);
 }
 
-/* multiplicative conversion constants */
-#define DegToRad 0.017453292F
-#define RadToDeg 57.295779F
-/* NED tilt-compensated e-Compass function */
-void eCompass(float Bx, float By, float Bz, float Gx, float Gy, float Gz)
-{
-	float sinAngle, cosAngle; /* sine and cosine */
-	float Bfx, Bfy, Bfz; /* calibrated mag data in uT after tilt correction */
-	/* subtract off the hard iron interference computed using equation 9 */
-	Bx -= Vx;
-	By -= Vy;
-	Bz -= Vz;
-	/* calculate roll angle Phi (-180deg, 180deg) and sin, cos */
-	Phi = atan2(Gy, Gz) * RadToDeg; /* Equation 2 */
-	sinAngle = sin(Phi * DegToRad); /* sin(Phi) */
-	cosAngle = cos(Phi * DegToRad); /* cos(Phi) */
-	/* de-rotate by roll angle Phi */
-	Bfy = By * cosAngle - Bz * sinAngle; /* Equation 5 y component */
-	Bz = By * sinAngle + Bz * cosAngle; /* Bz=(By-Vy).sin(Phi)+(Bz-Vz).cos(Phi) */
-	Gz = Gy * sinAngle + Gz * cosAngle; /* Gz=Gy.sin(Phi)+Gz.cos(Phi) */
-	/* calculate pitch angle Theta (-90deg, 90deg) and sin, cos*/
-	The = atan(-Gx / Gz) * RadToDeg; /* Equation 3 */
-	sinAngle = sin(The * DegToRad); /* sin(Theta) */
-	cosAngle = cos(The * DegToRad); /* cos(Theta) */
-	/* de-rotate by pitch angle Theta */
-	Bfx = Bx * cosAngle + Bz * sinAngle; /* Equation 5 x component */
-	Bfz = -Bx * sinAngle + Bz * cosAngle; /* Equation 5 z component */
-	/* calculate yaw = ecompass angle psi (-180deg, 180deg) */
-	Psi = atan2(-Bfy, Bfx) * RadToDeg; /* Equation 7 */
-	return;
-}
 
-void position2string(char *str)
+void orientation2string(Orientation orientation, char *str)
 {
 	char temp[MAXNUMSTRLEN];
 	strcpy(str, "[\0");
-	UTIL1_NumFloatToStr(&temp[0], MAXNUMSTRLEN, Psi, 2);
+	UTIL1_NumFloatToStr(&temp[0], MAXNUMSTRLEN, orientation.magneticFields[0], 2);
 	strcat(&str[0], &temp[0]);
 	strcat(&str[0], ", ");
-	UTIL1_NumFloatToStr(&temp[0], MAXNUMSTRLEN, The, 2);
+	UTIL1_NumFloatToStr(&temp[0], MAXNUMSTRLEN, orientation.magneticFields[1], 2);
 	strcat(&str[0], &temp[0]);
 	strcat(&str[0], ", ");
-	UTIL1_NumFloatToStr(&temp[0], MAXNUMSTRLEN, Phi, 2);
+	UTIL1_NumFloatToStr(&temp[0], MAXNUMSTRLEN, orientation.magneticFields[2], 2);
 	strcat(&str[0], &temp[0]);
 	strcat(&str[0], "]\0");
+}
 
+
+void angles2string(Orientation orientation, char *str)
+{
+	char temp[MAXNUMSTRLEN];
+	strcpy(str, "[\0");
+	UTIL1_NumFloatToStr(&temp[0], MAXNUMSTRLEN, orientation.Psi, 2);
+	strcat(&str[0], &temp[0]);
+	strcat(&str[0], ", ");
+	UTIL1_NumFloatToStr(&temp[0], MAXNUMSTRLEN, orientation.The, 2);
+	strcat(&str[0], &temp[0]);
+	strcat(&str[0], ", ");
+	UTIL1_NumFloatToStr(&temp[0], MAXNUMSTRLEN, orientation.Phi, 2);
+	strcat(&str[0], &temp[0]);
+	strcat(&str[0], "]\0");
 }
 
 void point2string(int16_t point[], char *str)

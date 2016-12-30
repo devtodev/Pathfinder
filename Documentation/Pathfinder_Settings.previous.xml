@@ -489,9 +489,9 @@ PE_DEBUGHALT();
       <I2C_Bus v="GI2C1" />
       <Wait v="WAIT1" />
       <boolgroup name="Constant Offsets" v="Enabled">
-        <X_offset v="-488" />
-        <Y_offset v="336" />
-        <Z_offset v="-326" />
+        <X_offset v="0" />
+        <Y_offset v="0" />
+        <Z_offset v="0" />
       </boolgroup>
       <boolgroup name="Shell" v="Disabled" />
     </Properties>

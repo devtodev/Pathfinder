@@ -107,6 +107,7 @@
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/BT_actions.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/Ultrasonic.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/acelerometro.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/magnetometro.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/motor.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Events.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/HMI/BT_frontend.c</PathName>
@@ -174,6 +175,7 @@
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/BT_actions.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/Ultrasonic.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/acelerometro.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/magnetometro.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/motor.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Events.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/HMI/BT_frontend.h</PathName>

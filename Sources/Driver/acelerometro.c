@@ -235,7 +235,7 @@ void Accel_Init_old(void)
 int getMovimiento()
 {
 	int16_t xyz[3], xyzold[3], cambioEstado;
-	Movimiento movimiento;
+	Gforce movimiento;
 
 			xyzold[0] = MMA1_GetX();
 			xyzold[1] = MMA1_GetY();
@@ -247,17 +247,17 @@ int getMovimiento()
 			xyz[1] = MMA1_GetY();
 			xyz[2] = MMA1_GetZ();
 
-			movimiento.x = (xyz[0] > xyzold[0])?xyz[0]-xyzold[0]:xyzold[0]-xyz[0];
-			movimiento.y = (xyz[1] > xyzold[1])?xyz[1]-xyzold[1]:xyzold[1]-xyz[1];
-			movimiento.z = (xyz[2] > xyzold[2])?xyz[2]-xyzold[2]:xyzold[2]-xyz[2];
+			movimiento.xyz[0] = (xyz[0] > xyzold[0])?xyz[0]-xyzold[0]:xyzold[0]-xyz[0];
+			movimiento.xyz[1] = (xyz[1] > xyzold[1])?xyz[1]-xyzold[1]:xyzold[1]-xyz[1];
+			movimiento.xyz[2] = (xyz[2] > xyzold[2])?xyz[2]-xyzold[2]:xyzold[2]-xyz[2];
 
-			movimiento.x = (movimiento.x<0)?movimiento.x*-1:movimiento.x;
-			movimiento.y = (movimiento.y<0)?movimiento.y*-1:movimiento.y;
-			movimiento.z = (movimiento.z<0)?movimiento.z*-1:movimiento.z;
+			movimiento.xyz[0] = (movimiento.xyz[0]<0)?movimiento.xyz[0]*-1:movimiento.xyz[0];
+			movimiento.xyz[1] = (movimiento.xyz[1]<0)?movimiento.xyz[1]*-1:movimiento.xyz[1];
+			movimiento.xyz[2] = (movimiento.xyz[2]<0)?movimiento.xyz[2]*-1:movimiento.xyz[2];
 
-			if ((movimiento.x< ACCEL_ANTIREBOTE)&&
-				(movimiento.y< ACCEL_ANTIREBOTE)&&
-				(movimiento.z< ACCEL_ANTIREBOTE))
+			if ((movimiento.xyz[0]< ACCEL_ANTIREBOTE)&&
+				(movimiento.xyz[1]< ACCEL_ANTIREBOTE)&&
+				(movimiento.xyz[2]< ACCEL_ANTIREBOTE))
 			{
 				if (cambioEstado == 1)
 				{
@@ -266,9 +266,9 @@ int getMovimiento()
 //!!!!!!					BT_showString("Quieto\r\n\0");
 				}
 			}
-			if ((movimiento.x> ACCEL_ANTIREBOTE)&&
-				(movimiento.y> ACCEL_ANTIREBOTE)&&
-				(movimiento.z> ACCEL_ANTIREBOTE))
+			if ((movimiento.xyz[0]> ACCEL_ANTIREBOTE)&&
+				(movimiento.xyz[1]> ACCEL_ANTIREBOTE)&&
+				(movimiento.xyz[2]> ACCEL_ANTIREBOTE))
 			{
 				// en movimiento
 				if (cambioEstado == 0)

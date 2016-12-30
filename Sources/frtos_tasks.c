@@ -24,6 +24,7 @@
 
 #include "math.h"
 
+#define TASK_HMI 1
 
 #define DELAY_BETWEEN_ACTIONS_MS 25
 #define MAX_ACTION_BUFFER 		 20
@@ -80,56 +81,61 @@ static portTASK_FUNCTION(SensorUltrasonidoTask, pvParameters) {
   /* Destroy the task */
   vTaskDelete(SensorUltrasonidoTask);
 }
-static portTASK_FUNCTION(AcelerometroTask, pvParameters) {
-	int16_t xyz[3];
-	char str[30];
-	char temp[30];
-	Accel_Init();
-
-	/* TODO: Wall-E
-	 *
-	 * Rx PTE21
-	 * Tx PTE20
-	 *
-	 */
-	for(;;)
-	{
-		xyz[0] = MMA1_GetX();
-		xyz[1] = MMA1_GetY();
-		xyz[2] = MMA1_GetZ();
-
-		point2string(&xyz[0], &str[0]);
-	    //BT_showString(str);	BT_showString("\r\n");
-
-		FRTOS1_vTaskDelay(100/portTICK_RATE_MS);
-	}
-	/* Destroy the task */
-	vTaskDelete(AcelerometroTask);
-}
-
-#define MAXMAGDATA 10
-static portTASK_FUNCTION(MagnetometerTask, pvParameters) {
-  Posicion position;
-  int16_t Gxyz[3];
+#define BUFFERPOSITIONDATA 20
+static portTASK_FUNCTION(PositionTask, pvParameters) {
+  Orientation orientation;
+  Gforce gforce;
+  int16_t magneticFieldsTemp[BUFFERPOSITIONDATA][3];
+  int16_t gforcesTemp[BUFFERPOSITIONDATA][3];
+  int cursor = 0;
   char str[30];
   Mag_Init();
+  Accel_Init();
   for(;;) {
-	  	position = getPosicion();
-		Gxyz[0] = MMA1_GetX();
-		Gxyz[1] = MMA1_GetY();
-		Gxyz[2] = MMA1_GetZ();
+	  	gforcesTemp[cursor][0] = MMA1_GetX();
+	  	gforcesTemp[cursor][1] = MMA1_GetY();
+	  	gforcesTemp[cursor][2] = MMA1_GetZ();
+	  	MAG1_GetXYZ16(magneticFieldsTemp[cursor]);
 
-	    point2string(&position.xyz[0], &str[0]);
-	    //BT_showString(str);
-	    eCompass(position.xyz[0], position.xyz[1], position.xyz[2], Gxyz[0], Gxyz[1], Gxyz[2]);
-	    position2string(str);
-	    BT_showString(str);
-	    BT_showString("\r\n");
-
-	  	vTaskDelay(100/portTICK_RATE_MS);
+	  	point2string(gforcesTemp[cursor], str);
+	  	cursor++;
+	  	if (cursor >= BUFFERPOSITIONDATA)
+	  	{
+	  		long tempMag[3] = {0};
+	  		long tempAccel[3] = {0};
+	  		for (cursor = 0; cursor < BUFFERPOSITIONDATA; cursor++)
+	  		{
+	  			tempMag[0] = tempMag[0] + magneticFieldsTemp[cursor][0];
+	  			tempMag[1] = tempMag[1] + magneticFieldsTemp[cursor][1];
+	  			tempMag[2] = tempMag[2] + magneticFieldsTemp[cursor][2];
+	  			tempAccel[0] = tempAccel[0] + gforcesTemp[cursor][0];
+	  			tempAccel[1] = tempAccel[1] + gforcesTemp[cursor][1];
+	  			tempAccel[2] = tempAccel[2] + gforcesTemp[cursor][2];
+	  		}
+	  		orientation.magneticFields[0] = tempMag[0] / BUFFERPOSITIONDATA;
+	  		orientation.magneticFields[1] = tempMag[1] / BUFFERPOSITIONDATA;
+	  		orientation.magneticFields[2] = tempMag[2] / BUFFERPOSITIONDATA;
+	  		gforce.xyz[0] = tempAccel[0] / BUFFERPOSITIONDATA;
+	  		gforce.xyz[1] = tempAccel[1] / BUFFERPOSITIONDATA;
+	  		gforce.xyz[2] = tempAccel[2] / BUFFERPOSITIONDATA;
+		    eCompass(orientation.magneticFields[0], orientation.magneticFields[1], orientation.magneticFields[2],
+		  			gforce.xyz[0], gforce.xyz[1], gforce.xyz[2]);
+		  	orientation.Phi = Phi;
+		  	orientation.The = The;
+		  	orientation.Psi = Psi;
+		  	orientation.Vx = Vx;
+		  	orientation.Vy = Vy;
+		  	orientation.Vz = Vz;
+		  	cursor = 0;
+		  	//point2string(gforce.xyz, str);
+		  	angles2string(orientation, str);
+		  	BT_showString(str);
+		  	BT_showString("\r\n\0");
+	  	}
+	  	vTaskDelay(10/portTICK_RATE_MS);
   }
   /* Destroy the task */
-  vTaskDelete(MagnetometerTask);
+  vTaskDelete(PositionTask);
 }
 /*
 int16_t i = 0, x, y, z, xi, yi, zi, degree;
@@ -238,8 +244,8 @@ void CreateTasks(void) {
 #endif
 
   if (FRTOS1_xTaskCreate(
-     AcelerometroTask,  /* pointer to the task */
-      "AcelerometroTask", /* task name for kernel awareness debugging */
+		  PositionTask,  /* pointer to the task */
+      "PositionTask", /* task name for kernel awareness debugging */
       configMINIMAL_STACK_SIZE , /* task stack size */
       (void*)NULL, /* optional task startup argument */
       tskIDLE_PRIORITY + 2,  /* initial priority */
@@ -250,17 +256,5 @@ void CreateTasks(void) {
       /*lint +e527 */
   }
 
-  if (FRTOS1_xTaskCreate(
-	  MagnetometerTask,  /* pointer to the task */
-      "MagnetometerTask", /* task name for kernel awareness debugging */
-      configMINIMAL_STACK_SIZE , /* task stack size */
-      (void*)NULL, /* optional task startup argument */
-      tskIDLE_PRIORITY + 2,  /* initial priority */
-      (xTaskHandle*)NULL /* optional task handle to create */
-    ) != pdPASS) {
-      /*lint -e527 */
-      for(;;){}; /* error! probably out of memory */
-      /*lint +e527 */
-  }
 }
 
