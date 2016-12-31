@@ -5,19 +5,12 @@
  *      Author: Carlos Miguens
  */
 #include "stdint.h"
-
+#include "Georeference.h"
 #define LEFT 1
 #define RIGHT 0
 
 #define DELAY_SPEED_CHANGE 		25
 #define DELAY_DIRECTION_CHANGE  500
-
-typedef struct {
-	int16_t magneticFields[3];
-	float Psi, The, Phi; /* yaw, pitch, roll angles in deg */
-	float Vx, Vy, Vz; /* hard iron calibration coefficients */
-} Orientation;
-
 
 int speed_Left;
 int speed_Right;

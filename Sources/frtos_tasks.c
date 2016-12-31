@@ -13,6 +13,7 @@
 /* End <includes> initialization, DO NOT MODIFY LINES ABOVE */
 
 #include "MMA1.h"
+#include "MAG1.h"
 #include "Controller/ActionManager.h"
 #include "Driver/acelerometro.h"
 #include "Controller/moves.h"
@@ -24,6 +25,7 @@
 
 #include "math.h"
 
+#define SHOW_ORIENTATION 1
 #define TASK_HMI 1
 
 #define DELAY_BETWEEN_ACTIONS_MS 25
@@ -32,17 +34,17 @@
 
 #define BUFFERDISTANCESIZE 		 5
 
-static portTASK_FUNCTION(speedTask, pvParameters) {
+static portTASK_FUNCTION(motorTask, pvParameters) {
 	struct Action action;
 
 	for(;;) {
-		if( xQueueReceive( queueSpeed, &( action ), portMAX_DELAY ) )
+		if( xQueueReceive( queueMotor, &( action ), portMAX_DELAY ) )
 		{
 			doAction(action.type);
 			vTaskDelay(action.delayms/portTICK_RATE_MS);
 		}
 	}
-	vTaskDelete(speedTask);
+	vTaskDelete(motorTask);
 }
 static portTASK_FUNCTION(directionTask, pvParameters) {
 	struct Action action;
@@ -83,12 +85,13 @@ static portTASK_FUNCTION(SensorUltrasonidoTask, pvParameters) {
 }
 #define BUFFERPOSITIONDATA 20
 static portTASK_FUNCTION(PositionTask, pvParameters) {
-  Orientation orientation;
   Gforce gforce;
   int16_t magneticFieldsTemp[BUFFERPOSITIONDATA][3];
   int16_t gforcesTemp[BUFFERPOSITIONDATA][3];
   int cursor = 0;
   char str[30];
+  Orientation orientation;
+  setOrientation(&orientation);
   Mag_Init();
   Accel_Init();
   for(;;) {
@@ -97,8 +100,8 @@ static portTASK_FUNCTION(PositionTask, pvParameters) {
 	  	gforcesTemp[cursor][2] = MMA1_GetZ();
 	  	MAG1_GetXYZ16(magneticFieldsTemp[cursor]);
 
-	  	point2string(gforcesTemp[cursor], str);
 	  	cursor++;
+
 	  	if (cursor >= BUFFERPOSITIONDATA)
 	  	{
 	  		long tempMag[3] = {0};
@@ -127,74 +130,36 @@ static portTASK_FUNCTION(PositionTask, pvParameters) {
 		  	orientation.Vy = Vy;
 		  	orientation.Vz = Vz;
 		  	cursor = 0;
-		  	//point2string(gforce.xyz, str);
+
+			#if SHOW_GFORCES
+		  	point2string(gforce.xyz, str);
+		  	BT_showString(str);
+		  	BT_showString("\r\n\0");
+			#endif
+		  	#if SHOW_ORIENTATION
 		  	angles2string(orientation, str);
 		  	BT_showString(str);
 		  	BT_showString("\r\n\0");
+		  	#endif
 	  	}
 	  	vTaskDelay(10/portTICK_RATE_MS);
   }
   /* Destroy the task */
   vTaskDelete(PositionTask);
 }
-/*
-int16_t i = 0, x, y, z, xi, yi, zi, degree;
-int16_t data[3][MAXMAGDATA];
-char temp[10];
-MAG1_Enable();
-MAG1_GetX(&xi);
-MAG1_GetY(&yi);
-MAG1_GetZ(&zi);
-for(;;) {
- 	MAG1_GetX(&data[0][i]);
-	MAG1_GetY(&data[1][i]);
-	MAG1_GetZ(&data[2][i]);
-	if (i >= MAXMAGDATA)
-	{
-		x = 0;
-		y = 0;
-		z = 0;
-		for (i = 0; i < MAXMAGDATA; i++)
-		{
-			x =+ xi - data[0][i];
-			y =+ yi - data[1][i];
-			z =+ zi - data[2][i];
-		}
-		x = x / MAXMAGDATA;
-		y = y / MAXMAGDATA;
-		z = z / MAXMAGDATA;
-		UTIL1_Num16sToStr(&temp[0], 20, x);
-		BT_showString(temp);
-		BT_showString(" ");
-		UTIL1_Num16sToStr(&temp[0], 20, y);
-		BT_showString(temp);
-		BT_showString(" ");
-		UTIL1_Num16sToStr(&temp[0], 20, z);
-		BT_showString(temp);
 
-		degree = 90-atan(y/x)*180/3.1416;
-		BT_showString(" ");
-		UTIL1_Num16sToStr(&temp[0], 20, degree);
-		BT_showString(temp);
-
-		BT_showString("\r\n");
-		i = 0;
-	} else {
-		i++;
-	}
-	*/
 void CreateTasks(void) {
 	BT_init();
 	//move_init();
-	queueSpeed = xQueueCreate( MAX_ACTION_BUFFER, sizeof( struct Action ) );
+	queueMotor = xQueueCreate( MAX_ACTION_BUFFER, sizeof( struct Action ) );
 	queueDirection = xQueueCreate( MAX_ACTION_BUFFER, sizeof( struct Action ) );
 	pushAction(MOVE_STOP);
   if (FRTOS1_xTaskCreate(
-		speedTask,  /* pointer to the task */
-        "speedTask", /* task name for kernel awareness debugging */
+		motorTask,  /* pointer to the task */
+        "motorTask", /* task name for kernel awareness debugging */
 		configMINIMAL_STACK_SIZE, /* task stack size */
         (void*)NULL, /* optional task startup argument */
-        tskIDLE_PRIORITY + 3,  /* initial priority */
+        tskIDLE_PRIORITY + 2,  /* initial priority */
         (xTaskHandle*)NULL /* optional task handle to create */
       ) != pdPASS) {
         /*lint -e527 */
@@ -206,7 +171,7 @@ void CreateTasks(void) {
           "directionTask", /* task name for kernel awareness debugging */
 		  configMINIMAL_STACK_SIZE, /* task stack size */
           (void*)NULL, /* optional task startup argument */
-          tskIDLE_PRIORITY + 3,  /* initial priority */
+          tskIDLE_PRIORITY + 2,  /* initial priority */
           (xTaskHandle*)NULL /* optional task handle to create */
         ) != pdPASS) {
           /*lint -e527 */
@@ -234,7 +199,7 @@ void CreateTasks(void) {
       "SensorUltrasonidoTask", /* task name for kernel awareness debugging */
       configMINIMAL_STACK_SIZE+200, /* task stack size */
       (void*)NULL, /* optional task startup argument */
-      tskIDLE_PRIORITY + 2,  /* initial priority */
+      tskIDLE_PRIORITY + 3,  /* initial priority */
       (xTaskHandle*)NULL /* optional task handle to create */
     ) != pdPASS) {
       /*lint -e527 */
@@ -248,7 +213,7 @@ void CreateTasks(void) {
       "PositionTask", /* task name for kernel awareness debugging */
       configMINIMAL_STACK_SIZE , /* task stack size */
       (void*)NULL, /* optional task startup argument */
-      tskIDLE_PRIORITY + 2,  /* initial priority */
+      tskIDLE_PRIORITY + 3,  /* initial priority */
       (xTaskHandle*)NULL /* optional task handle to create */
     ) != pdPASS) {
       /*lint -e527 */

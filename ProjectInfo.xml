@@ -103,6 +103,7 @@
       <PathName>/home/karl/workspace/Pathfinder/Project_Settings/Startup_Code/startup.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/ActionManager.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/Distance.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/Georeference.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/moves.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/BT_actions.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/Ultrasonic.c</PathName>
@@ -171,6 +172,7 @@
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/timers.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/ActionManager.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/Distance.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/Georeference.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/moves.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/BT_actions.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/Ultrasonic.h</PathName>

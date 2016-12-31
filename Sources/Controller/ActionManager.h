@@ -19,6 +19,9 @@
 #define GOBACKWARD	 'k'
 #define ROTATE_LEFT  'j'
 #define ROTATE_RIGHT 'l'
+#define ROTATE_90 	 'm'
+#define ROTATE_180 	 'n'
+#define ROTATE_270 	 'b'
 
 void initActions();
 void doAction(char action);
@@ -30,4 +33,4 @@ struct Action {
 	int delayms;
 } tAction;
 
-QueueHandle_t queueSpeed, queueDirection;
+QueueHandle_t queueMotor, queueDirection;

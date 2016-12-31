@@ -10,6 +10,7 @@
 #include "FRTOS1.h"
 #include "string.h"
 #include "math.h"
+#include "Georeference.h"
 
 #define MAXNUMSTRLEN 30
 
@@ -21,8 +22,8 @@ int direction_Right = RELEASE;
 
 void move_SpeedRefresh()
 {
-	motorSetSpeed(MOTORLEFT, (~speed_Left) * 0xFFF * 2);
-	motorSetSpeed(MOTORRIGHT, (~speed_Right) * 0xFFF * 2);
+	motorSetSpeed(MOTORLEFT, (~speed_Left) * 0xBBBB);
+	motorSetSpeed(MOTORRIGHT, (~speed_Right) * 0xBBBB);
 }
 
 void move_DirectionRefresh()
@@ -168,6 +169,8 @@ void move_stop()
 
 void move_Rotate(int direction, int angle)
 {
+	Orientation *orientation = getOrientation();
+	move_stop();
 	switch(direction)
 	{
 		case LEFT:
@@ -181,5 +184,13 @@ void move_Rotate(int direction, int angle)
 
 	}
 	move_DirectionRefresh();
-}
 
+	if (angle > 0)
+	{
+		int rotationTime = (angle / 90) * 666;
+		move_SpeedUp();
+		vTaskDelay(rotationTime/portTICK_RATE_MS);
+		move_stop();
+	}
+
+}

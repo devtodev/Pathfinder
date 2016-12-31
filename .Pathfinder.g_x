@@ -83,10 +83,10 @@
       <File Name="Generated_Code/ASerialLdd1.h" FileDate="2016-12-30, 00:24:15" FileAge="1483068255000" FileType="45637" CompNumb="66" />
       <File Name="Generated_Code/portmacro.h" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="45637" CompNumb="3" />
       <File Name="Sources/Events.h" FileDate="2016-12-23, 01:30:06" FileAge="1482467406000" FileType="131328" />
-      <File Name="ProjectInfo.xml" FileDate="2016-12-29, 15:42:35" FileAge="1483036955000" FileType="45637" />
+      <File Name="ProjectInfo.xml" FileDate="2016-12-30, 03:07:26" FileAge="1483078046000" FileType="45637" />
       <File Name="Generated_Code/ASerialLdd1.c" FileDate="2016-12-30, 00:24:15" FileAge="1483068255000" FileType="45637" CompNumb="66" />
       <File Name="Sources/Events.c" FileDate="2016-12-23, 01:30:06" FileAge="1482467406000" FileType="131328" />
-      <File Name="Documentation/Pathfinder_SIGNALS.txt" FileDate="2016-12-30, 00:24:15" FileAge="1483068255000" FileType="3072" />
+      <File Name="Documentation/Pathfinder_SIGNALS.txt" FileDate="2016-12-30, 21:26:19" FileAge="1483143979000" FileType="3072" />
       <File Name="Generated_Code/mpu_wrappers.h" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="45637" CompNumb="3" />
       <File Name="Static_Code/PDD/UART0_PDD.h" FileDate="2016-12-05, 21:22:24" FileAge="1480983744000" FileType="1048576" />
       <File Name="Generated_Code/queue.h" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="45637" CompNumb="3" />
@@ -176,11 +176,11 @@
       <File Name="Generated_Code/MotorSpeed_4.h" FileDate="2016-12-10, 11:13:39" FileAge="1481379219000" FileType="45637" CompNumb="124" />
       <File Name="Generated_Code/CLS1.h" FileDate="2016-12-23, 01:30:05" FileAge="1482467405000" FileType="45637" CompNumb="155" />
       <File Name="Generated_Code/MotorSpeed_4.c" FileDate="2016-12-10, 11:13:39" FileAge="1481379219000" FileType="45637" CompNumb="124" />
-      <File Name="Generated_Code/croutine.h" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="45637" CompNumb="3" />
       <File Name="Generated_Code/CLS1.c" FileDate="2016-12-23, 01:30:05" FileAge="1482467405000" FileType="45637" CompNumb="155" />
+      <File Name="Generated_Code/croutine.h" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="45637" CompNumb="3" />
       <File Name="Generated_Code/heap_4.c" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="45637" CompNumb="3" />
       <File Name="Generated_Code/.gdbinit-FreeRTOS-helpers" FileDate="2016-12-05, 21:22:24" FileAge="1480983744000" FileType="45637" CompNumb="3" />
     </GeneratedByPE>
   </GeneratedFilesList>
-  <CodeGenReference>89</CodeGenReference>
+  <CodeGenReference>91</CodeGenReference>
 </CodeGenerationInfo>
