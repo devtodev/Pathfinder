@@ -86,7 +86,7 @@
       <File Name="ProjectInfo.xml" FileDate="2016-12-30, 03:07:26" FileAge="1483078046000" FileType="45637" />
       <File Name="Generated_Code/ASerialLdd1.c" FileDate="2016-12-30, 00:24:15" FileAge="1483068255000" FileType="45637" CompNumb="66" />
       <File Name="Sources/Events.c" FileDate="2016-12-23, 01:30:06" FileAge="1482467406000" FileType="131328" />
-      <File Name="Documentation/Pathfinder_SIGNALS.txt" FileDate="2016-12-30, 21:26:19" FileAge="1483143979000" FileType="3072" />
+      <File Name="Documentation/Pathfinder_SIGNALS.txt" FileDate="2017-01-03, 02:51:56" FileAge="1483422716000" FileType="3072" />
       <File Name="Generated_Code/mpu_wrappers.h" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="45637" CompNumb="3" />
       <File Name="Static_Code/PDD/UART0_PDD.h" FileDate="2016-12-05, 21:22:24" FileAge="1480983744000" FileType="1048576" />
       <File Name="Generated_Code/queue.h" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="45637" CompNumb="3" />
@@ -182,5 +182,5 @@
       <File Name="Generated_Code/.gdbinit-FreeRTOS-helpers" FileDate="2016-12-05, 21:22:24" FileAge="1480983744000" FileType="45637" CompNumb="3" />
     </GeneratedByPE>
   </GeneratedFilesList>
-  <CodeGenReference>91</CodeGenReference>
+  <CodeGenReference>93</CodeGenReference>
 </CodeGenerationInfo>

@@ -38,7 +38,7 @@ static portTASK_FUNCTION(motorTask, pvParameters) {
 	struct Action action;
 
 	for(;;) {
-		if( xQueueReceive( queueMotor, &( action ), portMAX_DELAY ) )
+		if( xQueueReceive( queueMotor, &( action ), portMAX_DELAY) )
 		{
 			doAction(action.type);
 			vTaskDelay(action.delayms/portTICK_RATE_MS);
@@ -46,17 +46,31 @@ static portTASK_FUNCTION(motorTask, pvParameters) {
 	}
 	vTaskDelete(motorTask);
 }
-static portTASK_FUNCTION(directionTask, pvParameters) {
-	struct Action action;
+static portTASK_FUNCTION(navigationTask, pvParameters) {
+	int iStep = -1;
 	for(;;) {
-		if (xQueueReceive( queueDirection, &( action ), portMAX_DELAY ))
+		/*
+		 * Monitoring and control the correct direction to meet the target
+		 *
+		 *  the mission could be aborted putting iStep in zero
+		 *
+		 */
+		iStep = monitoringTheTravel();
+
+		if( xQueuePeek( queueStep, &( target ), 0) && (iStep <= 0) )
 		{
-			doAction(action.type);
-			vTaskDelay(action.delayms/portTICK_RATE_MS);
+			iStep = 0; // init the journey
+			travelAddNewTarget(target);
+			/*
+			 * calculating the next moves
+			 * to goal the target
+			 * and add to the steps circular queue
+			 */
 		}
-		vTaskDelay(25/portTICK_RATE_MS);
+		// time between sensor control points
+		vTaskDelay(10/portTICK_RATE_MS);
 	}
-	vTaskDelete(directionTask);
+	vTaskDelete(navigationTask);
 }
 static portTASK_FUNCTION(HMI_BT_Task, pvParameters) {
   hmi_bt_init();
@@ -85,13 +99,10 @@ static portTASK_FUNCTION(SensorUltrasonidoTask, pvParameters) {
 }
 #define BUFFERPOSITIONDATA 20
 static portTASK_FUNCTION(PositionTask, pvParameters) {
-  Gforce gforce;
   int16_t magneticFieldsTemp[BUFFERPOSITIONDATA][3];
   int16_t gforcesTemp[BUFFERPOSITIONDATA][3];
   int cursor = 0;
   char str[30];
-  Orientation orientation;
-  setOrientation(&orientation);
   Mag_Init();
   Accel_Init();
   for(;;) {
@@ -115,20 +126,20 @@ static portTASK_FUNCTION(PositionTask, pvParameters) {
 	  			tempAccel[1] = tempAccel[1] + gforcesTemp[cursor][1];
 	  			tempAccel[2] = tempAccel[2] + gforcesTemp[cursor][2];
 	  		}
-	  		orientation.magneticFields[0] = tempMag[0] / BUFFERPOSITIONDATA;
-	  		orientation.magneticFields[1] = tempMag[1] / BUFFERPOSITIONDATA;
-	  		orientation.magneticFields[2] = tempMag[2] / BUFFERPOSITIONDATA;
-	  		gforce.xyz[0] = tempAccel[0] / BUFFERPOSITIONDATA;
-	  		gforce.xyz[1] = tempAccel[1] / BUFFERPOSITIONDATA;
-	  		gforce.xyz[2] = tempAccel[2] / BUFFERPOSITIONDATA;
-		    eCompass(orientation.magneticFields[0], orientation.magneticFields[1], orientation.magneticFields[2],
-		  			gforce.xyz[0], gforce.xyz[1], gforce.xyz[2]);
-		  	orientation.Phi = Phi;
-		  	orientation.The = The;
-		  	orientation.Psi = Psi;
-		  	orientation.Vx = Vx;
-		  	orientation.Vy = Vy;
-		  	orientation.Vz = Vz;
+	  		position.orientation.magneticFields[0] = tempMag[0] / BUFFERPOSITIONDATA;
+	  		position.orientation.magneticFields[1] = tempMag[1] / BUFFERPOSITIONDATA;
+	  		position.orientation.magneticFields[2] = tempMag[2] / BUFFERPOSITIONDATA;
+	  		position.gforceXYZ[0] = tempAccel[0] / BUFFERPOSITIONDATA;
+	  		position.gforceXYZ[1] = tempAccel[1] / BUFFERPOSITIONDATA;
+	  		position.gforceXYZ[2] = tempAccel[2] / BUFFERPOSITIONDATA;
+		    eCompass(position.orientation.magneticFields[0], position.orientation.magneticFields[1], position.orientation.magneticFields[2],
+		    		position.gforceXYZ[0], position.gforceXYZ[1], position.gforceXYZ[2]);
+		  	position.orientation.Phi = Phi;
+		  	position.orientation.The = The;
+		  	position.orientation.Psi = Psi;
+		  	position.orientation.Vx = Vx;
+		  	position.orientation.Vy = Vy;
+		  	position.orientation.Vz = Vz;
 		  	cursor = 0;
 
 			#if SHOW_GFORCES
@@ -137,7 +148,7 @@ static portTASK_FUNCTION(PositionTask, pvParameters) {
 		  	BT_showString("\r\n\0");
 			#endif
 		  	#if SHOW_ORIENTATION
-		  	angles2string(orientation, str);
+		  	angles2string(position.orientation, str);
 		  	BT_showString(str);
 		  	BT_showString("\r\n\0");
 		  	#endif
@@ -152,7 +163,6 @@ void CreateTasks(void) {
 	BT_init();
 	//move_init();
 	queueMotor = xQueueCreate( MAX_ACTION_BUFFER, sizeof( struct Action ) );
-	queueDirection = xQueueCreate( MAX_ACTION_BUFFER, sizeof( struct Action ) );
 	pushAction(MOVE_STOP);
   if (FRTOS1_xTaskCreate(
 		motorTask,  /* pointer to the task */
@@ -167,8 +177,8 @@ void CreateTasks(void) {
         /*lint +e527 */
     }
   if (FRTOS1_xTaskCreate(
-  		  directionTask,  /* pointer to the task */
-          "directionTask", /* task name for kernel awareness debugging */
+  		  navigationTask,  /* pointer to the task */
+          "navigationTask", /* task name for kernel awareness debugging */
 		  configMINIMAL_STACK_SIZE, /* task stack size */
           (void*)NULL, /* optional task startup argument */
           tskIDLE_PRIORITY + 2,  /* initial priority */

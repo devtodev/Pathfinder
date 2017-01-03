@@ -6,14 +6,19 @@
  */
 
 #include "Georeference.h"
+#include "ActionManager.h"
 
-  void setOrientation(Orientation *position)
-  {
-	  orientation = position;
-  }
+#define MAXSTEPSCIRCULARTAIL 20
+
+struct Action steps[MAXSTEPSCIRCULARTAIL];
+
+int travelMonitoring()
+{
+	return -1;
+}
 
 
-  Orientation *getOrientation()
-  {
-	  return orientation;
-  }
+int travelAddNewTarget(Position newTarget)
+{
+	return -1;
+}

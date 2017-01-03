@@ -169,7 +169,6 @@ void move_stop()
 
 void move_Rotate(int direction, int angle)
 {
-	Orientation *orientation = getOrientation();
 	move_stop();
 	switch(direction)
 	{

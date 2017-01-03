@@ -33,4 +33,4 @@ struct Action {
 	int delayms;
 } tAction;
 
-QueueHandle_t queueMotor, queueDirection;
+QueueHandle_t queueMotor, queueStep;

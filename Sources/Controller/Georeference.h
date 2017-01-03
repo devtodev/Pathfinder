@@ -8,7 +8,7 @@
 #ifndef SOURCES_CONTROLLER_GEOREFERENCE_H_
 #define SOURCES_CONTROLLER_GEOREFERENCE_H_
 
-#include "stdint.h";
+#include "stdint.h"
 
 typedef struct {
 	int16_t magneticFields[3];
@@ -16,9 +16,15 @@ typedef struct {
 	float Vx, Vy, Vz; /* hard iron calibration coefficients */
 } Orientation;
 
-  Orientation *orientation;
+typedef struct {
+	int16_t gforceXYZ[3];
+	Orientation orientation;
+} Position;
 
-  Orientation *getOrientation();
-  void setOrientation(Orientation *position);
+  Position position;
+  Position target;
+
+  int travelMonitoring();
+  int travelAddNewTarget(Position newTarget);
 
 #endif /* SOURCES_CONTROLLER_GEOREFERENCE_H_ */

@@ -8,14 +8,15 @@
 #include "Controller/moves.h"
 #include "Driver/motor.h"
 #include "ActionManager.h"
+#include "Georeference.h"
 
 #define MAXACTIONS 		   		20
 
 
 void initActions()
 {
-	queueDirection = xQueueCreate( MAXACTIONS, sizeof( struct Action ) );
 	queueMotor 	   = xQueueCreate( MAXACTIONS, sizeof( struct Action ) );
+	queueStep 	   = xQueueCreate( MAXACTIONS, sizeof( Position ) );
 }
 
 void pushAction(char action)
@@ -37,12 +38,12 @@ void pushAction(char action)
 		case TURN_LEFT:
 			reg.type = TURN_LEFT;
 			reg.delayms = DELAY_DIRECTION_CHANGE;
-			xQueueSend( queueDirection, ( void * ) &reg, ( TickType_t )  DELAY_DIRECTION_CHANGE+1 );
+			xQueueSend( queueMotor, ( void * ) &reg, ( TickType_t )  DELAY_DIRECTION_CHANGE+1 );
 			break;
 		case TURN_RIGHT:
 			reg.type = TURN_RIGHT;
 			reg.delayms = DELAY_DIRECTION_CHANGE;
-			xQueueSend( queueDirection, ( void * ) &reg, ( TickType_t )  DELAY_DIRECTION_CHANGE+1 );
+			xQueueSend( queueMotor, ( void * ) &reg, ( TickType_t )  DELAY_DIRECTION_CHANGE+1 );
 			break;
 		case MOVE_STOP:
 			reg.type = MOVE_STOP;
@@ -60,7 +61,7 @@ void pushAction(char action)
 			vTaskDelay(1000/portTICK_RATE_MS);
 			reg.type = GOFORDWARD;
 			reg.delayms = DELAY_DIRECTION_CHANGE;
-			xQueueSend( queueDirection, ( void * ) &reg, ( TickType_t )  DELAY_DIRECTION_CHANGE+1 );
+			xQueueSend( queueMotor, ( void * ) &reg, ( TickType_t )  DELAY_DIRECTION_CHANGE+1 );
 			speed_Left = iSpeedLeft;
 			speed_Right = iSpeedRight;
 			move_SpeedRefresh();
@@ -76,7 +77,7 @@ void pushAction(char action)
 			vTaskDelay(DELAY_DIRECTION_CHANGE/portTICK_RATE_MS);
 			reg.type = GOBACKWARD;
 			reg.delayms = DELAY_DIRECTION_CHANGE;
-			xQueueSend( queueDirection, ( void * ) &reg, ( TickType_t )  DELAY_DIRECTION_CHANGE+1 );
+			xQueueSend( queueMotor, ( void * ) &reg, ( TickType_t )  DELAY_DIRECTION_CHANGE+1 );
 			speed_Left = iSpeedLeft;
 			speed_Right = iSpeedRight;
 			move_SpeedRefresh();
@@ -90,7 +91,7 @@ void pushAction(char action)
 			vTaskDelay(DELAY_DIRECTION_CHANGE/portTICK_RATE_MS);
 			reg.type = ROTATE_LEFT;
 			reg.delayms = DELAY_DIRECTION_CHANGE;
-			xQueueSend( queueDirection, ( void * ) &reg, ( TickType_t )  DELAY_DIRECTION_CHANGE+1 );
+			xQueueSend( queueMotor, ( void * ) &reg, ( TickType_t )  DELAY_DIRECTION_CHANGE+1 );
 			speed_Left = iSpeedLeft;
 			speed_Right = iSpeedRight;
 			move_SpeedRefresh();
@@ -104,7 +105,7 @@ void pushAction(char action)
 			vTaskDelay(DELAY_DIRECTION_CHANGE/portTICK_RATE_MS);
 			reg.type = ROTATE_RIGHT;
 			reg.delayms = DELAY_DIRECTION_CHANGE;
-			xQueueSend( queueDirection, ( void * ) &reg, ( TickType_t )  DELAY_DIRECTION_CHANGE+1 );
+			xQueueSend( queueMotor, ( void * ) &reg, ( TickType_t )  DELAY_DIRECTION_CHANGE+1 );
 			speed_Left = iSpeedLeft;
 			speed_Right = iSpeedRight;
 			move_SpeedRefresh();
