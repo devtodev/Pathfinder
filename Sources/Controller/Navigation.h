@@ -1,12 +1,12 @@
 /*
- * Georeference.h
+ * Navigation.h
  *
  *  Created on: 30/12/2016
  *      Author: karl
  */
 
-#ifndef SOURCES_CONTROLLER_GEOREFERENCE_H_
-#define SOURCES_CONTROLLER_GEOREFERENCE_H_
+#ifndef SOURCES_CONTROLLER_NAVIGATION_H_
+#define SOURCES_CONTROLLER_NAVIGATION_H_
 
 #include "stdint.h"
 
@@ -17,14 +17,15 @@ typedef struct {
 } Orientation;
 
 typedef struct {
-	int16_t gforceXYZ[3];
+	int16_t xyz[3];
 	Orientation orientation;
 } Position;
 
   Position position;
   Position target;
+  int16_t gforceXYZ[3];
 
-  int travelMonitoring();
+  int travelMeetTheTarget();
   int travelAddNewTarget(Position newTarget);
 
-#endif /* SOURCES_CONTROLLER_GEOREFERENCE_H_ */
+#endif /* SOURCES_CONTROLLER_NAVIGATION_H_ */

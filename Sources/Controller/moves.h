@@ -4,8 +4,8 @@
  *  Created on: 12/12/2016
  *      Author: Carlos Miguens
  */
+#include <Controller/Navigation.h>
 #include "stdint.h"
-#include "Georeference.h"
 #define LEFT 1
 #define RIGHT 0
 
@@ -28,6 +28,9 @@ void move_Forward();
 void move_Backward();
 void move_Rotate(int direction, int angle);
 void move_stop();
+
+// Error detect
+void move_correction();
 
 void move_init();
 void point2string(int16_t *point, char *str);

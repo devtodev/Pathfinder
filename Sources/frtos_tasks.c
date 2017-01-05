@@ -35,14 +35,15 @@
 #define BUFFERDISTANCESIZE 		 5
 
 static portTASK_FUNCTION(motorTask, pvParameters) {
-	struct Action action;
 
 	for(;;) {
-		if( xQueueReceive( queueMotor, &( action ), portMAX_DELAY) )
+		move_correction();
+		if( xQueueReceive( queueMotor, &( currentAction ), 0) )
 		{
-			doAction(action.type);
-			vTaskDelay(action.delayms/portTICK_RATE_MS);
+			doAction(currentAction.type);
+			vTaskDelay(currentAction.delayms/portTICK_RATE_MS);
 		}
+		vTaskDelay(10/portTICK_RATE_MS);
 	}
 	vTaskDelete(motorTask);
 }
@@ -55,9 +56,9 @@ static portTASK_FUNCTION(navigationTask, pvParameters) {
 		 *  the mission could be aborted putting iStep in zero
 		 *
 		 */
-		iStep = monitoringTheTravel();
+		iStep = travelMonitoring();
 
-		if( xQueuePeek( queueStep, &( target ), 0) && (iStep <= 0) )
+		if( xQueueReceive( queueStep, &( target ), 0) && (iStep <= 0) )
 		{
 			iStep = 0; // init the journey
 			travelAddNewTarget(target);
@@ -78,6 +79,7 @@ static portTASK_FUNCTION(HMI_BT_Task, pvParameters) {
   for(;;) {
 	option = hmi_bt_getOption();
 	pushAction(option);
+	vTaskDelay(10/portTICK_RATE_MS);
   }
   vTaskDelete(HMI_BT_Task);
 }
@@ -129,11 +131,14 @@ static portTASK_FUNCTION(PositionTask, pvParameters) {
 	  		position.orientation.magneticFields[0] = tempMag[0] / BUFFERPOSITIONDATA;
 	  		position.orientation.magneticFields[1] = tempMag[1] / BUFFERPOSITIONDATA;
 	  		position.orientation.magneticFields[2] = tempMag[2] / BUFFERPOSITIONDATA;
-	  		position.gforceXYZ[0] = tempAccel[0] / BUFFERPOSITIONDATA;
-	  		position.gforceXYZ[1] = tempAccel[1] / BUFFERPOSITIONDATA;
-	  		position.gforceXYZ[2] = tempAccel[2] / BUFFERPOSITIONDATA;
+	  		gforceXYZ[0] = tempAccel[0] / BUFFERPOSITIONDATA;
+	  		gforceXYZ[1] = tempAccel[1] / BUFFERPOSITIONDATA;
+	  		gforceXYZ[2] = tempAccel[2] / BUFFERPOSITIONDATA;
+	  		/*
+	  		 * TODO: estimate the speed and traveled distance
+	  		 */
 		    eCompass(position.orientation.magneticFields[0], position.orientation.magneticFields[1], position.orientation.magneticFields[2],
-		    		position.gforceXYZ[0], position.gforceXYZ[1], position.gforceXYZ[2]);
+		    		gforceXYZ[0], gforceXYZ[1], gforceXYZ[2]);
 		  	position.orientation.Phi = Phi;
 		  	position.orientation.The = The;
 		  	position.orientation.Psi = Psi;

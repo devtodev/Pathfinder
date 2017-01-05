@@ -7,10 +7,10 @@
 
 #include <Driver/motor.h>
 #include <Controller/moves.h>
+#include <Controller/Navigation.h>
 #include "FRTOS1.h"
 #include "string.h"
 #include "math.h"
-#include "Georeference.h"
 
 #define MAXNUMSTRLEN 30
 
@@ -19,6 +19,15 @@ int speed_Right = 0;
 int direction_Left = RELEASE;
 int direction_Right = RELEASE;
 
+
+void move_correction()
+{
+	/* TODO: When go forward or backward, check the course and, if necessary, make a correction
+	if ((currentAction.type == GOFORDWARD) || (currentAction.type == GOBACKWARD))
+	{
+		// PID controller for the direction
+	} */
+}
 
 void move_SpeedRefresh()
 {
