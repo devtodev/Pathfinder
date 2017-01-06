@@ -13,6 +13,7 @@
 #include "math.h"
 
 #define MAXNUMSTRLEN 30
+#define CANTSPEEDS 2
 
 int speed_Left = 0;
 int speed_Right = 0;
@@ -31,8 +32,11 @@ void move_correction()
 
 void move_SpeedRefresh()
 {
-	motorSetSpeed(MOTORLEFT, (~speed_Left) * 0xBBBB);
-	motorSetSpeed(MOTORRIGHT, (~speed_Right) * 0xBBBB);
+	int speed = (speed_Right == CANTSPEEDS)? 0: 0xFFFF / (speed_Right + 1);
+	motorSetSpeed(MOTORRIGHT, speed);
+	speed = (speed_Left == CANTSPEEDS)? 0: 0xFFFF / (speed_Left + 1);
+	motorSetSpeed(MOTORLEFT, speed);
+
 }
 
 void move_DirectionRefresh()
@@ -101,7 +105,7 @@ void move_init()
 
 void move_SpeedLeftIncrease()
 {
-	speed_Left = (speed_Left<5)?speed_Left+1:speed_Left;
+	speed_Left = (speed_Left<CANTSPEEDS)?speed_Left+1:speed_Left;
 }
 
 void move_SpeedLeftDecrease()
@@ -111,7 +115,7 @@ void move_SpeedLeftDecrease()
 
 void move_SpeedRightIncrease()
 {
-	speed_Right = (speed_Right<5)?speed_Right+1:speed_Right;
+	speed_Right = (speed_Right<CANTSPEEDS)?speed_Right+1:speed_Right;
 }
 
 void move_SpeedRightDecrease()

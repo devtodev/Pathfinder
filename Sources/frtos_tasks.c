@@ -40,8 +40,8 @@ static portTASK_FUNCTION(motorTask, pvParameters) {
 		move_correction();
 		if( xQueueReceive( queueMotor, &( currentAction ), 0) )
 		{
-			doAction(currentAction.type);
 			vTaskDelay(currentAction.delayms/portTICK_RATE_MS);
+			doAction(currentAction.type);
 		}
 		vTaskDelay(10/portTICK_RATE_MS);
 	}
@@ -56,9 +56,9 @@ static portTASK_FUNCTION(navigationTask, pvParameters) {
 		 *  the mission could be aborted putting iStep in zero
 		 *
 		 */
-		iStep = travelMonitoring();
+		travelMeetTheTarget();
 
-		if( xQueueReceive( queueStep, &( target ), 0) && (iStep <= 0) )
+		if( xQueueReceive( queueTarget, &( target ), 1) && (iStep <= 0) )
 		{
 			iStep = 0; // init the journey
 			travelAddNewTarget(target);
@@ -79,7 +79,6 @@ static portTASK_FUNCTION(HMI_BT_Task, pvParameters) {
   for(;;) {
 	option = hmi_bt_getOption();
 	pushAction(option);
-	vTaskDelay(10/portTICK_RATE_MS);
   }
   vTaskDelete(HMI_BT_Task);
 }
@@ -166,8 +165,8 @@ static portTASK_FUNCTION(PositionTask, pvParameters) {
 
 void CreateTasks(void) {
 	BT_init();
-	//move_init();
-	queueMotor = xQueueCreate( MAX_ACTION_BUFFER, sizeof( struct Action ) );
+	initActions();
+//	move_init();
 	pushAction(MOVE_STOP);
   if (FRTOS1_xTaskCreate(
 		motorTask,  /* pointer to the task */

@@ -35,4 +35,4 @@ struct Action {
 
 struct Action currentAction;
 
-QueueHandle_t queueMotor, queueStep;
+QueueHandle_t queueMotor, queueTarget;

@@ -14,6 +14,14 @@
 Position targets[MAXSTEPSCIRCULARTAIL];
 int iTarget = -1, lastTarget = -1;
 
+int checkingMeetTheTarget();
+
+int checkingMeetTheTarget()
+{
+	// TODO:
+	return 0;
+}
+
 int travelMeetTheTarget()
 {
 	if (iTarget < 0) return iTarget;

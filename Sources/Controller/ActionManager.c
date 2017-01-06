@@ -16,7 +16,7 @@
 void initActions()
 {
 	queueMotor 	   = xQueueCreate( MAXACTIONS, sizeof( struct Action ) );
-	queueStep 	   = xQueueCreate( MAXACTIONS, sizeof( Position ) );
+	queueTarget    = xQueueCreate( MAXACTIONS, sizeof( Position ) );
 }
 
 void pushAction(char action)
@@ -98,13 +98,28 @@ void pushAction(char action)
 			xQueueSend( queueMotor, ( void * ) &reg, portMAX_DELAY);
 			break;
 		case ROTATE_90:
-			move_Rotate(RIGHT, 90);
+			reg.type = MOVE_STOP;
+			reg.delayms = DELAY_SPEED_CHANGE;
+			xQueueSend( queueMotor, ( void * ) &reg, portMAX_DELAY );
+			reg.type = ROTATE_90;
+			reg.delayms = DELAY_DIRECTION_CHANGE;
+			xQueueSend( queueMotor, ( void * ) &reg, portMAX_DELAY );
 			break;
 		case ROTATE_180:
-			move_Rotate(RIGHT, 180);
+			reg.type = MOVE_STOP;
+			reg.delayms = DELAY_SPEED_CHANGE;
+			xQueueSend( queueMotor, ( void * ) &reg, portMAX_DELAY );
+			reg.type = ROTATE_180;
+			reg.delayms = DELAY_DIRECTION_CHANGE;
+			xQueueSend( queueMotor, ( void * ) &reg, portMAX_DELAY );
 			break;
 		case ROTATE_270:
-			move_Rotate(LEFT, 90);
+			reg.type = MOVE_STOP;
+			reg.delayms = DELAY_SPEED_CHANGE;
+			xQueueSend( queueMotor, ( void * ) &reg, portMAX_DELAY );
+			reg.type = ROTATE_270;
+			reg.delayms = DELAY_DIRECTION_CHANGE;
+			xQueueSend( queueMotor, ( void * ) &reg, portMAX_DELAY );
 			break;
 	    default:
 			break;
