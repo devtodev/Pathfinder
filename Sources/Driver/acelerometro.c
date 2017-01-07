@@ -120,115 +120,31 @@ FS1 FS0 g Range
 #define ACCEL_LOW_POWER 		0
 #define ACCEL_HIGH_RESOLUTION 	1
 
-void Accel_Init()
+int boardOrientation[3]; // stored initial gravity
+
+void Accel_calibrate()
 {
-	MMA1_Init();
-}
-
-void Accel_Init_old(void)
-{
-	unsigned char ctrl_reg_1 = 0,  ctrl_reg_2 = 0,  ctrl_reg_3 = 0, ctrl_reg_5 = 0,  ctrl_reg_4 = 0, ctrl_reg_range = 0;
-	unsigned char ff_mm_cfg = 0;
-
-	uint8_t buf, rbuf;
-	static const uint8_t addr = ACCEL_FF_MT_CFG; //ACCEL_FF_MT_SRC;
-
-	ctrl_reg_1 |= ACCEL_ACTIVE_BIT_MASK;
-	/*
-	// configuracion sleep mode rate 640 ms
-	ctrl_reg_1 |= ACCEL_ASLP_RATE0;
-	ctrl_reg_1 |= ACCEL_ASLP_RATE1;
-	// Wake Mode Sample Rate rate 10 ms
-	ctrl_reg_1 |= ACCEL_DR0_MASK;
-	ctrl_reg_1 |= ACCEL_DR1_MASK;
-	#if ACCEL_LOW_POWER
-	ctrl_reg_2 |= 1 << 3;
-	ctrl_reg_2 |= 1 << 4;
-	#endif
-	#if ACCEL_HIGH_RESOLUTION
-	ctrl_reg_2 |= 1 << 4;
-	#endif
-	// Enable sleep mode
-	ctrl_reg_2 |= 1 << 2;
-	*/
-	// Choose Motion to wake the device from sleep
-	ctrl_reg_3 |= 1 << 3; //WAKE_FF_MT
-	// interrupt enable INT1
-	ctrl_reg_4 |= 1 << 7; // INT_EN_ASLP   Auto-SLEEP/WAKE interrupt enabled.
-	ctrl_reg_4 |= 1 << 2; // INT_EN_FF_MT  Freefall/Motion interrupt enabled
-	ctrl_reg_4 |= 1; 	  // INT_EN_DRDY   Data Ready interrupt enabled
-
-	//  interrupt enable INT2
-	ctrl_reg_5 |= 1 << 7; // INT_CFG_ASLP   0: Interrupt is routed to INT2 pin; 1: Interrupt is routed to INT1 pin
-	ctrl_reg_5 |= 1 << 2; // INT_CFG_FF_MT  0: Interrupt is routed to INT2 pin; 1: Interrupt is routed to INT1 pin
-	ctrl_reg_5 |= 1; 	  // INT_CFG_DRDY   Data Ready interrupt enabled
-	/*
-	// Set the Dynamic Range to 4g
-	ctrl_reg_range |= 1;
-
 	MMA1_CalibrateX1g();
 	MMA1_CalibrateY1g();
 	MMA1_CalibrateZ1g();
-*/
-	/*
-	* Freefall/Motion functional block configuration
-	* 0x15: FF_MT_CFG Freefall/Motion Configuration Register
-	Bit 7 	Bit 6 	Bit 5 	Bit 4 	Bit 3 	Bit 2 	Bit 1 	Bit 0
-	ELE 	OAE 	ZEFE 	YEFE 	XEFE 	— 		— 		—
+	boardOrientation[0] = MMA1_GetX();
+	boardOrientation[1] = MMA1_GetY();
+	boardOrientation[2] = MMA1_GetZ();
+}
 
-	 ELE 0: Event flag latch disabled; 1: event flag latch enabled (FROZEN FF_MT_SRC)
-	 OAE 0: Freefall Flag 1: Motion Flag
-	 ZEFE YEFE XEFE 0: event detection disabled 1: raise event flag on measured acceleration value beyond preset threshold
-
-	* 0x16: FF_MT_SRC Freefall/Motion Source Register
-	Bit 7 	Bit 6 	Bit 5 	Bit 4 	Bit 3 	Bit 2 	Bit 1 	Bit 0
-	EA 		— 		ZHE 	ZHP 	YHE 	YHP 	XHE 	XHP
-
-	 EA 0 No event flag has been asserted; 1: one or more event flag has been asserted
-	 ZHE YHE XHE Motion event detected
-	 ZHP YHP XHP Motion Polarity Flag
-
-	* 0x17: FF_MT_THS Register (Read/Write)
-	Bit 7 	Bit 6 	Bit 5 	Bit 4 	Bit 3 	Bit 2 	Bit 1 	Bit 0
-	DBCNTM 	THS6 	THS5 	THS4 	THS3 	THS2 	THS1 	THS0
-
-	 DBCNTM 0: increments or decrements debounce 1: increments or clears counter
-	 THS[6:0] Freefall /Motion Threshold: Default value: 000_0000
-
-	* 0x18: FF_MT_COUNT Debounce Register
-	Bit 7 	Bit 6 	Bit 5 	Bit 4 	Bit 3 	Bit 2 	Bit 1 	Bit 0
-	D7 		D6		D5 		D4 		D3 		D2 		D1 		D0
-
-
-	 */
-
-	/* Mode 3: Motion Detection with ELE = 0, OAE = 1
-	In this mode, the EA bit indicates a motion event after the debounce counter time is reached. The ZEFE, YEFE, and XEFE
-	control bits determine which axes are taken into consideration for motion detection. Once the EA bit is set, and DBCNTM = 0,
-	the EA bit can get cleared only after the delay specified by FF_MT_COUNT. If DBCNTM = 1, the EA bit is cleared as soon as the
-	motion high g condition disappears. The event flags ZHE, ZHP, YHE, YHP, XHE, and XHP reflect the motion detection status
-	(i.e., high g event) without any debouncing, provided that the corresponding bits ZEFE, YEFE, and/or XEFE are set. Reading the
-	FF_MT_SRC does not clear any flags, nor is the debounce counter reset.
-	*/
-	ff_mm_cfg |= 1 << 3; // x Event flag enable
-	ff_mm_cfg |= 1 << 4; // y Event flag enable
-	ff_mm_cfg |= 1 << 5; // z Event flag enable
-	ff_mm_cfg |= 1 << 6; // motion detection
-
-	// The interrupts
-	GI2C1_SelectSlave(MMA1_I2C_ADDR);
-	GI2C1_Init();
+void Accel_Init()
+{
 	MMA1_Init();
-	FRTOS1_vTaskDelay(700/portTICK_RATE_MS);
-	GI2C1_WriteByteAddress8(MMA1_I2C_ADDR, ACCEL_REG_1, ctrl_reg_1);
-	GI2C1_WriteByteAddress8(MMA1_I2C_ADDR, ACCEL_REG_2, ctrl_reg_2);
-	GI2C1_WriteByteAddress8(MMA1_I2C_ADDR, ACCEL_REG_4, ctrl_reg_4);
-	GI2C1_WriteByteAddress8(MMA1_I2C_ADDR, ACCEL_REG_5, ctrl_reg_5);
-	GI2C1_WriteByteAddress8(MMA1_I2C_ADDR, 0x15, ff_mm_cfg); // ACCEL_FF_MT_CFG
-	FRTOS1_vTaskDelay(700/portTICK_RATE_MS);
-	GI2C1_ReadByteAddress8(MMA1_I2C_ADDR, 0x0D, &buf); // WHO_I_AM = 0x1a
-	GI2C1_ReadByteAddress8(MMA1_I2C_ADDR, 0x15, &buf); // ACCEL_FF_MT_CFG = 0 why??? :-(
-	return 0;
+	Accel_calibrate();
+}
+
+#define GRAVITYCHANGUI	3000
+int Accel_isOverturn()
+{
+	if ((boardOrientation[0] + GRAVITYCHANGUI < gforceXYZ[0]) || (boardOrientation[0] - GRAVITYCHANGUI > gforceXYZ[0]) ) return 1;
+	if ((boardOrientation[1] + GRAVITYCHANGUI < gforceXYZ[1]) || (boardOrientation[1] - GRAVITYCHANGUI > gforceXYZ[1]) ) return 1;
+	if ((boardOrientation[2] + GRAVITYCHANGUI < gforceXYZ[2]) || (boardOrientation[2] - GRAVITYCHANGUI > gforceXYZ[2]) ) return 1;
+    return 0;
 }
 
 // detecta si hay movimiento
@@ -280,68 +196,6 @@ int getMovimiento()
 
 	return cambioEstado;
 }
-
-/*
- *
-Movimiento getMovimiento()
-{
-    Movimiento resultado;
-	unsigned char lectura;
-	uint8_t buf;
-	static const uint8_t addr = ACCEL_FF_MT_SRC;
-
-	if(GI2C1_ReadAddress(MMA1_I2C_ADDR, (uint8_t*)&addr, sizeof(addr), &buf, 1)!=ERR_OK) {
-		resultado.flag = -1;
-		return resultado;
-	}
-	lectura = buf;
-	/*
-		resultado.flag = 0;
-		return resultado;	* 0x16: FF_MT_SRC Freefall/Motion Source Register
-	Bit 7 	Bit 6 	Bit 5 	Bit 4 	Bit 3 	Bit 2 	Bit 1 	Bit 0
-	EA 		— 		ZHE 	ZHP 	YHE 	YHP 	XHE 	XHP
-
-	 EA 0 No event flag has been asserted; 1: one or more event flag has been asserted
-	 ZHE YHE XHE Motion event detected
-	 ZHP YHP XHP Motion Polarity Flag
-
-	 * *
-
-	if (!lectura && (1 << 7))
-	{
-		resultado.flag = 0;
-		resultado.x = 0;
-		resultado.y = 0;
-		resultado.z = 0;
-		return resultado;
-	}
-	// se detecto movimiento !
-	resultado.flag = 1;
-
-	if (lectura && (1 << 1))
-	{
-		resultado.x = (lectura && 1)?ACCEL_POSITIVO:ACCEL_NEGATIVO;
-	} else {
-		resultado.x = ACCEL_NEUTRO;
-	}
-
-	if (lectura && (1 << 3))
-	{
-		resultado.y = (lectura && (1<< 2))?ACCEL_POSITIVO:ACCEL_NEGATIVO;
-	} else {
-		resultado.y = ACCEL_NEUTRO;
-	}
-
-	if (lectura && (1 << 5))
-	{
-		resultado.z = (lectura && (1<< 4))?ACCEL_POSITIVO:ACCEL_NEGATIVO;
-	} else {
-		resultado.z = ACCEL_NEUTRO;
-	}
-
-	return resultado;
-	*/
-
 
 void Accel_Wake()
 {

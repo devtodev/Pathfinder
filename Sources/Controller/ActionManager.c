@@ -8,6 +8,7 @@
 #include <Controller/Navigation.h>
 #include "Controller/moves.h"
 #include "Driver/motor.h"
+#include "Driver/acelerometro.h"
 #include "ActionManager.h"
 
 #define MAXACTIONS 		   		20
@@ -147,15 +148,19 @@ void doAction(char action)
 			move_stop();
 			break;
 		case GOFORDWARD:
+			Accel_Init();
 			move_Forward();
 			break;
 		case GOBACKWARD:
+			Accel_Init();
 			move_Backward();
 			break;
 		case ROTATE_LEFT:
+			Accel_Init();
 			move_Rotate(LEFT, 0);
 			break;
 		case ROTATE_RIGHT:
+			Accel_Init();
 			move_Rotate(RIGHT, 0);
 			break;
 		case ROTATE_90:

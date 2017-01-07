@@ -15,8 +15,11 @@ typedef struct {
 	int16_t xyz[3];
 } Gforce;
 
+int16_t gforceXYZ[3];
 
 void Accel_Init();
+void Accel_calibrate();
 void Accel_Wake();
 void Accel_Sleep();
+int  Accel_isOverturn();
 int getMovimiento();

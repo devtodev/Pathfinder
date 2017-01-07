@@ -7,10 +7,10 @@
 
 #include <Driver/motor.h>
 #include <Controller/moves.h>
-#include <Controller/Navigation.h>
 #include "FRTOS1.h"
 #include "string.h"
 #include "math.h"
+#include "Driver/acelerometro.h"
 
 #define MAXNUMSTRLEN 30
 #define CANTSPEEDS 2
@@ -77,17 +77,29 @@ void angles2string(Orientation orientation, char *str)
 	strcat(&str[0], "]\0");
 }
 
+int getRealSpeed()
+{
+	int speed = 0;
+	speed = (gforceXYZ[0] < 0)? speed + gforceXYZ[0] * -1:speed + gforceXYZ[0];
+	speed = (gforceXYZ[1] < 0)? speed + gforceXYZ[1] * -1:speed + gforceXYZ[1];
+//	speed = (gforceXYZ[2] < 0)? speed + gforceXYZ[2] * -1:speed + gforceXYZ[2];
+	return speed;
+}
+
 void point2string(int16_t point[], char *str)
 {
 	char temp[MAXNUMSTRLEN];
 	strcpy(str, "{\0");
-	UTIL1_Num16sToStr(&temp[0], MAXNUMSTRLEN, point[0]);
+/*	UTIL1_Num16sToStr(&temp[0], MAXNUMSTRLEN, point[0]);
 	strcat(&str[0], &temp[0]);
 	strcat(&str[0], ", ");
 	UTIL1_Num16sToStr(&temp[0], MAXNUMSTRLEN, point[1]);
 	strcat(&str[0], &temp[0]);
 	strcat(&str[0], ", ");
 	UTIL1_Num16sToStr(&temp[0], MAXNUMSTRLEN, point[2]);
+	strcat(&str[0], &temp[0]);
+	strcat(&str[0], ", ");*/
+	UTIL1_Num16sToStr(&temp[0], MAXNUMSTRLEN, getRealSpeed(point));
 	strcat(&str[0], &temp[0]);
 	strcat(&str[0], "}\0");
 }

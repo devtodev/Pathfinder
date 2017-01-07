@@ -25,17 +25,20 @@
 
 #include "math.h"
 
-#define SHOW_ORIENTATION 1
+int SHOW_GFORCES = 1;
+int SHOW_ORIENTATION = 0;
+
 #define TASK_HMI 1
 
 #define DELAY_BETWEEN_ACTIONS_MS 25
 #define MAX_ACTION_BUFFER 		 20
 #define MAX_DISTANCE_TO_STOP	 35
+#define TASK_ULTRASONIDO		 1
 
 #define BUFFERDISTANCESIZE 		 5
 
 static portTASK_FUNCTION(motorTask, pvParameters) {
-
+	int overturn = 0;
 	for(;;) {
 		move_correction();
 		if( xQueueReceive( queueMotor, &( currentAction ), 0) )
@@ -43,6 +46,21 @@ static portTASK_FUNCTION(motorTask, pvParameters) {
 			vTaskDelay(currentAction.delayms/portTICK_RATE_MS);
 			doAction(currentAction.type);
 		}
+
+	    if ((Distance_getFront() < MAX_DISTANCE_TO_STOP) && (direction_Left == FORWARD) && (direction_Right == FORWARD))
+	    {
+	    	BT_showString("STOP: Obstaculo\r\n\0");
+	    	pushAction(MOVE_STOP);
+	    }
+
+	    overturn =+ Accel_isOverturn();
+	    if (overturn > 5)
+	    {
+	    	overturn = 0;
+	    	BT_showString("STOP: vuelco\r\n\0");
+	    	pushAction(MOVE_STOP);
+	    }
+
 		vTaskDelay(10/portTICK_RATE_MS);
 	}
 	vTaskDelete(motorTask);
@@ -88,11 +106,6 @@ static portTASK_FUNCTION(SensorUltrasonidoTask, pvParameters) {
   Distance_init();
   for(;;) {
 	    Distance_doMeaseure();
-	    distanceFront = Distance_getFront();
-	    if ((distanceFront < MAX_DISTANCE_TO_STOP) && (direction_Left == FORWARD) && (direction_Right == FORWARD))
-	    {
-	    	pushAction(MOVE_STOP);
-	    }
 	    vTaskDelay(10/portTICK_RATE_MS);
   }
   /* Destroy the task */
@@ -146,16 +159,18 @@ static portTASK_FUNCTION(PositionTask, pvParameters) {
 		  	position.orientation.Vz = Vz;
 		  	cursor = 0;
 
-			#if SHOW_GFORCES
-		  	point2string(gforce.xyz, str);
-		  	BT_showString(str);
-		  	BT_showString("\r\n\0");
-			#endif
-		  	#if SHOW_ORIENTATION
-		  	angles2string(position.orientation, str);
-		  	BT_showString(str);
-		  	BT_showString("\r\n\0");
-		  	#endif
+			if (SHOW_GFORCES)
+			{
+				point2string(gforceXYZ, str);
+				BT_showString(str);
+				BT_showString("\r\n\0");
+			}
+		  	if (SHOW_ORIENTATION)
+		  	{
+				angles2string(position.orientation, str);
+				BT_showString(str);
+				BT_showString("\r\n\0");
+		  	}
 	  	}
 	  	vTaskDelay(10/portTICK_RATE_MS);
   }

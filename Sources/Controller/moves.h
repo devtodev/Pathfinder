@@ -4,8 +4,8 @@
  *  Created on: 12/12/2016
  *      Author: Carlos Miguens
  */
-#include <Controller/Navigation.h>
 #include "stdint.h"
+#include "Navigation.h"
 #define LEFT 1
 #define RIGHT 0
 

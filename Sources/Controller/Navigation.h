@@ -21,9 +21,9 @@ typedef struct {
 	Orientation orientation;
 } Position;
 
-  Position position;
+Position position;
+
   Position target;
-  int16_t gforceXYZ[3];
 
   int travelMeetTheTarget();
   int travelAddNewTarget(Position newTarget);
