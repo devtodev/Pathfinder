@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : KL46P121M48SF4RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-23, 01:29, # CodeGen: 78
+**     Date/Time   : 2017-01-19, 12:56, # CodeGen: 96
 **     Abstract    :
 **
 **     Settings    :
@@ -490,8 +490,6 @@
 #include "CS1.h"
 #include "I2C0.h"
 #include "UTIL1.h"
-#include "BT.h"
-#include "ASerialLdd1.h"
 #include "TRIG.h"
 #include "WAIT1.h"
 #include "MotorSpeed_4.h"
@@ -513,6 +511,12 @@
 #include "MINT1.h"
 #include "ExtIntLdd1.h"
 #include "CLS1.h"
+#include "Flash.h"
+#include "IntFlashLdd1.h"
+#include "ESP8266.h"
+#include "ASerialLdd1.h"
+#include "BT.h"
+#include "ASerialLdd2.h"
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
@@ -1797,8 +1801,6 @@ void PE_low_level_init(void)
   GI2C1_Init();
   /* ### MMA8451Q "MMA1" init code ... */
   /* Write code here ... */
-  /* ### Asynchro serial "BT" init code ... */
-  BT_Init();
   /* ### PWM_LDD "PwmLdd2" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
   (void)PwmLdd2_Init(NULL);
   /* ### PWM_LDD "PwmLdd1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
@@ -1813,12 +1815,18 @@ void PE_low_level_init(void)
   (void)BitIoLdd4_Init(NULL);
   /* ### 74HC595 "MotorsDirection" init code ... */
   MotorsDirection_Init();
+  /* ### Asynchro serial "BT" init code ... */
+  BT_Init();
   /* ### Shell "CLS1" init code ... */
   CLS1_Init(); /* initialize shell */
   /* ### ExtInt_LDD "ExtIntLdd1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
   (void)ExtIntLdd1_Init(NULL);
   /* ### MAG3110 "MAG1" init code ... */
   /* Write code here ... */
+  /* ### IntFLASH "Flash" init code ... */
+  Flash_Init();
+  /* ### Asynchro serial "ESP8266" init code ... */
+  ESP8266_Init();
 }
   /* Flash configuration field */
   __attribute__ ((section (".cfmconfig"))) const uint8_t _cfm[0x10] = {

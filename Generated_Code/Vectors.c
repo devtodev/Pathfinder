@@ -6,7 +6,7 @@
 **     Version     : Component 01.003, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-23, 01:29, # CodeGen: 78
+**     Date/Time   : 2017-01-19, 12:56, # CodeGen: 96
 **     Abstract    :
 **
 **     Settings    :
@@ -64,8 +64,6 @@
   #include "CS1.h"
   #include "I2C0.h"
   #include "UTIL1.h"
-  #include "BT.h"
-  #include "ASerialLdd1.h"
   #include "TRIG.h"
   #include "WAIT1.h"
   #include "MotorSpeed_4.h"
@@ -87,6 +85,12 @@
   #include "MINT1.h"
   #include "ExtIntLdd1.h"
   #include "CLS1.h"
+  #include "Flash.h"
+  #include "IntFlashLdd1.h"
+  #include "ESP8266.h"
+  #include "ASerialLdd1.h"
+  #include "BT.h"
+  #include "ASerialLdd2.h"
   #include "Events.h"
 
 
@@ -135,7 +139,7 @@
     (tIsrFunc)&Cpu_Interrupt,          /* 0x1A  0x00000068   -   ivINT_SPI0                    unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x1B  0x0000006C   -   ivINT_SPI1                    unused by PE */
     (tIsrFunc)&ASerialLdd1_Interrupt,  /* 0x1C  0x00000070   2   ivINT_UART0                   used by PE */
-    (tIsrFunc)&Cpu_Interrupt,          /* 0x1D  0x00000074   -   ivINT_UART1                   unused by PE */
+    (tIsrFunc)&ASerialLdd2_Interrupt,  /* 0x1D  0x00000074   2   ivINT_UART1                   used by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x1E  0x00000078   -   ivINT_UART2                   unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x1F  0x0000007C   -   ivINT_ADC0                    unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x20  0x00000080   -   ivINT_CMP0                    unused by PE */

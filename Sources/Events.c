@@ -27,6 +27,8 @@
 /* MODULE Events */
 
 #include <Driver/Ultrasonic.h>
+#include <Driver/WIFI_actions.h>
+#include <Driver/BT_actions.h>
 #include "Cpu.h"
 #include "Events.h"
 
@@ -217,7 +219,18 @@ void BT_OnRxChar(void)
 {
 	char data;
 	BT_RecvChar(&data);
-	BT_inputChar(data);
+	if (connection.status != WIFI_ATMODE)
+	{
+		BT_inputChar(data);
+	} else {
+		if (data == '\n')
+		{
+			ESP8266_SendChar('\r');
+			ESP8266_SendChar('\n');
+		} else {
+			ESP8266_SendChar(data);
+		}
+	}
 }
 
 /*
@@ -332,6 +345,102 @@ void TU1_OnChannel0(LDD_TUserData *UserDataPtr)
 ** ===================================================================
 */
 void MINT1_OnInterrupt(void)
+{
+  /* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  ESP8266_OnError (module Events)
+**
+**     Component   :  ESP8266 [AsynchroSerial]
+**     Description :
+**         This event is called when a channel error (not the error
+**         returned by a given method) occurs. The errors can be read
+**         using <GetError> method.
+**         The event is available only when the <Interrupt
+**         service/event> property is enabled.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void ESP8266_OnError(void)
+{
+  /* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  ESP8266_OnRxChar (module Events)
+**
+**     Component   :  ESP8266 [AsynchroSerial]
+**     Description :
+**         This event is called after a correct character is received.
+**         The event is available only when the <Interrupt
+**         service/event> property is enabled and either the <Receiver>
+**         property is enabled or the <SCI output mode> property (if
+**         supported) is set to Single-wire mode.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void ESP8266_OnRxChar(void)
+{
+	char data;
+	ESP8266_RecvChar(&data);
+	if (connection.status == WIFI_ATMODE)
+		BT_SendChar(data);
+	else
+		WIFI_AddCharToInputBuffer(data);
+}
+
+/*
+** ===================================================================
+**     Event       :  ESP8266_OnTxChar (module Events)
+**
+**     Component   :  ESP8266 [AsynchroSerial]
+**     Description :
+**         This event is called after a character is transmitted.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void ESP8266_OnTxChar(void)
+{
+  /* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  ESP8266_OnFullRxBuf (module Events)
+**
+**     Component   :  ESP8266 [AsynchroSerial]
+**     Description :
+**         This event is called when the input buffer is full;
+**         i.e. after reception of the last character 
+**         that was successfully placed into input buffer.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void ESP8266_OnFullRxBuf(void)
+{
+  /* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  ESP8266_OnFreeTxBuf (module Events)
+**
+**     Component   :  ESP8266 [AsynchroSerial]
+**     Description :
+**         This event is called after the last character in output
+**         buffer is transmitted.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void ESP8266_OnFreeTxBuf(void)
 {
   /* Write your code here ... */
 }

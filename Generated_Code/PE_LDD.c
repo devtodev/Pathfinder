@@ -6,7 +6,7 @@
 **     Version     : Component 01.003, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-23, 01:29, # CodeGen: 78
+**     Date/Time   : 2017-01-19, 12:56, # CodeGen: 96
 **     Abstract    :
 **
 **     Settings    :
@@ -69,7 +69,9 @@
 ** Array of initialized device structures of LDD components.
 ** ===========================================================================
 */
-LDD_TDeviceData *PE_LDD_DeviceDataList[12] = {
+LDD_TDeviceData *PE_LDD_DeviceDataList[14] = {
+    NULL,
+    NULL,
     NULL,
     NULL,
     NULL,
@@ -205,8 +207,6 @@ bool PE_PeripheralUsed(uint32_t PrphBaseAddress)
   switch (PrphBaseAddress) {
     /* Base address allocated by peripheral(s) I2C0 */
     case 0x40066000UL:
-    /* Base address allocated by peripheral(s) UART0 */
-    case 0x4006A000UL:
     /* Base address allocated by peripheral(s) PTB */
     case 0x400FF040UL:
     /* Base address allocated by peripheral(s) TPM0 */
@@ -219,6 +219,12 @@ bool PE_PeripheralUsed(uint32_t PrphBaseAddress)
     case 0x400FF000UL:
     /* Base address allocated by peripheral(s) PTC */
     case 0x400FF080UL:
+    /* Base address allocated by peripheral(s) UART1 */
+    case 0x4006B000UL:
+    /* Base address allocated by peripheral(s) FTFA */
+    case 0x40020000UL:
+    /* Base address allocated by peripheral(s) UART0 */
+    case 0x4006A000UL:
       result = TRUE;
       break;
     default:
@@ -247,10 +253,6 @@ void LDD_SetClockConfiguration(LDD_TClockConfiguration ClockConfiguration)
   if (PE_LDD_DeviceDataList[PE_LDD_COMPONENT_I2C0_ID] != NULL) {
     I2C0_SetClockConfiguration(PE_LDD_DeviceDataList[PE_LDD_COMPONENT_I2C0_ID], ClockConfiguration);
   }
-  /* Component ASerialLdd1 (Serial_LDD). */
-  if (PE_LDD_DeviceDataList[PE_LDD_COMPONENT_ASerialLdd1_ID] != NULL) {
-    ASerialLdd1_SetClockConfiguration(PE_LDD_DeviceDataList[PE_LDD_COMPONENT_ASerialLdd1_ID], ClockConfiguration);
-  }
   /* Component Motors_TimerUnit (TimerUnit_LDD). */
   if (PE_LDD_DeviceDataList[PE_LDD_COMPONENT_Motors_TimerUnit_ID] != NULL) {
     Motors_TimerUnit_SetClockConfiguration(PE_LDD_DeviceDataList[PE_LDD_COMPONENT_Motors_TimerUnit_ID], ClockConfiguration);
@@ -267,7 +269,21 @@ void LDD_SetClockConfiguration(LDD_TClockConfiguration ClockConfiguration)
   if (PE_LDD_DeviceDataList[PE_LDD_COMPONENT_PwmLdd1_ID] != NULL) {
     PwmLdd1_SetClockConfiguration(PE_LDD_DeviceDataList[PE_LDD_COMPONENT_PwmLdd1_ID], ClockConfiguration);
   }
+  /* Component ASerialLdd2 (Serial_LDD). */
+  if (PE_LDD_DeviceDataList[PE_LDD_COMPONENT_ASerialLdd2_ID] != NULL) {
+    ASerialLdd2_SetClockConfiguration(PE_LDD_DeviceDataList[PE_LDD_COMPONENT_ASerialLdd2_ID], ClockConfiguration);
+  }
+  /* Component IntFlashLdd1 (LDD_FLASH_Polling). */
+  if (PE_LDD_DeviceDataList[PE_LDD_COMPONENT_IntFlashLdd1_ID] != NULL) {
+    IntFlashLdd1_SetClockConfiguration(PE_LDD_DeviceDataList[PE_LDD_COMPONENT_IntFlashLdd1_ID], ClockConfiguration);
+  }
+  /* Component ASerialLdd1 (Serial_LDD). */
+  if (PE_LDD_DeviceDataList[PE_LDD_COMPONENT_ASerialLdd1_ID] != NULL) {
+    ASerialLdd1_SetClockConfiguration(PE_LDD_DeviceDataList[PE_LDD_COMPONENT_ASerialLdd1_ID], ClockConfiguration);
+  }
   BT_SetClockConfiguration(ClockConfiguration);
+  Flash_SetClockConfiguration(ClockConfiguration);
+  ESP8266_SetClockConfiguration(ClockConfiguration);
 }
 
 /* END PE_LDD. */

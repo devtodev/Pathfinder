@@ -6,7 +6,7 @@
 **     Version     : Component 01.003, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-23, 01:29, # CodeGen: 78
+**     Date/Time   : 2017-01-19, 12:56, # CodeGen: 96
 **     Abstract    :
 **
 **     Settings    :
@@ -70,8 +70,6 @@
 #include "CS1.h"
 #include "I2C0.h"
 #include "UTIL1.h"
-#include "BT.h"
-#include "ASerialLdd1.h"
 #include "TRIG.h"
 #include "WAIT1.h"
 #include "MotorSpeed_4.h"
@@ -93,6 +91,12 @@
 #include "MINT1.h"
 #include "ExtIntLdd1.h"
 #include "CLS1.h"
+#include "Flash.h"
+#include "IntFlashLdd1.h"
+#include "ESP8266.h"
+#include "ASerialLdd1.h"
+#include "BT.h"
+#include "ASerialLdd2.h"
 
 
 /*

@@ -57,7 +57,11 @@
 #include "MINT1.h"
 #include "ExtIntLdd1.h"
 #include "CLS1.h"
+#include "Flash.h"
+#include "IntFlashLdd1.h"
+#include "ESP8266.h"
 #include "BT.h"
+#include "ASerialLdd2.h"
 #include "ASerialLdd1.h"
 #include "TRIG.h"
 #include "PwmLdd2.h"
@@ -304,6 +308,82 @@ void MINT1_OnInterrupt(void);
 **     Returns     : Nothing
 ** ===================================================================
 */
+
+/*
+** ===================================================================
+**     Event       :  ESP8266_OnError (module Events)
+**
+**     Component   :  ESP8266 [AsynchroSerial]
+**     Description :
+**         This event is called when a channel error (not the error
+**         returned by a given method) occurs. The errors can be read
+**         using <GetError> method.
+**         The event is available only when the <Interrupt
+**         service/event> property is enabled.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void ESP8266_OnError(void);
+
+/*
+** ===================================================================
+**     Event       :  ESP8266_OnRxChar (module Events)
+**
+**     Component   :  ESP8266 [AsynchroSerial]
+**     Description :
+**         This event is called after a correct character is received.
+**         The event is available only when the <Interrupt
+**         service/event> property is enabled and either the <Receiver>
+**         property is enabled or the <SCI output mode> property (if
+**         supported) is set to Single-wire mode.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void ESP8266_OnRxChar(void);
+
+/*
+** ===================================================================
+**     Event       :  ESP8266_OnTxChar (module Events)
+**
+**     Component   :  ESP8266 [AsynchroSerial]
+**     Description :
+**         This event is called after a character is transmitted.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void ESP8266_OnTxChar(void);
+
+/*
+** ===================================================================
+**     Event       :  ESP8266_OnFullRxBuf (module Events)
+**
+**     Component   :  ESP8266 [AsynchroSerial]
+**     Description :
+**         This event is called when the input buffer is full;
+**         i.e. after reception of the last character 
+**         that was successfully placed into input buffer.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void ESP8266_OnFullRxBuf(void);
+
+/*
+** ===================================================================
+**     Event       :  ESP8266_OnFreeTxBuf (module Events)
+**
+**     Component   :  ESP8266 [AsynchroSerial]
+**     Description :
+**         This event is called after the last character in output
+**         buffer is transmitted.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void ESP8266_OnFreeTxBuf(void);
 
 /* END Events */
 

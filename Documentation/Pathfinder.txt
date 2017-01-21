@@ -670,33 +670,6 @@ Module "UTIL1"     (component Utility)
    - UTIL1_SetValue24LE -Stores a 24bit value in memory as Little Endian
    - UTIL1_SetValue32LE -Stores a 32bit value in memory as Little Endian
 
-Module "BT"        (component AsynchroSerial)
-   - BT_RecvChar -If any data is received, this method returns one character, otherwise it returns an error code (it does not 
-                wait for data). This method is enabled only if the receiver property is enabled.  [Note:] Because the preferred 
-                method to handle error and break exception in the interrupt mode is to use events <OnError> and <OnBreak> the 
-                return value ERR_RXEMPTY has higher priority than other error codes. As a consequence the information about an 
-                exception in interrupt mode is returned only if there is a valid character ready to be read.
-   - BT_SendChar -Sends one character to the channel. If the component is temporarily disabled (Disable method) SendChar method 
-                only stores data into an output buffer. In case of a zero output buffer size, only one character can be stored. 
-                Enabling the component (Enable method) starts the transmission of the stored data. This method is available 
-                only if the transmitter property is enabled.
-   - BT_RecvBlock -If any data is received, this method returns the block of the data and its length (and incidental error), 
-                otherwise it returns an error code (it does not wait for data).  This method is available only if non-zero 
-                length of the input buffer is defined and the receiver property is enabled.  If less than requested number of 
-                characters is received only the available data is copied from the receive buffer to the user specified 
-                destination. The value ERR_EXEMPTY is returned and the value of variable pointed by the Rcv parameter is set to 
-                the number of received characters.
-   - BT_SendBlock -Sends a block of characters to the channel.  This method is available only if non-zero length of the output 
-                buffer is defined and the transmitter property is enabled.
-   - BT_ClearRxBuf -Clears the receive buffer.  This method is available only if non-zero length of the input buffer is defined 
-                and the receiver property is enabled.
-   - BT_ClearTxBuf -Clears the transmit buffer.  This method is available only if non-zero length of the output buffer is 
-                defined and the receiver property is enabled.
-   - BT_GetCharsInRxBuf -Returns the number of characters in the input buffer. This method is available only if the receiver 
-                property is enabled.
-   - BT_GetCharsInTxBuf -Returns the number of characters in the output buffer. This method is available only if the 
-                transmitter property is enabled.
-
 Module "TRIG"      (component BitIO_LDD)
    - TRIG_Init -Initializes the device. Allocates memory for the device data structure, allocates interrupt vectors and sets 
                 interrupt priority, sets pin routing, sets timing, etc. If the "Enable in init. code" is set to "yes" value 
@@ -873,6 +846,73 @@ Module "CLS1"      (component Shell)
    - CLS1_KeyPressed -Checks if a key has been pressed (a character is present in the input buffer)
    - CLS1_Init -Initializes the module, especially creates the mutex semaphore if an RTOS is used.
    - CLS1_Deinit -De-Initializes the module, especially frees the mutex semaphore if an RTOS is used.
+
+Module "Flash"     (component IntFLASH)
+   - Flash_DisableEvent -This method disables all the events except <OnSaveBuffer>, <OnRestoreBuffer> and <OnEraseError>. The 
+                method is available only if any event is enabled.
+   - Flash_EnableEvent -This method enables all the events except <OnSaveBuffer>, <OnRestoreBuffer> and <OnEraseError>. The 
+                method is available only if any event is enabled.
+   - Flash_SetByteFlash -Writes a byte to an address in FLASH. The operation of this method depends on the "Write method" 
+                property and state of the flash. Please see more details on general info page of the help.
+   - Flash_SetWordFlash -Writes a word to an address in FLASH. The operation of this method depends on the "Write method" 
+                property and state of the flash. Please see more details on general info page of the help.
+   - Flash_SetBlockFlash -Writes data to FLASH. The operation of this method depends on the "Write method" property and state 
+                of the flash. Please see more details on general info page of the help.
+
+Module "ESP8266"   (component AsynchroSerial)
+   - ESP8266_RecvChar -If any data is received, this method returns one character, otherwise it returns an error code (it does 
+                not wait for data). This method is enabled only if the receiver property is enabled.  [Note:] Because the 
+                preferred method to handle error and break exception in the interrupt mode is to use events <OnError> and 
+                <OnBreak> the return value ERR_RXEMPTY has higher priority than other error codes. As a consequence the 
+                information about an exception in interrupt mode is returned only if there is a valid character ready to be 
+                read.
+   - ESP8266_SendChar -Sends one character to the channel. If the component is temporarily disabled (Disable method) SendChar 
+                method only stores data into an output buffer. In case of a zero output buffer size, only one character can be 
+                stored. Enabling the component (Enable method) starts the transmission of the stored data. This method is 
+                available only if the transmitter property is enabled.
+   - ESP8266_RecvBlock -If any data is received, this method returns the block of the data and its length (and incidental error)
+                , otherwise it returns an error code (it does not wait for data).  This method is available only if non-zero 
+                length of the input buffer is defined and the receiver property is enabled.  If less than requested number of 
+                characters is received only the available data is copied from the receive buffer to the user specified 
+                destination. The value ERR_EXEMPTY is returned and the value of variable pointed by the Rcv parameter is set to 
+                the number of received characters.
+   - ESP8266_SendBlock -Sends a block of characters to the channel.  This method is available only if non-zero length of the 
+                output buffer is defined and the transmitter property is enabled.
+   - ESP8266_ClearRxBuf -Clears the receive buffer.  This method is available only if non-zero length of the input buffer is 
+                defined and the receiver property is enabled.
+   - ESP8266_ClearTxBuf -Clears the transmit buffer.  This method is available only if non-zero length of the output buffer is 
+                defined and the receiver property is enabled.
+   - ESP8266_GetCharsInRxBuf -Returns the number of characters in the input buffer. This method is available only if the 
+                receiver property is enabled.
+   - ESP8266_GetCharsInTxBuf -Returns the number of characters in the output buffer. This method is available only if the 
+                transmitter property is enabled.
+
+Module "BT"        (component AsynchroSerial)
+   - BT_RecvChar -If any data is received, this method returns one character, otherwise it returns an error code (it does not 
+                wait for data). This method is enabled only if the receiver property is enabled.  [Note:] Because the preferred 
+                method to handle error and break exception in the interrupt mode is to use events <OnError> and <OnBreak> the 
+                return value ERR_RXEMPTY has higher priority than other error codes. As a consequence the information about an 
+                exception in interrupt mode is returned only if there is a valid character ready to be read.
+   - BT_SendChar -Sends one character to the channel. If the component is temporarily disabled (Disable method) SendChar method 
+                only stores data into an output buffer. In case of a zero output buffer size, only one character can be stored. 
+                Enabling the component (Enable method) starts the transmission of the stored data. This method is available 
+                only if the transmitter property is enabled.
+   - BT_RecvBlock -If any data is received, this method returns the block of the data and its length (and incidental error), 
+                otherwise it returns an error code (it does not wait for data).  This method is available only if non-zero 
+                length of the input buffer is defined and the receiver property is enabled.  If less than requested number of 
+                characters is received only the available data is copied from the receive buffer to the user specified 
+                destination. The value ERR_EXEMPTY is returned and the value of variable pointed by the Rcv parameter is set to 
+                the number of received characters.
+   - BT_SendBlock -Sends a block of characters to the channel.  This method is available only if non-zero length of the output 
+                buffer is defined and the transmitter property is enabled.
+   - BT_ClearRxBuf -Clears the receive buffer.  This method is available only if non-zero length of the input buffer is defined 
+                and the receiver property is enabled.
+   - BT_ClearTxBuf -Clears the transmit buffer.  This method is available only if non-zero length of the output buffer is 
+                defined and the receiver property is enabled.
+   - BT_GetCharsInRxBuf -Returns the number of characters in the input buffer. This method is available only if the receiver 
+                property is enabled.
+   - BT_GetCharsInTxBuf -Returns the number of characters in the output buffer. This method is available only if the 
+                transmitter property is enabled.
 
 Module "Cpu"       (component MKL46Z256LL4)
    - Cpu_SetClockConfiguration -Calling of this method will cause the clock configuration change and reconfiguration of all 

@@ -19,16 +19,11 @@
 #include "Controller/moves.h"
 #include "Driver/BT_actions.h"
 #include "Controller/Distance.h"
-#include "HMI/BT_frontend.h"
 #include "Driver/magnetometro.h"
 #include "Driver/motor.h"
+#include "Driver/WIFI_actions.h"
 
 #include "math.h"
-
-int SHOW_GFORCES = 1;
-int SHOW_ORIENTATION = 0;
-
-#define TASK_HMI 1
 
 #define DELAY_BETWEEN_ACTIONS_MS 25
 #define MAX_ACTION_BUFFER 		 20
@@ -36,6 +31,15 @@ int SHOW_ORIENTATION = 0;
 #define TASK_ULTRASONIDO		 1
 
 #define BUFFERDISTANCESIZE 		 5
+
+
+/**
+ * DEBUG INFO SHOW
+ */
+
+int SHOW_GFORCES = 0;
+int SHOW_ORIENTATION = 0;
+
 
 static portTASK_FUNCTION(motorTask, pvParameters) {
 	int overturn = 0;
@@ -91,6 +95,102 @@ static portTASK_FUNCTION(navigationTask, pvParameters) {
 	}
 	vTaskDelete(navigationTask);
 }
+
+static portTASK_FUNCTION(GatewayTask, pvParameters) {
+
+  initGateway();
+  for(;;) {
+    xSemaphoreTake(xSemaphoreWifiATCommand, portMAX_DELAY);
+    readBuffer();
+  }
+  /* Destroy the task */
+  vTaskDelete(GatewayTask);
+}
+
+static portTASK_FUNCTION(HMITask, pvParameters) {
+  char menuConectado[MENUMAXLENGHT][64] = {"Desconectar"};
+  char opcionHIM[30];
+  int i = 0;
+  /* Write your task initialization code here ... */
+  BT_init();
+/*  MySegLCDPtr = SegLCD1_Init(NULL);
+	setLCD("9991");
+	SymbolON(11,0);
+*/
+  for(;;) {
+	  BT_showString("Power by Agro Robots\n\r\0");
+	  xSemaphoreTake(xSemaphoreWifiRefresh, portMAX_DELAY);
+	  switch (connection.status)
+	  {
+	  	  case WIFI_DISCONNECTED:
+		    // necesito obtener los spots
+	  		BT_sendSaltoLinea();BT_sendSaltoLinea();BT_sendSaltoLinea();BT_sendSaltoLinea();
+	  		BT_sendSaltoLinea();BT_sendSaltoLinea();
+	  		FRTOS1_vTaskDelay(1000/portTICK_RATE_MS);
+	  		refreshWifiSpots();
+	  		xSemaphoreTake(xSemaphoreWifiRefresh, portMAX_DELAY);
+	  		if ((SSIDStoredVisible()) && (i < 2))
+	  		{
+	  			strcpy(connection.ssid, storeSSID);
+	  			strcpy(connection.password, storePassword);
+	  			tryToConnect();
+	  			i++;
+	  		} else {
+				// mostrar los SSIDs
+				if (BT_showMenu(&spotSSID, &connection.ssid[0]) != -69)
+				{
+					// setPassword
+					BT_sendSaltoLinea();
+					BT_showString("Seleccion: ");
+					BT_showString(&connection.ssid[0]);
+					BT_sendSaltoLinea();
+					BT_askValue("Password: ", &connection.password[0]);
+					// showDetails
+					BT_sendSaltoLinea();BT_sendSaltoLinea();
+					BT_showString("SSID: ");
+					BT_showString(&connection.ssid[0]);
+					BT_sendSaltoLinea();
+					BT_showString("PASSWORD: ");
+					BT_showString(&connection.password[0]);
+					BT_sendSaltoLinea();
+			  		// try to connect
+					tryToConnect();
+				} else {
+					xSemaphoreGive(xSemaphoreWifiRefresh);
+					for (i = 0; i < 100; i++) BT_sendSaltoLinea();
+				}
+	  		}
+		  break;
+	  	  case WIFI_CONNECTING:
+	  		FRTOS1_vTaskDelay(2000/portTICK_RATE_MS);
+	  		connectionMode();
+	  		/*FRTOS1_vTaskDelay(1000/portTICK_RATE_MS);
+			getIP();*/
+			xSemaphoreTake(xSemaphoreWifiRefresh, portMAX_DELAY);
+			FRTOS1_vTaskDelay(1000/portTICK_RATE_MS);
+			connectingToServer();
+		  break;
+	  	  case WIFI_CONNECTED:
+
+	  		switch (BT_showMenu(&menuConectado, &opcionHIM[0]))
+	  		{
+				case 0:
+					disconectFromSpot();
+				break;
+				case -69:
+					xSemaphoreGive(xSemaphoreWifiRefresh);
+					for (i = 0; i < 100; i++) BT_sendSaltoLinea();
+				break;
+	  		}
+		  break;
+	  }
+  }
+  /* Destroy the task */
+  vTaskDelete(HMITask);
+}
+
+
+/*
 static portTASK_FUNCTION(HMI_BT_Task, pvParameters) {
   hmi_bt_init();
   char option;
@@ -100,6 +200,7 @@ static portTASK_FUNCTION(HMI_BT_Task, pvParameters) {
   }
   vTaskDelete(HMI_BT_Task);
 }
+*/
 static portTASK_FUNCTION(SensorUltrasonidoTask, pvParameters) {
   int distanceFront;
   char temp[10];
@@ -183,66 +284,58 @@ void CreateTasks(void) {
 	initActions();
 //	move_init();
 	pushAction(MOVE_STOP);
-  if (FRTOS1_xTaskCreate(
+#ifdef blablaaba
+	if (FRTOS1_xTaskCreate(
+  		  navigationTask,
+          "navigationTask",
+		  configMINIMAL_STACK_SIZE,
+          (void*)NULL,
+          tskIDLE_PRIORITY + 2,
+          (xTaskHandle*)NULL
+        ) != pdPASS) {
+          for(;;){};
+  }
+#endif
+	if (FRTOS1_xTaskCreate(
 		motorTask,  /* pointer to the task */
         "motorTask", /* task name for kernel awareness debugging */
 		configMINIMAL_STACK_SIZE, /* task stack size */
         (void*)NULL, /* optional task startup argument */
-        tskIDLE_PRIORITY + 2,  /* initial priority */
+        tskIDLE_PRIORITY + 1,  /* initial priority */
         (xTaskHandle*)NULL /* optional task handle to create */
       ) != pdPASS) {
         /*lint -e527 */
         for(;;){}; /* error! probably out of memory */
         /*lint +e527 */
     }
-  if (FRTOS1_xTaskCreate(
-  		  navigationTask,  /* pointer to the task */
-          "navigationTask", /* task name for kernel awareness debugging */
-		  configMINIMAL_STACK_SIZE, /* task stack size */
-          (void*)NULL, /* optional task startup argument */
-          tskIDLE_PRIORITY + 2,  /* initial priority */
-          (xTaskHandle*)NULL /* optional task handle to create */
-        ) != pdPASS) {
-          /*lint -e527 */
-          for(;;){}; /* error! probably out of memory */
-          /*lint +e527 */
-      }
-
-#if TASK_HMI
-  if (FRTOS1_xTaskCreate(
-		  HMI_BT_Task,  /* pointer to the task */
-          "HMI_BT_Task", /* task name for kernel awareness debugging */
-          configMINIMAL_STACK_SIZE, /* task stack size */
-          (void*)NULL, /* optional task startup argument */
-          tskIDLE_PRIORITY + 1,  /* initial priority */
-          (xTaskHandle*)NULL /* optional task handle to create */
-        ) != pdPASS) {
-          /*lint -e527 */
-          for(;;){}; /* error! probably out of memory */
-          /*lint +e527 */
-      }
-#endif
-#if TASK_ULTRASONIDO
-  if (FRTOS1_xTaskCreate(
-	  SensorUltrasonidoTask,  /* pointer to the task */
-      "SensorUltrasonidoTask", /* task name for kernel awareness debugging */
-      configMINIMAL_STACK_SIZE+200, /* task stack size */
-      (void*)NULL, /* optional task startup argument */
-      tskIDLE_PRIORITY + 3,  /* initial priority */
-      (xTaskHandle*)NULL /* optional task handle to create */
-    ) != pdPASS) {
-      /*lint -e527 */
-      for(;;){}; /* error! probably out of memory */
-      /*lint +e527 */
-  }
-#endif
-
+	if (FRTOS1_xTaskCreate(
+	  SensorUltrasonidoTask,
+	  "SensorUltrasonidoTask",
+	  configMINIMAL_STACK_SIZE+200,
+	  (void*)NULL,
+	  tskIDLE_PRIORITY + 1,
+	  (xTaskHandle*)NULL
+	) != pdPASS) {
+	  for(;;){};
+	}
   if (FRTOS1_xTaskCreate(
 		  PositionTask,  /* pointer to the task */
       "PositionTask", /* task name for kernel awareness debugging */
       configMINIMAL_STACK_SIZE , /* task stack size */
       (void*)NULL, /* optional task startup argument */
-      tskIDLE_PRIORITY + 3,  /* initial priority */
+      tskIDLE_PRIORITY + 1,  /* initial priority */
+      (xTaskHandle*)NULL /* optional task handle to create */
+    ) != pdPASS) {
+      /*lint -e527 */
+      for(;;){}; /* error! probably out of memory */
+      /*lint +e527 */
+  }
+  if (FRTOS1_xTaskCreate(
+     GatewayTask,  /* pointer to the task */
+      "Gateway", /* task name for kernel awareness debugging */
+      1200, /* task stack size */
+      (void*)NULL, /* optional task startup argument */
+      tskIDLE_PRIORITY + 1,  /* initial priority */
       (xTaskHandle*)NULL /* optional task handle to create */
     ) != pdPASS) {
       /*lint -e527 */
@@ -250,5 +343,17 @@ void CreateTasks(void) {
       /*lint +e527 */
   }
 
+  if (FRTOS1_xTaskCreate(
+     HMITask,  /* pointer to the task */
+      "HMI", /* task name for kernel awareness debugging */
+      1200, /* task stack size */
+      (void*)NULL, /* optional task startup argument */
+      tskIDLE_PRIORITY + 1,  /* initial priority */
+      (xTaskHandle*)NULL /* optional task handle to create */
+    ) != pdPASS) {
+      /*lint -e527 */
+      for(;;){}; /* error! probably out of memory */
+      /*lint +e527 */
+  }
 }
 

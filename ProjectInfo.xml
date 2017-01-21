@@ -48,12 +48,14 @@
       <Path>/home/karl/workspace/Pathfinder/Sources/Controller/</Path>
       <Path>/home/karl/workspace/Pathfinder/Sources/Driver/</Path>
       <Path>/home/karl/workspace/Pathfinder/Sources/</Path>
-      <Path>/home/karl/workspace/Pathfinder/Sources/HMI/</Path>
+      <Path>/home/karl/workspace/Pathfinder/Sources/Utils/</Path>
+      <Path>/home/karl/workspace/Pathfinder/Sources/borrame/</Path>
     </SourceCodePaths>
   </PATHS>
   <FILES>
     <GeneratedCs>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/ASerialLdd1.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Generated_Code/ASerialLdd2.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/BT.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/BitIoLdd1.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/BitIoLdd2.c</PathName>
@@ -63,10 +65,13 @@
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/CS1.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/Cpu.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/DS1.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Generated_Code/ESP8266.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/ExtIntLdd1.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/FRTOS1.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Generated_Code/Flash.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/GI2C1.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/I2C0.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Generated_Code/IntFlashLdd1.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/KSDK1.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/MAG1.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/MINT1.c</PathName>
@@ -107,16 +112,20 @@
       <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/moves.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/BT_actions.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/Ultrasonic.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/WIFI_actions.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/acelerometro.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/magnetometro.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/motor.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Events.c</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/HMI/BT_frontend.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Utils/StorePassword.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Utils/utils.c</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/borrame/BT_frontend.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/frtos_tasks.c</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/main.c</PathName>
     </GeneratedCs>
     <GeneratedHs>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/ASerialLdd1.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Generated_Code/ASerialLdd2.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/BT.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/BitIoLdd1.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/BitIoLdd2.h</PathName>
@@ -126,13 +135,16 @@
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/CS1.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/Cpu.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/DS1.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Generated_Code/ESP8266.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/ExtIntLdd1.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/FRTOS1.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Generated_Code/Flash.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/FreeRTOS.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/FreeRTOSConfig.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/GI2C1.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/I2C0.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/IO_Map.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Generated_Code/IntFlashLdd1.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/KSDK1.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/MAG1.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Generated_Code/MINT1.h</PathName>
@@ -176,11 +188,15 @@
       <PathName>/home/karl/workspace/Pathfinder/Sources/Controller/moves.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/BT_actions.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/Ultrasonic.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/WIFI_actions.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/acelerometro.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/magnetometro.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Driver/motor.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/Events.h</PathName>
-      <PathName>/home/karl/workspace/Pathfinder/Sources/HMI/BT_frontend.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Utils/StorePassword.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Utils/config.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/Utils/utils.h</PathName>
+      <PathName>/home/karl/workspace/Pathfinder/Sources/borrame/BT_frontend.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Sources/frtos_tasks.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Static_Code/IO_Map/MKL46Z4.h</PathName>
       <PathName>/home/karl/workspace/Pathfinder/Static_Code/PDD/ADC_PDD.h</PathName>

@@ -23,7 +23,6 @@
 
 \page page_components Components 
 - \subpage I2C0
-- \subpage ASerialLdd1
 - \subpage TRIG
 - \subpage Motors_TimerUnit
 - \subpage PwmLdd2
@@ -33,7 +32,11 @@
 - \subpage BitIoLdd2
 - \subpage BitIoLdd3
 - \subpage BitIoLdd4
+- \subpage ASerialLdd2
 - \subpage ExtIntLdd1
+- \subpage IntFlashLdd1
+- \subpage IntFlashLdd1
+- \subpage ASerialLdd1
 
 */
 

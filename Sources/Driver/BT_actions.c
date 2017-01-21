@@ -116,7 +116,7 @@ void BT_inputChar(char data)
 	if ((BT_mode != MENU) && (BT_mode != INPUT))
 		return;
 
-	if (data != '\n')
+	if ((data != '\n') && (data != '\r'))
 	{
 		BT_SendChar(data);
 		BTinputBuffer[BTinputBufferCursor] = data;
@@ -129,7 +129,7 @@ void BT_inputChar(char data)
 	}
 
 
-	if ((BT_mode == INPUT) || (data == '\n') || (data == '?') ||
+	if ((data == '\n') || (data == '\r') || (data == '?') ||
 			((BT_mode == MENU) && ((data >= OPTIONMENUBASE) && (data <= menuMaxOption))))
 	{
 		xSemaphoreGive(xSemaphoreBTRead);
