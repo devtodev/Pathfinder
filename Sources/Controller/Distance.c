@@ -15,14 +15,16 @@ int iBufferFront;
 void Distance_doMeaseure()
 {
 		bufferDistanceFront[iBufferFront] = getDistanceFront();
-		if (bufferDistanceFront[iBufferFront] != 0)
+		if (bufferDistanceFront[iBufferFront] == 0)
 		{
-			iBufferFront++;
-			if (iBufferFront > BUFFERDISTANCESIZE)
-			{
-				iBufferFront = 0;
-			}
+			bufferDistanceFront[iBufferFront] = 300;
 		}
+		iBufferFront++;
+		if (iBufferFront > BUFFERDISTANCESIZE)
+		{
+			iBufferFront = 0;
+		}
+
 }
 
 int Distance_getFront()

@@ -388,10 +388,10 @@ void ESP8266_OnRxChar(void)
 {
 	char data;
 	ESP8266_RecvChar(&data);
-	if (connection.status == WIFI_ATMODE)
+/*	if (connection.status == WIFI_ATMODE)
 		BT_SendChar(data);
-	else
-		WIFI_AddCharToInputBuffer(data);
+	else */
+	WIFI_AddCharToInputBuffer(data);
 }
 
 /*

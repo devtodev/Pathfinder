@@ -138,7 +138,7 @@ void Accel_Init()
 	Accel_calibrate();
 }
 
-#define GRAVITYCHANGUI	3000
+#define GRAVITYCHANGUI	2000
 int Accel_isOverturn()
 {
 	if ((boardOrientation[0] + GRAVITYCHANGUI < gforceXYZ[0]) || (boardOrientation[0] - GRAVITYCHANGUI > gforceXYZ[0]) ) return 1;

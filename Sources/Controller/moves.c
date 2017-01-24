@@ -36,7 +36,6 @@ void move_SpeedRefresh()
 	motorSetSpeed(MOTORRIGHT, speed);
 	speed = (speed_Left == CANTSPEEDS)? 0: 0xFFFF / (speed_Left + 1);
 	motorSetSpeed(MOTORLEFT, speed);
-
 }
 
 void move_DirectionRefresh()

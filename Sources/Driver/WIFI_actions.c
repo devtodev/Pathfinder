@@ -37,7 +37,7 @@ void WIFI_AddCharToInputBuffer(char data)
 	wifiInputBuffer[cursorWifiInputBuffer] = data;
 	cursorWifiInputBuffer++;
 	wifiInputBuffer[cursorWifiInputBuffer] = '\0';
-	//BT_showLogChar(data);
+//	BT_showLogChar(data);
 	// detectar OK y liberar el semaforo para interpretar el mensaje
 	if ((cursorWifiInputBuffer > 5) &&
 		(((wifiInputBuffer[cursorWifiInputBuffer-2] == 'O') && (wifiInputBuffer[cursorWifiInputBuffer-1] == 'K'))

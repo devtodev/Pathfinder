@@ -90,8 +90,8 @@
       <File Name="Sources/Events.h" FileDate="2017-01-19, 12:56:16" FileAge="1484841376000" FileType="131328" />
       <File Name="ProjectInfo.xml" FileDate="2017-01-20, 17:34:57" FileAge="1484944497000" FileType="45637" />
       <File Name="Generated_Code/ASerialLdd1.c" FileDate="2017-01-19, 12:56:16" FileAge="1484841376000" FileType="45637" CompNumb="161" />
-      <File Name="Sources/Events.c" FileDate="2017-01-19, 12:56:16" FileAge="1484841376000" FileType="131328" />
-      <File Name="Documentation/Pathfinder_SIGNALS.txt" FileDate="2017-01-20, 18:16:12" FileAge="1484946972000" FileType="3072" />
+      <File Name="Sources/Events.c" FileDate="2017-01-23, 19:28:20" FileAge="1485210500000" FileType="131328" />
+      <File Name="Documentation/Pathfinder_SIGNALS.txt" FileDate="2017-01-24, 17:04:30" FileAge="1485288270000" FileType="3072" />
       <File Name="Generated_Code/mpu_wrappers.h" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="45637" CompNumb="3" />
       <File Name="Static_Code/PDD/UART0_PDD.h" FileDate="2016-12-05, 21:22:24" FileAge="1480983744000" FileType="1048576" />
       <File Name="Generated_Code/queue.h" FileDate="2016-12-17, 19:30:44" FileAge="1482013844000" FileType="45637" CompNumb="3" />
@@ -192,5 +192,5 @@
       <File Name="Generated_Code/.gdbinit-FreeRTOS-helpers" FileDate="2016-12-05, 21:22:24" FileAge="1480983744000" FileType="45637" CompNumb="3" />
     </GeneratedByPE>
   </GeneratedFilesList>
-  <CodeGenReference>99</CodeGenReference>
+  <CodeGenReference>101</CodeGenReference>
 </CodeGenerationInfo>
