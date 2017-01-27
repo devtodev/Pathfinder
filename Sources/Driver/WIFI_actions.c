@@ -26,7 +26,7 @@ void sendATCommand(char *ATCommand);
 void sendPartialATCommand(char *ATCommand);
 void resetModule();
 
-#define MAXWIFIINPUTLEGHT 1024
+#define MAXWIFIINPUTLEGHT 2048
 
 char wifiInputBuffer[MAXWIFIINPUTLEGHT];
 int cursorWifiInputBuffer;
@@ -180,7 +180,8 @@ void readBuffer()
 // AT COMMANDS
   if (interpretarBuffer("+RST\0", setMode) == 1) return;
   if (interpretarBuffer("+CWMODE\0", enterMode) == 1) return;
-  if (interpretarBuffer("+CWLAP\0", spotsParse) == 1) return;
+  if (interpretarBuffer("+CWLAP\0", spotsParse) == 1)
+	  return;
   if (interpretarBuffer("+CIFSR\0", evaluarGetIP) == 1) return;
   if (interpretarBuffer("+CWJAP\0", spotsNewConnect) == 1) return;
   if (interpretarBuffer("+CIPMUX\0", evaluarConnectionMode) == 1) return;
@@ -342,11 +343,11 @@ int SSIDStoredVisible()
 	int i = 0;
 	if ((storeSSID == NULL) || (storeSSID[0] == '\0'))
 		return FALSE;
-	while (spotSSID[i] != '\0')
+	while ((spotSSID[i] != '\0') && (i < 27))
 	{
 		i++;
 		//el SSID almacenado en memoria esta visible
-		if (strcmp(storeSSID, spotSSID[i]))
+		if (strcmp(storeSSID, spotSSID[i]) == 0)
 			return TRUE;
 	}
 	//no se visualiza el SSID

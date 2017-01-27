@@ -115,6 +115,7 @@ static portTASK_FUNCTION(HMITask, pvParameters) {
   BT_init();
   FRTOS1_vTaskDelay(3000/portTICK_RATE_MS);
   for(;;) {
+	  /*
 	  if (mode == 0)
 	  {
 			option = hmi_bt_getOption();
@@ -122,7 +123,7 @@ static portTASK_FUNCTION(HMITask, pvParameters) {
 				mode = 1;
 			else
 				pushAction(option);
-	  } else {
+	  } else {*/
 			BT_showString("Power by Agro Robots\n\r\0");
 			xSemaphoreTake(xSemaphoreWifiRefresh, portMAX_DELAY);
 			switch (connection.status)
@@ -190,7 +191,7 @@ static portTASK_FUNCTION(HMITask, pvParameters) {
 			  break;
 			}
 	  }
-  }
+  //}
   /* Destroy the task */
   vTaskDelete(HMITask);
 }
@@ -290,6 +291,8 @@ void CreateTasks(void) {
 	initActions();
 //	move_init();
 	pushAction(MOVE_STOP);
+
+
 	if (FRTOS1_xTaskCreate(
 		motorTask,  /* pointer to the task */
         "motorTask", /* task name for kernel awareness debugging */
@@ -302,7 +305,7 @@ void CreateTasks(void) {
         for(;;){}; /* error! probably out of memory */
         /*lint +e527 */
     }
-#ifdef blablaaba
+
 	if (FRTOS1_xTaskCreate(
   		  navigationTask,
           "navigationTask",
@@ -313,8 +316,8 @@ void CreateTasks(void) {
         ) != pdPASS) {
           for(;;){};
   }
-#endif
-
+#ifdef blablaaba
+	/*
 	if (FRTOS1_xTaskCreate(
 	  SensorUltrasonidoTask,
 	  "SensorUltrasonidoTask",
@@ -338,11 +341,11 @@ void CreateTasks(void) {
       for(;;){}; /* error! probably out of memory */
       /*lint +e527 */
   }
-
+#endif
   if (FRTOS1_xTaskCreate(
      GatewayTask,  /* pointer to the task */
       "Gateway", /* task name for kernel awareness debugging */
-      1200, /* task stack size */
+      1900, /* task stack size */
       (void*)NULL, /* optional task startup argument */
       tskIDLE_PRIORITY + 1,  /* initial priority */
       (xTaskHandle*)NULL /* optional task handle to create */

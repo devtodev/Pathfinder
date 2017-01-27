@@ -74,7 +74,7 @@ int BT_showMenu(char text[MENUMAXLENGHT][64], char *reply)
 	BT_sendSaltoLinea();
 	BTinputBufferCursor= 0;
 	BTinputBuffer[0] = '\0';
-	while (*text[i] != '\0')
+	while ((*text[i] != '\0') && (OPTIONMENUBASE+i != 'z'))
 	{
 		opcion[0] = OPTIONMENUBASE+i;
 		opcion[1] = ')';
@@ -92,7 +92,7 @@ int BT_showMenu(char text[MENUMAXLENGHT][64], char *reply)
 	opcion[3] = OPTIONMENUBASE+i-1;
 	menuMaxOption = opcion[3];
 	BT_showString(opcion);
-	if (!xSemaphoreTake(xSemaphoreBTRead, 5000/portTICK_RATE_MS))
+	if (!xSemaphoreTake(xSemaphoreBTRead, 15000/portTICK_RATE_MS))
 	{
 		return -69;
 	}
