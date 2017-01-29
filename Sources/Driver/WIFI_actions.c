@@ -270,6 +270,12 @@ void evaluarGetIP()
 	xSemaphoreGive(xSemaphoreWifiRefresh);
 }
 
+/*
+ * NVMC_SaveSSID_PASSData
+ *
+ * Armar diccionario de claves
+ *
+ */
 
 void spotsNewConnect()
 {
