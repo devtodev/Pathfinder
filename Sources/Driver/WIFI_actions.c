@@ -192,17 +192,39 @@ void analizarEnvioDelServer()
 
 void verificarEnvioAlServer()
 {
-	// verificar si se envio, reenviar en caso de que no se haya enviado!
+	int position[10];
+	int error = find(wifiInputBuffer, "ERROR\0", (int *) &position);
+	error = (error == 0)?find(wifiInputBuffer, "not valid\0", (int *) &position):error;
+	if (error > 0)
+	{
+		BT_sendSaltoLinea();
+		BT_showString("Error al enviar al server\0");
+		//connectionMode();
+		connection.status = WIFI_DISCONNECTED;
+		xSemaphoreGive(xSemaphoreWifiRefresh);
+		return;
+	}
+
 	xSemaphoreGive(xSemaphoreWifiRefresh);
 }
 
-void sendInfo(char *data)
+void sendInfo(int distance)
 {
+	char data[50], command[100], temp[10];
+	Num16sToStr(temp, 10, distance);
+	strcpy(data, "{\"distance\":");
+	strcat(data, temp);
+	strcat(data, "}\0");
+
+	Num16sToStr(temp, 10, strlen(data));
+
+	strcpy(command, "AT+CIPSEND=0,\0");
+	strcat(command, temp);
+
 	// "DeviceID|TipoAccionId|Valor"
-	sendATCommand("AT+CIPSEND=0,5\0");
+	sendATCommand(command);
 	FRTOS1_vTaskDelay(1000/portTICK_RATE_MS);
-	sendPartialATCommand(DEVICE_ID);
-	sendPartialATCommand("1234\0");
+	sendPartialATCommand(data);
 //	sendPartialATCommand(data);
 }
 

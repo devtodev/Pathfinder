@@ -18,7 +18,7 @@ char menuBT[SIZEBTMENU][64] = {"w) up Speed\r\n\0",
 					"j) Rotate left\r\n\0",
 					"l) Rotate right\r\n\0",
 					"z) WiFi mode on\r\n\0",};
-
+/*
 void hmi_bt_init()
 {
 	int i;
@@ -49,3 +49,4 @@ char hmi_bt_getOption()
 	BT_askValue("\r", &bufferInput[0]);
 	return bufferInput[0];
 }
+*/

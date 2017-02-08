@@ -44,6 +44,7 @@ int SHOW_ORIENTATION = 0;
 
 static portTASK_FUNCTION(motorTask, pvParameters) {
 	int overturn = 0;
+	int distance = 0;
 	for(;;) {
 		move_correction();
 		if( xQueueReceive( queueMotor, &( currentAction ), 0) )
@@ -51,8 +52,8 @@ static portTASK_FUNCTION(motorTask, pvParameters) {
 			vTaskDelay(currentAction.delayms/portTICK_RATE_MS);
 			doAction(currentAction.type);
 		}
-
-	    if ((Distance_getFront() < MAX_DISTANCE_TO_STOP) && (direction_Left == FORWARD) && (direction_Right == FORWARD))
+		distance = Distance_getFront();
+	    if ((distance < MAX_DISTANCE_TO_STOP) && (direction_Left == FORWARD) && (direction_Right == FORWARD))
 	    {
 	    	BT_showString("STOP: Obstaculo\r\n\0");
 	    	pushAction(MOVE_STOP);
@@ -187,7 +188,6 @@ static portTASK_FUNCTION(HMITask, pvParameters) {
 				connectingToServer();
 			  break;
 			  case WIFI_CONNECTED:
-				sendInfo("1\0");
 				switch (BT_showMenu(&menuConectado, &opcionHIM[0]))
 				{
 					case 0:
@@ -219,9 +219,18 @@ static portTASK_FUNCTION(HMI_BT_Task, pvParameters) {
 */
 static portTASK_FUNCTION(SensorUltrasonidoTask, pvParameters) {
   int distanceFront;
-  char temp[10];
+  char temp[10], count = 0;
   Distance_init();
   for(;;) {
+	    if (connection.status == WIFI_CONNECTED)
+	    {
+			if (count >= 50)
+			{
+				sendInfo(Distance_getFront());
+				count = 0;
+			}
+			count++;
+	    }
 	    Distance_doMeaseure();
 	    vTaskDelay(10/portTICK_RATE_MS);
   }
@@ -324,9 +333,8 @@ void CreateTasks(void) {
           (xTaskHandle*)NULL
         ) != pdPASS) {
           for(;;){};
-  }
-#ifdef blablaaba
-	/*
+    }
+
 	if (FRTOS1_xTaskCreate(
 	  SensorUltrasonidoTask,
 	  "SensorUltrasonidoTask",
@@ -337,6 +345,8 @@ void CreateTasks(void) {
 	) != pdPASS) {
 	  for(;;){};
 	}
+
+#ifdef blablaaba
 
 	if (FRTOS1_xTaskCreate(
 		  PositionTask,  /* pointer to the task */
