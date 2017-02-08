@@ -171,7 +171,7 @@ PE_DEBUGHALT();
         <Default_memory_for_interrupts v="INTERNAL FLASH" />
         <Default_memory_for_code v="INTERNAL FLASH" />
         <Default_memory_for_data v="INTERNAL RAM" />
-        <list name="ROM/RAM Areas" v="4">
+        <list name="ROM/RAM Areas" v="5">
           <group name="MemoryArea0">
             <boolgroup name="ROM/RAM Area" v="Enabled">
               <Name v="m_interrupts" />
@@ -188,7 +188,7 @@ PE_DEBUGHALT();
               <Name v="m_text" />
               <Qualifier v="RX" />
               <Address v="1040" />
-              <Size v="261104" />
+              <Size v="228336" />
             </boolgroup>
           </group>
           <group name="MemoryArea3">
@@ -196,6 +196,14 @@ PE_DEBUGHALT();
               <Name v="m_data" />
               <Qualifier v="RW" />
               <Address v="536862720" />
+              <Size v="32768" />
+            </boolgroup>
+          </group>
+          <group name="MemoryArea4">
+            <boolgroup name="ROM/RAM Area" v="Enabled">
+              <Name v="NVM_Config" />
+              <Qualifier v="RWX" />
+              <Address v="229376" />
               <Size v="32768" />
             </boolgroup>
           </group>
@@ -608,6 +616,80 @@ PE_DEBUGHALT();
       <EmptySection_DummyValue />
     </Events>
   </Bean>
+  <Bean name="UTIL1" type="Utility">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="UTIL1" />
+      <SDK v="KSDK1" />
+    </Properties>
+    <Methods>
+      <strcpy v="generate code" />
+      <strcat v="generate code" />
+      <strcatPad v="generate code" />
+      <chcat v="generate code" />
+      <Num8sToStr v="generate code" />
+      <Num8uToStr v="generate code" />
+      <Num16sToStr v="generate code" />
+      <Num16uToStr v="generate code" />
+      <Num32uToStr v="generate code" />
+      <Num32sToStr v="generate code" />
+      <NumFloatToStr v="generate code" />
+      <Num16sToStrFormatted v="generate code" />
+      <Num16uToStrFormatted v="generate code" />
+      <Num32uToStrFormatted v="generate code" />
+      <Num32sToStrFormatted v="generate code" />
+      <strcatNum8u v="generate code" />
+      <strcatNum8s v="generate code" />
+      <strcatNum16u v="generate code" />
+      <strcatNum16s v="generate code" />
+      <strcatNum32u v="generate code" />
+      <strcatNum32s v="generate code" />
+      <strcatNum16uFormatted v="generate code" />
+      <strcatNum16sFormatted v="generate code" />
+      <strcatNum32uFormatted v="generate code" />
+      <strcatNum32sFormatted v="generate code" />
+      <strcatNum8Hex v="generate code" />
+      <strcatNum16Hex v="generate code" />
+      <strcatNum24Hex v="generate code" />
+      <strcatNum32Hex v="generate code" />
+      <strcatNum32sDotValue100 v="generate code" />
+      <strcatNumFloat v="generate code" />
+      <IsLeapYear v="generate code" />
+      <WeekDay v="generate code" />
+      <ReadEscapedName v="generate code" />
+      <xatoi v="generate code" />
+      <ScanDate v="generate code" />
+      <ScanTime v="generate code" />
+      <ScanDecimal8uNumber v="generate code" />
+      <ScanDecimal8sNumber v="generate code" />
+      <ScanDecimal16uNumber v="generate code" />
+      <ScanDecimal16sNumber v="generate code" />
+      <ScanDecimal32uNumber v="generate code" />
+      <ScanDecimal32sNumber v="generate code" />
+      <ScanDecimal32sDotNumber v="generate code" />
+      <ScanHex8uNumber v="generate code" />
+      <ScanHex8uNumberNoPrefix v="generate code" />
+      <ScanHex16uNumber v="generate code" />
+      <ScanHex32uNumber v="generate code" />
+      <ScanSeparatedNumbers v="generate code" />
+      <ScanDoubleQuotedString v="generate code" />
+      <strcmp v="generate code" />
+      <strncmp v="generate code" />
+      <strFind v="generate code" />
+      <strtailcmp v="generate code" />
+      <strlen v="generate code" />
+      <strCutTail v="generate code" />
+      <GetValue16LE v="generate code" />
+      <GetValue24LE v="generate code" />
+      <GetValue32LE v="generate code" />
+      <SetValue16LE v="generate code" />
+      <SetValue24LE v="generate code" />
+      <SetValue32LE v="generate code" />
+    </Methods>
+    <Events>
+      <EmptySection_DummyValue />
+    </Events>
+  </Bean>
   <Bean name="CS1" type="CriticalSection">
     <Enabled v="Y" />
     <Properties>
@@ -737,80 +819,6 @@ PE_DEBUGHALT();
       <event name="OnError" v="don&amp;apos;t generate code" />
       <event name="OnBusStartDetected" v="don&amp;apos;t generate code" />
       <event name="OnBusStopDetected" v="don&amp;apos;t generate code" />
-    </Events>
-  </Bean>
-  <Bean name="UTIL1" type="Utility">
-    <Enabled v="Y" />
-    <Properties>
-      <Component_name v="UTIL1" />
-      <SDK v="KSDK1" />
-    </Properties>
-    <Methods>
-      <strcpy v="generate code" />
-      <strcat v="generate code" />
-      <strcatPad v="generate code" />
-      <chcat v="generate code" />
-      <Num8sToStr v="generate code" />
-      <Num8uToStr v="generate code" />
-      <Num16sToStr v="generate code" />
-      <Num16uToStr v="generate code" />
-      <Num32uToStr v="generate code" />
-      <Num32sToStr v="generate code" />
-      <NumFloatToStr v="generate code" />
-      <Num16sToStrFormatted v="generate code" />
-      <Num16uToStrFormatted v="generate code" />
-      <Num32uToStrFormatted v="generate code" />
-      <Num32sToStrFormatted v="generate code" />
-      <strcatNum8u v="generate code" />
-      <strcatNum8s v="generate code" />
-      <strcatNum16u v="generate code" />
-      <strcatNum16s v="generate code" />
-      <strcatNum32u v="generate code" />
-      <strcatNum32s v="generate code" />
-      <strcatNum16uFormatted v="generate code" />
-      <strcatNum16sFormatted v="generate code" />
-      <strcatNum32uFormatted v="generate code" />
-      <strcatNum32sFormatted v="generate code" />
-      <strcatNum8Hex v="generate code" />
-      <strcatNum16Hex v="generate code" />
-      <strcatNum24Hex v="generate code" />
-      <strcatNum32Hex v="generate code" />
-      <strcatNum32sDotValue100 v="generate code" />
-      <strcatNumFloat v="generate code" />
-      <IsLeapYear v="generate code" />
-      <WeekDay v="generate code" />
-      <ReadEscapedName v="generate code" />
-      <xatoi v="generate code" />
-      <ScanDate v="generate code" />
-      <ScanTime v="generate code" />
-      <ScanDecimal8uNumber v="generate code" />
-      <ScanDecimal8sNumber v="generate code" />
-      <ScanDecimal16uNumber v="generate code" />
-      <ScanDecimal16sNumber v="generate code" />
-      <ScanDecimal32uNumber v="generate code" />
-      <ScanDecimal32sNumber v="generate code" />
-      <ScanDecimal32sDotNumber v="generate code" />
-      <ScanHex8uNumber v="generate code" />
-      <ScanHex8uNumberNoPrefix v="generate code" />
-      <ScanHex16uNumber v="generate code" />
-      <ScanHex32uNumber v="generate code" />
-      <ScanSeparatedNumbers v="generate code" />
-      <ScanDoubleQuotedString v="generate code" />
-      <strcmp v="generate code" />
-      <strncmp v="generate code" />
-      <strFind v="generate code" />
-      <strtailcmp v="generate code" />
-      <strlen v="generate code" />
-      <strCutTail v="generate code" />
-      <GetValue16LE v="generate code" />
-      <GetValue24LE v="generate code" />
-      <GetValue32LE v="generate code" />
-      <SetValue16LE v="generate code" />
-      <SetValue24LE v="generate code" />
-      <SetValue32LE v="generate code" />
-    </Methods>
-    <Events>
-      <EmptySection_DummyValue />
     </Events>
   </Bean>
   <Bean name="TRIG" type="BitIO_LDD">

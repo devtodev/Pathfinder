@@ -20,16 +20,15 @@ static bool isErased(char *ptr, int nofBytes) {
   return TRUE;
 }
 
-char NVMC_SaveSSID_PASSData(void *data, int dataSize) {
-  if (dataSize>NVMC_SSID_PASS_DATA_SIZE) {
-    return ERR_OVERFLOW;
-  }
-  return Flash_SetBlockFlash(data, (Flash_TAddress)(NVMC_SSID_PASS_DATA_START_ADDR), dataSize);
+char NVMC_SaveSSID_PASSData(void *data, int id) {
+  Flash_TAddress address =  NVMC_SSID_PASS_DATA_START_ADDR + id * NVMC_SSID_PASS_DATA_SIZE;
+  return Flash_SetBlockFlash(data, address, NVMC_SSID_PASS_DATA_SIZE);
 }
 
-void *NVMC_GetSSID_PASSData(void) {
-  if (isErased((char*)NVMC_SSID_PASS_DATA_START_ADDR, NVMC_SSID_PASS_DATA_SIZE)) {
+void *NVMC_GetSSID_PASSData(int id) {
+  char* address =  NVMC_SSID_PASS_DATA_START_ADDR + id * NVMC_SSID_PASS_DATA_SIZE;
+  if (isErased(address, NVMC_SSID_PASS_DATA_SIZE)) {
     return NULL;
   }
-  return (void*)NVMC_SSID_PASS_DATA_START_ADDR;
+  return (void*)address;
 }

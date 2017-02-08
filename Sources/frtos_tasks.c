@@ -109,46 +109,54 @@ static portTASK_FUNCTION(GatewayTask, pvParameters) {
 }
 
 static portTASK_FUNCTION(HMITask, pvParameters) {
-  char menuConectado[MENUMAXLENGHT][64] = {"Desconectar"};
-  char opcionHIM[30], option;
-  int i = 0, mode = 0;
-  BT_init();
-  FRTOS1_vTaskDelay(3000/portTICK_RATE_MS);
-  for(;;) {
-	  /*
-	  if (mode == 0)
-	  {
-			option = hmi_bt_getOption();
-			if (option == 'z')
-				mode = 1;
-			else
-				pushAction(option);
-	  } else {*/
-			BT_showString("Power by Agro Robots\n\r\0");
-			xSemaphoreTake(xSemaphoreWifiRefresh, portMAX_DELAY);
-			switch (connection.status)
-			{
-			  case WIFI_DISCONNECTED:
-				// necesito obtener los spots
-				BT_sendSaltoLinea();BT_sendSaltoLinea();BT_sendSaltoLinea();BT_sendSaltoLinea();
-				BT_sendSaltoLinea();BT_sendSaltoLinea();
-				FRTOS1_vTaskDelay(1000/portTICK_RATE_MS);
-				refreshWifiSpots();
-				xSemaphoreTake(xSemaphoreWifiRefresh, portMAX_DELAY);
-				if ((SSIDStoredVisible()) && (i < 2))
-				{
-					strcpy(connection.ssid, storeSSID);
-					strcpy(connection.password, storePassword);
-					tryToConnect();
-					i++;
-				} else {
+	  char menuConectado[MENUMAXLENGHT][64] = {"Desconectar"};
+	  char opcionHIM[30];
+	  int intentsConnects = 0, temp = 0;
+	  /* Write your task initialization code here ... */
+	  BT_init();
+/*	  MySegLCDPtr = SegLCD1_Init(NULL);
+	  setLCD("9991");
+	  SymbolON(11,0);
+*/
+	  for(;;) {
+		  BT_sendSaltoLinea();BT_sendSaltoLinea();BT_sendSaltoLinea();BT_sendSaltoLinea();
+		  BT_showString("Agro Robots WiFi Spot");
+		  xSemaphoreTake(xSemaphoreWifiRefresh, portMAX_DELAY);
+		  switch (connection.status)
+		  {
+		  	  case WIFI_DISCONNECTED:
+			    // necesito obtener los spots
+		  		BT_sendSaltoLinea();BT_sendSaltoLinea();
+		  		FRTOS1_vTaskDelay(1000/portTICK_RATE_MS);
+		  		refreshWifiSpots();
+		  		xSemaphoreTake(xSemaphoreWifiRefresh, portMAX_DELAY);
+		  		temp = SSIDStoredVisible();
+		  		if ((temp >= 0) && (intentsConnects < 2))
+		  		{
+		  			strcpy(connection.ssid, storedConnections[temp].ssid);
+		  			strcpy(connection.password, storedConnections[temp].password);
+		  			tryToConnect();
+		  			intentsConnects++;
+		  		} else {
+		  			temp = 0;
+		  			while ((temp < MAXCANTSPOTSWIFI) && (spotSSID[temp][0] != '\0'))
+		  			{
+		  				temp++;
+		  			}
+		  			if ((temp > 0) && (strcmp("{Ingreso manual}\0", spotSSID[temp-1])!=0))
+		  				strcpy(spotSSID[temp], "{Ingreso manual}\0");
 					// mostrar los SSIDs
 					if (BT_showMenu(&spotSSID, &connection.ssid[0]) != -69)
 					{
 						// setPassword
 						BT_sendSaltoLinea();
-						BT_showString("Seleccion: ");
-						BT_showString(&connection.ssid[0]);
+						if (strcmp("{Ingreso manual}\0", &connection.ssid[0])!=0)
+						{
+							BT_showString("Seleccion: ");
+							BT_showString(&connection.ssid[0]);
+						} else {
+							BT_askValue("SSID: ", &connection.ssid[0]);
+						}
 						BT_sendSaltoLinea();
 						BT_askValue("Password: ", &connection.password[0]);
 						// showDetails
@@ -159,19 +167,21 @@ static portTASK_FUNCTION(HMITask, pvParameters) {
 						BT_showString("PASSWORD: ");
 						BT_showString(&connection.password[0]);
 						BT_sendSaltoLinea();
-						// try to connect
+				  		// try to connect
 						tryToConnect();
 					} else {
 						xSemaphoreGive(xSemaphoreWifiRefresh);
-						for (i = 0; i < 100; i++) BT_sendSaltoLinea();
+						for (int i = 0; i < 100; i++) BT_sendSaltoLinea();
 					}
-				}
+		  		}
 			  break;
-			  case WIFI_CONNECTING:
-				FRTOS1_vTaskDelay(2000/portTICK_RATE_MS);
-				connectionMode();
-				/*FRTOS1_vTaskDelay(1000/portTICK_RATE_MS);
-				getIP();*/
+		  	  case WIFI_CONNECTING:
+		  		intentsConnects = 0;
+		  		FRTOS1_vTaskDelay(2000/portTICK_RATE_MS);
+		  		connectionMode();
+		  		xSemaphoreTake(xSemaphoreWifiRefresh, portMAX_DELAY);
+		  		FRTOS1_vTaskDelay(1000/portTICK_RATE_MS);
+				setDHCP();
 				xSemaphoreTake(xSemaphoreWifiRefresh, portMAX_DELAY);
 				FRTOS1_vTaskDelay(1000/portTICK_RATE_MS);
 				connectingToServer();
@@ -185,15 +195,14 @@ static portTASK_FUNCTION(HMITask, pvParameters) {
 					break;
 					case -69:
 						xSemaphoreGive(xSemaphoreWifiRefresh);
-						for (i = 0; i < 100; i++) BT_sendSaltoLinea();
+						for (int i = 0; i < 100; i++) BT_sendSaltoLinea();
 					break;
 				}
 			  break;
-			}
+		  }
 	  }
-  //}
-  /* Destroy the task */
-  vTaskDelete(HMITask);
+	  /* Destroy the task */
+	  vTaskDelete(HMITask);
 }
 
 

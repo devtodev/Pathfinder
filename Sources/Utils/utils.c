@@ -68,3 +68,45 @@ int strsub(char *text, int init, int end, char *rta)
 	return index;
 }
 
+/*!
+  \brief Converts a 16bit signed number into a string.
+  \param[in,out] dst String buffer to store the number.
+  \param[in] dstSize Size of the destination buffer in uint8_ts.
+  \param[in] val 16bit signed number to convert.
+ */
+void Num16sToStr(char *dst, int dstSize, int val)
+{
+  unsigned char *ptr =  ((unsigned char *)dst);
+  unsigned char i=0, j;
+  unsigned char tmp;
+  unsigned char sign = (unsigned char)(val < 0);
+
+  if (val==(int)(0x8000)) { /* special case 0x8000/-32768: prevent overflow below. */
+    strcpy(dst, (unsigned char*)"-32768");
+    return;
+  }
+  dstSize--; /* for zero uint8_t */
+  if (sign) {
+    val = -val;
+  }
+  if (val == 0 && dstSize > 0){
+    ptr[i++] = '0';
+    dstSize--;
+  }
+  while (val > 0 && dstSize > 0) {
+    ptr[i++] = (unsigned char)((val % 10) + '0');
+    dstSize--;
+    val /= 10;
+  }
+  if (sign && dstSize > 0){
+    ptr[i++] = '-';
+    dstSize--;
+  }
+  for(j=0; j<(i/2); j++) { /* swap buffer */
+    tmp = ptr[j];
+    ptr[j] = ptr[(i-j)-1];
+    ptr[(i-j)-1] = tmp;
+  }
+  ptr[i] = '\0';
+}
+

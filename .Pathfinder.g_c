@@ -120,9 +120,9 @@
       <XtraAge30>1234279382</XtraAge30>
       <XtraAge31>1234279382</XtraAge31>
       <XtraAge50>1244882696</XtraAge50>
-      <XtraAge51>1244882696</XtraAge51>
+      <XtraAge51>1245545104</XtraAge51>
       <XtraAge53>1233496780</XtraAge53>
-      <XtraAge54>1244882696</XtraAge54>
+      <XtraAge54>1245545104</XtraAge54>
       <GenExtraFileType54>4</GenExtraFileType54>
       <GenExtraFileType53>5</GenExtraFileType53>
       <GenExtraFileType52>4</GenExtraFileType52>
@@ -508,9 +508,9 @@
         <Line>MMA1</Line>
         <Line>GI2C1</Line>
         <Line>TMOUT1</Line>
+        <Line>UTIL1</Line>
         <Line>CS1</Line>
         <Line>I2C0</Line>
-        <Line>UTIL1</Line>
         <Line>TRIG</Line>
         <Line>WAIT1</Line>
         <Line>MotorSpeed_4</Line>
@@ -542,7 +542,7 @@
     </GenFiles>
     <SignalListFile>Documentation\Pathfinder_SIGNALS.txt</SignalListFile>
     <DestinationCompiler>GNUC</DestinationCompiler>
-    <ProjectModificationStamp>62</ProjectModificationStamp>
+    <ProjectModificationStamp>63</ProjectModificationStamp>
   </Options>
   <CpuID_82>
     <Generated>true</Generated>
@@ -551,7 +551,7 @@
     <GenDriverVersion>01.04</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
     <HeaderAge>1233496780</HeaderAge>
-    <CodeAge>1244882696</CodeAge>
+    <CodeAge>1245545104</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>11</GenNumMethods>
     <SetClockConfiguration>true</SetClockConfiguration>
@@ -3305,288 +3305,6 @@
     </MethodPos>
     <GenExtraFilesCount>0</GenExtraFilesCount>
   </ComponentID_20>
-  <ComponentID_21>
-    <Generated>true</Generated>
-    <GenCompName>CS1</GenCompName>
-    <GenComponentVersion>01.009</GenComponentVersion>
-    <GenDriverVersion>01.00</GenDriverVersion>
-    <GenEventModule />
-    <HeaderAge>1234279382</HeaderAge>
-    <CodeAge>1234279381</CodeAge>
-    <AsemblAge>-1</AsemblAge>
-    <GenNumMethods>3</GenNumMethods>
-    <CriticalVariable>true</CriticalVariable>
-    <EnterCritical>true</EnterCritical>
-    <ExitCritical>true</ExitCritical>
-    <GenNumEvents>0</GenNumEvents>
-    <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
-    <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
-    <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
-    <GenMethodPos>6</GenMethodPos>
-    <MethodPos>
-      <MethodPos0>CriticalVariable</MethodPos0>
-      <MethodType>method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>67</LineBeg>
-      <LineEnd>79</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos1>EnterCritical</MethodPos1>
-      <MethodType>method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>80</LineBeg>
-      <LineEnd>101</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos2>ExitCritical</MethodPos2>
-      <MethodType>method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>102</LineBeg>
-      <LineEnd>119</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos3>CriticalVariable</MethodPos3>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>46</LineBeg>
-      <LineEnd>61</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos4>EnterCritical</MethodPos4>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>62</LineBeg>
-      <LineEnd>77</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos5>ExitCritical</MethodPos5>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>78</LineBeg>
-      <LineEnd>93</LineEnd>
-    </MethodPos>
-    <GenExtraFilesCount>0</GenExtraFilesCount>
-  </ComponentID_21>
-  <ComponentID_22>
-    <Generated>true</Generated>
-    <GenCompName>I2C0</GenCompName>
-    <GenComponentVersion>01.016</GenComponentVersion>
-    <GenDriverVersion>01.07</GenDriverVersion>
-    <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1233496780</HeaderAge>
-    <CodeAge>1233496780</CodeAge>
-    <AsemblAge>-1</AsemblAge>
-    <GenNumMethods>33</GenNumMethods>
-    <Init>true</Init>
-    <Deinit>true</Deinit>
-    <Enable>false</Enable>
-    <Disable>false</Disable>
-    <SetEventMask>false</SetEventMask>
-    <GetEventMask>false</GetEventMask>
-    <MasterSendBlock>true</MasterSendBlock>
-    <MasterGetBlockSentStatus>false</MasterGetBlockSentStatus>
-    <MasterGetSentDataNum>false</MasterGetSentDataNum>
-    <MasterReceiveBlock>true</MasterReceiveBlock>
-    <MasterGetBlockReceivedStatus>false</MasterGetBlockReceivedStatus>
-    <MasterGetReceivedDataNum>false</MasterGetReceivedDataNum>
-    <MasterUpdateReceiveBlockSize>false</MasterUpdateReceiveBlockSize>
-    <SlaveSendBlock>false</SlaveSendBlock>
-    <SlaveGetBlockSentStatus>false</SlaveGetBlockSentStatus>
-    <SlaveGetSentDataNum>false</SlaveGetSentDataNum>
-    <SlaveCancelTransmissionBlock>false</SlaveCancelTransmissionBlock>
-    <SlaveReceiveBlock>false</SlaveReceiveBlock>
-    <SlaveGetBlockReceivedStatus>false</SlaveGetBlockReceivedStatus>
-    <SlaveGetReceivedDataNum>false</SlaveGetReceivedDataNum>
-    <SlaveUpdateReceiveBlockSize>false</SlaveUpdateReceiveBlockSize>
-    <SlaveCancelReceptionBlock>false</SlaveCancelReceptionBlock>
-    <SelectSlaveDevice>true</SelectSlaveDevice>
-    <SetAcknowledgeMode>false</SetAcknowledgeMode>
-    <SendAcknowledge>false</SendAcknowledge>
-    <GetError>true</GetError>
-    <CheckBus>false</CheckBus>
-    <GetStats>false</GetStats>
-    <ClearStats>false</ClearStats>
-    <Main>false</Main>
-    <ConnectPin>false</ConnectPin>
-    <SetOperationMode>false</SetOperationMode>
-    <GetDriverState>false</GetDriverState>
-    <GenNumEvents>14</GenNumEvents>
-    <OnMasterBlockSent_Selected>3</OnMasterBlockSent_Selected>
-    <OnMasterBlockSent_Name>I2C0_OnMasterBlockSent</OnMasterBlockSent_Name>
-    <OnMasterBlockSent_Priority>interrupts disabled</OnMasterBlockSent_Priority>
-    <OnMasterBlockReceived_Selected>3</OnMasterBlockReceived_Selected>
-    <OnMasterBlockReceived_Name>I2C0_OnMasterBlockReceived</OnMasterBlockReceived_Name>
-    <OnMasterBlockReceived_Priority>interrupts disabled</OnMasterBlockReceived_Priority>
-    <OnMasterByteReceived_Selected>1</OnMasterByteReceived_Selected>
-    <OnMasterByteReceived_Name>I2C0_OnMasterByteReceived</OnMasterByteReceived_Name>
-    <OnMasterByteReceived_Priority>interrupts disabled</OnMasterByteReceived_Priority>
-    <OnSlaveBlockSent_Selected>0</OnSlaveBlockSent_Selected>
-    <OnSlaveBlockSent_Name>I2C0_OnSlaveBlockSent</OnSlaveBlockSent_Name>
-    <OnSlaveBlockSent_Priority>interrupts disabled</OnSlaveBlockSent_Priority>
-    <OnSlaveBlockReceived_Selected>0</OnSlaveBlockReceived_Selected>
-    <OnSlaveBlockReceived_Name>I2C0_OnSlaveBlockReceived</OnSlaveBlockReceived_Name>
-    <OnSlaveBlockReceived_Priority>interrupts disabled</OnSlaveBlockReceived_Priority>
-    <OnSlaveByteReceived_Selected>0</OnSlaveByteReceived_Selected>
-    <OnSlaveByteReceived_Name>I2C0_OnSlaveByteReceived</OnSlaveByteReceived_Name>
-    <OnSlaveByteReceived_Priority>interrupts disabled</OnSlaveByteReceived_Priority>
-    <OnSlaveRxRequest_Selected>0</OnSlaveRxRequest_Selected>
-    <OnSlaveRxRequest_Name>I2C0_OnSlaveRxRequest</OnSlaveRxRequest_Name>
-    <OnSlaveRxRequest_Priority>interrupts disabled</OnSlaveRxRequest_Priority>
-    <OnSlaveTxRequest_Selected>0</OnSlaveTxRequest_Selected>
-    <OnSlaveTxRequest_Name>I2C0_OnSlaveTxRequest</OnSlaveTxRequest_Name>
-    <OnSlaveTxRequest_Priority>interrupts disabled</OnSlaveTxRequest_Priority>
-    <OnSlaveGeneralCallAddr_Selected>0</OnSlaveGeneralCallAddr_Selected>
-    <OnSlaveGeneralCallAddr_Name>I2C0_OnSlaveGeneralCallAddr</OnSlaveGeneralCallAddr_Name>
-    <OnSlaveGeneralCallAddr_Priority>interrupts disabled</OnSlaveGeneralCallAddr_Priority>
-    <OnSlaveSmBusCallAddr_Selected>0</OnSlaveSmBusCallAddr_Selected>
-    <OnSlaveSmBusCallAddr_Name>I2C0_OnSlaveSmBusCallAddr</OnSlaveSmBusCallAddr_Name>
-    <OnSlaveSmBusCallAddr_Priority>interrupts disabled</OnSlaveSmBusCallAddr_Priority>
-    <OnSlaveSmBusAlertResponse_Selected>0</OnSlaveSmBusAlertResponse_Selected>
-    <OnSlaveSmBusAlertResponse_Name>I2C0_OnSlaveSmBusAlertResponse</OnSlaveSmBusAlertResponse_Name>
-    <OnSlaveSmBusAlertResponse_Priority>interrupts disabled</OnSlaveSmBusAlertResponse_Priority>
-    <OnError_Selected>1</OnError_Selected>
-    <OnError_Name>I2C0_OnError</OnError_Name>
-    <OnError_Priority>interrupts disabled</OnError_Priority>
-    <OnBusStartDetected_Selected>1</OnBusStartDetected_Selected>
-    <OnBusStartDetected_Name>I2C0_OnBusStartDetected</OnBusStartDetected_Name>
-    <OnBusStartDetected_Priority>interrupts disabled</OnBusStartDetected_Priority>
-    <OnBusStopDetected_Selected>1</OnBusStopDetected_Selected>
-    <OnBusStopDetected_Name>I2C0_OnBusStopDetected</OnBusStopDetected_Name>
-    <OnBusStopDetected_Priority>interrupts disabled</OnBusStopDetected_Priority>
-    <ISR_IntISRHandle />
-    <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
-    <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
-    <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
-    <GenMethodPos>18</GenMethodPos>
-    <MethodPos>
-      <MethodPos0>Init</MethodPos0>
-      <MethodType>method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>186</LineBeg>
-      <LineEnd>210</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos1>Deinit</MethodPos1>
-      <MethodType>method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>211</LineBeg>
-      <LineEnd>225</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos2>MasterSendBlock</MethodPos2>
-      <MethodType>method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>226</LineBeg>
-      <LineEnd>272</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos3>MasterReceiveBlock</MethodPos3>
-      <MethodType>method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>273</LineBeg>
-      <LineEnd>323</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos4>SelectSlaveDevice</MethodPos4>
-      <MethodType>method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>324</LineBeg>
-      <LineEnd>358</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos5>GetError</MethodPos5>
-      <MethodType>method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>359</LineBeg>
-      <LineEnd>381</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos6>Interrupt</MethodPos6>
-      <MethodType>internal_method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>382</LineBeg>
-      <LineEnd>394</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos7>SetClockConfiguration</MethodPos7>
-      <MethodType>internal_method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>395</LineBeg>
-      <LineEnd>407</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos8>HWEnDi</MethodPos8>
-      <MethodType>internal_method_declaration</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>197</LineBeg>
-      <LineEnd>199</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos9>Interrupt</MethodPos9>
-      <MethodType>internal_method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>200</LineBeg>
-      <LineEnd>294</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos10>Init</MethodPos10>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>295</LineBeg>
-      <LineEnd>383</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos11>Deinit</MethodPos11>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>384</LineBeg>
-      <LineEnd>412</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos12>MasterSendBlock</MethodPos12>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>413</LineBeg>
-      <LineEnd>512</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos13>MasterReceiveBlock</MethodPos13>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>513</LineBeg>
-      <LineEnd>617</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos14>SelectSlaveDevice</MethodPos14>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>618</LineBeg>
-      <LineEnd>692</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos15>GetError</MethodPos15>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>693</LineBeg>
-      <LineEnd>731</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos16>HWEnDi</MethodPos16>
-      <MethodType>internal_method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>732</LineBeg>
-      <LineEnd>756</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos17>SetClockConfiguration</MethodPos17>
-      <MethodType>internal_method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>757</LineBeg>
-      <LineEnd>783</LineEnd>
-    </MethodPos>
-    <GenExtraFilesCount>1</GenExtraFilesCount>
-    <ExtraFile0>Documentation\doxygen\I2C0_component.txt</ExtraFile0>
-  </ComponentID_22>
   <ComponentID_36>
     <Generated>true</Generated>
     <GenCompName>UTIL1</GenCompName>
@@ -4548,6 +4266,288 @@
     </MethodPos>
     <GenExtraFilesCount>0</GenExtraFilesCount>
   </ComponentID_36>
+  <ComponentID_21>
+    <Generated>true</Generated>
+    <GenCompName>CS1</GenCompName>
+    <GenComponentVersion>01.009</GenComponentVersion>
+    <GenDriverVersion>01.00</GenDriverVersion>
+    <GenEventModule />
+    <HeaderAge>1234279382</HeaderAge>
+    <CodeAge>1234279381</CodeAge>
+    <AsemblAge>-1</AsemblAge>
+    <GenNumMethods>3</GenNumMethods>
+    <CriticalVariable>true</CriticalVariable>
+    <EnterCritical>true</EnterCritical>
+    <ExitCritical>true</ExitCritical>
+    <GenNumEvents>0</GenNumEvents>
+    <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
+    <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
+    <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
+    <GenMethodPos>6</GenMethodPos>
+    <MethodPos>
+      <MethodPos0>CriticalVariable</MethodPos0>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>67</LineBeg>
+      <LineEnd>79</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos1>EnterCritical</MethodPos1>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>80</LineBeg>
+      <LineEnd>101</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos2>ExitCritical</MethodPos2>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>102</LineBeg>
+      <LineEnd>119</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos3>CriticalVariable</MethodPos3>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>46</LineBeg>
+      <LineEnd>61</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos4>EnterCritical</MethodPos4>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>62</LineBeg>
+      <LineEnd>77</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos5>ExitCritical</MethodPos5>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>78</LineBeg>
+      <LineEnd>93</LineEnd>
+    </MethodPos>
+    <GenExtraFilesCount>0</GenExtraFilesCount>
+  </ComponentID_21>
+  <ComponentID_22>
+    <Generated>true</Generated>
+    <GenCompName>I2C0</GenCompName>
+    <GenComponentVersion>01.016</GenComponentVersion>
+    <GenDriverVersion>01.07</GenDriverVersion>
+    <GenEventModule>Events</GenEventModule>
+    <HeaderAge>1233496780</HeaderAge>
+    <CodeAge>1233496780</CodeAge>
+    <AsemblAge>-1</AsemblAge>
+    <GenNumMethods>33</GenNumMethods>
+    <Init>true</Init>
+    <Deinit>true</Deinit>
+    <Enable>false</Enable>
+    <Disable>false</Disable>
+    <SetEventMask>false</SetEventMask>
+    <GetEventMask>false</GetEventMask>
+    <MasterSendBlock>true</MasterSendBlock>
+    <MasterGetBlockSentStatus>false</MasterGetBlockSentStatus>
+    <MasterGetSentDataNum>false</MasterGetSentDataNum>
+    <MasterReceiveBlock>true</MasterReceiveBlock>
+    <MasterGetBlockReceivedStatus>false</MasterGetBlockReceivedStatus>
+    <MasterGetReceivedDataNum>false</MasterGetReceivedDataNum>
+    <MasterUpdateReceiveBlockSize>false</MasterUpdateReceiveBlockSize>
+    <SlaveSendBlock>false</SlaveSendBlock>
+    <SlaveGetBlockSentStatus>false</SlaveGetBlockSentStatus>
+    <SlaveGetSentDataNum>false</SlaveGetSentDataNum>
+    <SlaveCancelTransmissionBlock>false</SlaveCancelTransmissionBlock>
+    <SlaveReceiveBlock>false</SlaveReceiveBlock>
+    <SlaveGetBlockReceivedStatus>false</SlaveGetBlockReceivedStatus>
+    <SlaveGetReceivedDataNum>false</SlaveGetReceivedDataNum>
+    <SlaveUpdateReceiveBlockSize>false</SlaveUpdateReceiveBlockSize>
+    <SlaveCancelReceptionBlock>false</SlaveCancelReceptionBlock>
+    <SelectSlaveDevice>true</SelectSlaveDevice>
+    <SetAcknowledgeMode>false</SetAcknowledgeMode>
+    <SendAcknowledge>false</SendAcknowledge>
+    <GetError>true</GetError>
+    <CheckBus>false</CheckBus>
+    <GetStats>false</GetStats>
+    <ClearStats>false</ClearStats>
+    <Main>false</Main>
+    <ConnectPin>false</ConnectPin>
+    <SetOperationMode>false</SetOperationMode>
+    <GetDriverState>false</GetDriverState>
+    <GenNumEvents>14</GenNumEvents>
+    <OnMasterBlockSent_Selected>3</OnMasterBlockSent_Selected>
+    <OnMasterBlockSent_Name>I2C0_OnMasterBlockSent</OnMasterBlockSent_Name>
+    <OnMasterBlockSent_Priority>interrupts disabled</OnMasterBlockSent_Priority>
+    <OnMasterBlockReceived_Selected>3</OnMasterBlockReceived_Selected>
+    <OnMasterBlockReceived_Name>I2C0_OnMasterBlockReceived</OnMasterBlockReceived_Name>
+    <OnMasterBlockReceived_Priority>interrupts disabled</OnMasterBlockReceived_Priority>
+    <OnMasterByteReceived_Selected>1</OnMasterByteReceived_Selected>
+    <OnMasterByteReceived_Name>I2C0_OnMasterByteReceived</OnMasterByteReceived_Name>
+    <OnMasterByteReceived_Priority>interrupts disabled</OnMasterByteReceived_Priority>
+    <OnSlaveBlockSent_Selected>0</OnSlaveBlockSent_Selected>
+    <OnSlaveBlockSent_Name>I2C0_OnSlaveBlockSent</OnSlaveBlockSent_Name>
+    <OnSlaveBlockSent_Priority>interrupts disabled</OnSlaveBlockSent_Priority>
+    <OnSlaveBlockReceived_Selected>0</OnSlaveBlockReceived_Selected>
+    <OnSlaveBlockReceived_Name>I2C0_OnSlaveBlockReceived</OnSlaveBlockReceived_Name>
+    <OnSlaveBlockReceived_Priority>interrupts disabled</OnSlaveBlockReceived_Priority>
+    <OnSlaveByteReceived_Selected>0</OnSlaveByteReceived_Selected>
+    <OnSlaveByteReceived_Name>I2C0_OnSlaveByteReceived</OnSlaveByteReceived_Name>
+    <OnSlaveByteReceived_Priority>interrupts disabled</OnSlaveByteReceived_Priority>
+    <OnSlaveRxRequest_Selected>0</OnSlaveRxRequest_Selected>
+    <OnSlaveRxRequest_Name>I2C0_OnSlaveRxRequest</OnSlaveRxRequest_Name>
+    <OnSlaveRxRequest_Priority>interrupts disabled</OnSlaveRxRequest_Priority>
+    <OnSlaveTxRequest_Selected>0</OnSlaveTxRequest_Selected>
+    <OnSlaveTxRequest_Name>I2C0_OnSlaveTxRequest</OnSlaveTxRequest_Name>
+    <OnSlaveTxRequest_Priority>interrupts disabled</OnSlaveTxRequest_Priority>
+    <OnSlaveGeneralCallAddr_Selected>0</OnSlaveGeneralCallAddr_Selected>
+    <OnSlaveGeneralCallAddr_Name>I2C0_OnSlaveGeneralCallAddr</OnSlaveGeneralCallAddr_Name>
+    <OnSlaveGeneralCallAddr_Priority>interrupts disabled</OnSlaveGeneralCallAddr_Priority>
+    <OnSlaveSmBusCallAddr_Selected>0</OnSlaveSmBusCallAddr_Selected>
+    <OnSlaveSmBusCallAddr_Name>I2C0_OnSlaveSmBusCallAddr</OnSlaveSmBusCallAddr_Name>
+    <OnSlaveSmBusCallAddr_Priority>interrupts disabled</OnSlaveSmBusCallAddr_Priority>
+    <OnSlaveSmBusAlertResponse_Selected>0</OnSlaveSmBusAlertResponse_Selected>
+    <OnSlaveSmBusAlertResponse_Name>I2C0_OnSlaveSmBusAlertResponse</OnSlaveSmBusAlertResponse_Name>
+    <OnSlaveSmBusAlertResponse_Priority>interrupts disabled</OnSlaveSmBusAlertResponse_Priority>
+    <OnError_Selected>1</OnError_Selected>
+    <OnError_Name>I2C0_OnError</OnError_Name>
+    <OnError_Priority>interrupts disabled</OnError_Priority>
+    <OnBusStartDetected_Selected>1</OnBusStartDetected_Selected>
+    <OnBusStartDetected_Name>I2C0_OnBusStartDetected</OnBusStartDetected_Name>
+    <OnBusStartDetected_Priority>interrupts disabled</OnBusStartDetected_Priority>
+    <OnBusStopDetected_Selected>1</OnBusStopDetected_Selected>
+    <OnBusStopDetected_Name>I2C0_OnBusStopDetected</OnBusStopDetected_Name>
+    <OnBusStopDetected_Priority>interrupts disabled</OnBusStopDetected_Priority>
+    <ISR_IntISRHandle />
+    <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
+    <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
+    <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
+    <GenMethodPos>18</GenMethodPos>
+    <MethodPos>
+      <MethodPos0>Init</MethodPos0>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>186</LineBeg>
+      <LineEnd>210</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos1>Deinit</MethodPos1>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>211</LineBeg>
+      <LineEnd>225</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos2>MasterSendBlock</MethodPos2>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>226</LineBeg>
+      <LineEnd>272</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos3>MasterReceiveBlock</MethodPos3>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>273</LineBeg>
+      <LineEnd>323</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos4>SelectSlaveDevice</MethodPos4>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>324</LineBeg>
+      <LineEnd>358</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos5>GetError</MethodPos5>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>359</LineBeg>
+      <LineEnd>381</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos6>Interrupt</MethodPos6>
+      <MethodType>internal_method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>382</LineBeg>
+      <LineEnd>394</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos7>SetClockConfiguration</MethodPos7>
+      <MethodType>internal_method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>395</LineBeg>
+      <LineEnd>407</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos8>HWEnDi</MethodPos8>
+      <MethodType>internal_method_declaration</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>197</LineBeg>
+      <LineEnd>199</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos9>Interrupt</MethodPos9>
+      <MethodType>internal_method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>200</LineBeg>
+      <LineEnd>294</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos10>Init</MethodPos10>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>295</LineBeg>
+      <LineEnd>383</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos11>Deinit</MethodPos11>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>384</LineBeg>
+      <LineEnd>412</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos12>MasterSendBlock</MethodPos12>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>413</LineBeg>
+      <LineEnd>512</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos13>MasterReceiveBlock</MethodPos13>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>513</LineBeg>
+      <LineEnd>617</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos14>SelectSlaveDevice</MethodPos14>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>618</LineBeg>
+      <LineEnd>692</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos15>GetError</MethodPos15>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>693</LineBeg>
+      <LineEnd>731</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos16>HWEnDi</MethodPos16>
+      <MethodType>internal_method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>732</LineBeg>
+      <LineEnd>756</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos17>SetClockConfiguration</MethodPos17>
+      <MethodType>internal_method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>757</LineBeg>
+      <LineEnd>783</LineEnd>
+    </MethodPos>
+    <GenExtraFilesCount>1</GenExtraFilesCount>
+    <ExtraFile0>Documentation\doxygen\I2C0_component.txt</ExtraFile0>
+  </ComponentID_22>
   <ComponentID_79>
     <Generated>true</Generated>
     <GenCompName>TRIG</GenCompName>
@@ -5728,7 +5728,7 @@
       <LineEnd>232</LineEnd>
     </MethodPos>
     <GenExtraFilesCount>0</GenExtraFilesCount>
-    <InhrCompID_144>
+    <InhrCompID_166>
       <Generated>true</Generated>
       <GenCompName>STCP1</GenCompName>
       <GenComponentVersion>02.086</GenComponentVersion>
@@ -5811,7 +5811,7 @@
         <LineEnd>158</LineEnd>
       </MethodPos>
       <GenExtraFilesCount>0</GenExtraFilesCount>
-      <InhrCompID_145>
+      <InhrCompID_167>
         <Generated>true</Generated>
         <GenCompName>BitIoLdd1</GenCompName>
         <GenComponentVersion>01.033</GenComponentVersion>
@@ -5911,9 +5911,9 @@
         </MethodPos>
         <GenExtraFilesCount>1</GenExtraFilesCount>
         <ExtraFile0>Documentation\doxygen\BitIoLdd1_component.txt</ExtraFile0>
-      </InhrCompID_145>
-    </InhrCompID_144>
-    <InhrCompID_146>
+      </InhrCompID_167>
+    </InhrCompID_166>
+    <InhrCompID_168>
       <Generated>true</Generated>
       <GenCompName>DS1</GenCompName>
       <GenComponentVersion>02.086</GenComponentVersion>
@@ -5996,7 +5996,7 @@
         <LineEnd>158</LineEnd>
       </MethodPos>
       <GenExtraFilesCount>0</GenExtraFilesCount>
-      <InhrCompID_147>
+      <InhrCompID_169>
         <Generated>true</Generated>
         <GenCompName>BitIoLdd2</GenCompName>
         <GenComponentVersion>01.033</GenComponentVersion>
@@ -6096,9 +6096,9 @@
         </MethodPos>
         <GenExtraFilesCount>1</GenExtraFilesCount>
         <ExtraFile0>Documentation\doxygen\BitIoLdd2_component.txt</ExtraFile0>
-      </InhrCompID_147>
-    </InhrCompID_146>
-    <InhrCompID_148>
+      </InhrCompID_169>
+    </InhrCompID_168>
+    <InhrCompID_170>
       <Generated>true</Generated>
       <GenCompName>SHCP1</GenCompName>
       <GenComponentVersion>02.086</GenComponentVersion>
@@ -6181,7 +6181,7 @@
         <LineEnd>158</LineEnd>
       </MethodPos>
       <GenExtraFilesCount>0</GenExtraFilesCount>
-      <InhrCompID_149>
+      <InhrCompID_171>
         <Generated>true</Generated>
         <GenCompName>BitIoLdd3</GenCompName>
         <GenComponentVersion>01.033</GenComponentVersion>
@@ -6281,9 +6281,9 @@
         </MethodPos>
         <GenExtraFilesCount>1</GenExtraFilesCount>
         <ExtraFile0>Documentation\doxygen\BitIoLdd3_component.txt</ExtraFile0>
-      </InhrCompID_149>
-    </InhrCompID_148>
-    <InhrCompID_150>
+      </InhrCompID_171>
+    </InhrCompID_170>
+    <InhrCompID_172>
       <Generated>true</Generated>
       <GenCompName>OE1</GenCompName>
       <GenComponentVersion>02.086</GenComponentVersion>
@@ -6366,7 +6366,7 @@
         <LineEnd>158</LineEnd>
       </MethodPos>
       <GenExtraFilesCount>0</GenExtraFilesCount>
-      <InhrCompID_151>
+      <InhrCompID_173>
         <Generated>true</Generated>
         <GenCompName>BitIoLdd4</GenCompName>
         <GenComponentVersion>01.033</GenComponentVersion>
@@ -6466,8 +6466,8 @@
         </MethodPos>
         <GenExtraFilesCount>1</GenExtraFilesCount>
         <ExtraFile0>Documentation\doxygen\BitIoLdd4_component.txt</ExtraFile0>
-      </InhrCompID_151>
-    </InhrCompID_150>
+      </InhrCompID_173>
+    </InhrCompID_172>
   </ComponentID_135>
   <ComponentID_152>
     <Generated>true</Generated>
@@ -6948,7 +6948,7 @@
       <LineEnd>989</LineEnd>
     </MethodPos>
     <GenExtraFilesCount>0</GenExtraFilesCount>
-    <InhrCompID_153>
+    <InhrCompID_174>
       <Generated>true</Generated>
       <GenCompName>MINT1</GenCompName>
       <GenComponentVersion>02.105</GenComponentVersion>
@@ -7000,7 +7000,7 @@
         <LineEnd>118</LineEnd>
       </MethodPos>
       <GenExtraFilesCount>0</GenExtraFilesCount>
-      <InhrCompID_154>
+      <InhrCompID_175>
         <Generated>true</Generated>
         <GenCompName>ExtIntLdd1</GenCompName>
         <GenComponentVersion>02.156</GenComponentVersion>
@@ -7072,8 +7072,8 @@
         </MethodPos>
         <GenExtraFilesCount>1</GenExtraFilesCount>
         <ExtraFile0>Documentation\doxygen\ExtIntLdd1_component.txt</ExtraFile0>
-      </InhrCompID_154>
-    </InhrCompID_153>
+      </InhrCompID_175>
+    </InhrCompID_174>
   </ComponentID_152>
   <ComponentID_155>
     <Generated>true</Generated>

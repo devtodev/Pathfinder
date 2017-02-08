@@ -6,7 +6,7 @@
 **     Version     : Component 01.003, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-19, 12:56, # CodeGen: 96
+**     Date/Time   : 2017-01-29, 16:20, # CodeGen: 102
 **     Abstract    :
 **
 **     Settings    :
@@ -61,9 +61,9 @@
   #include "MMA1.h"
   #include "GI2C1.h"
   #include "TMOUT1.h"
+  #include "UTIL1.h"
   #include "CS1.h"
   #include "I2C0.h"
-  #include "UTIL1.h"
   #include "TRIG.h"
   #include "WAIT1.h"
   #include "MotorSpeed_4.h"
