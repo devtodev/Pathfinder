@@ -179,6 +179,14 @@ void readBuffer()
 
 void analizarEnvioDelServer()
 {
+	int position[10];
+	char action = '\0';
+	if (find(wifiInputBuffer, "{\0", (int *) &position) > 0)
+	{
+		action = wifiInputBuffer[position[0]+1];
+		pushAction(action);
+	}
+
 	BT_showString("Robot command!\r\n\0");
 }
 
@@ -191,11 +199,11 @@ void verificarEnvioAlServer()
 void sendInfo(char *data)
 {
 	// "DeviceID|TipoAccionId|Valor"
-	sendATCommand("AT+CIPSEND=5\0");
+	sendATCommand("AT+CIPSEND=0,5\0");
 	FRTOS1_vTaskDelay(1000/portTICK_RATE_MS);
 	sendPartialATCommand(DEVICE_ID);
-	sendPartialATCommand("|\0");
-	sendPartialATCommand(data);
+	sendPartialATCommand("1234\0");
+//	sendPartialATCommand(data);
 }
 
 void evaluarConeccionConServer()

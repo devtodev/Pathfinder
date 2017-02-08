@@ -53,18 +53,18 @@ void BT_showString(char *text)
 
 void BT_showLog(char *text)
 {
-	xSemaphoreTake(xSemaphoreBTWrite, portMAX_DELAY);
+//	xSemaphoreTake(xSemaphoreBTWrite, portMAX_DELAY);
 	if (BT_logMode == logMode_DEBUG)
 		BT_showString(text);
-	xSemaphoreGive(xSemaphoreBTWrite);
+//	xSemaphoreGive(xSemaphoreBTWrite);
 }
 
 void BT_showLogChar(char data)
 {
-	xSemaphoreTake(xSemaphoreBTWrite, portMAX_DELAY);
+//	xSemaphoreTake(xSemaphoreBTWrite, portMAX_DELAY);
 	if (BT_logMode == logMode_DEBUG)
 		BT_SendChar(data);
-	xSemaphoreGive(xSemaphoreBTWrite);
+//	xSemaphoreGive(xSemaphoreBTWrite);
 }
 
 int BT_showMenu(char text[MENUMAXLENGHT][64], char *reply)
