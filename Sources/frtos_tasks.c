@@ -46,7 +46,7 @@ static portTASK_FUNCTION(motorTask, pvParameters) {
 	int overturn = 0;
 	int distance = 0;
 	for(;;) {
-		move_correction();
+//		move_correction();
 		if( xQueueReceive( queueMotor, &( currentAction ), 0) )
 		{
 			vTaskDelay(currentAction.delayms/portTICK_RATE_MS);
@@ -71,6 +71,7 @@ static portTASK_FUNCTION(motorTask, pvParameters) {
 	}
 	vTaskDelete(motorTask);
 }
+#if nav
 static portTASK_FUNCTION(navigationTask, pvParameters) {
 	int iStep = -1;
 	for(;;) {
@@ -97,6 +98,7 @@ static portTASK_FUNCTION(navigationTask, pvParameters) {
 	}
 	vTaskDelete(navigationTask);
 }
+#endif
 
 static portTASK_FUNCTION(GatewayTask, pvParameters) {
 
@@ -226,7 +228,7 @@ static portTASK_FUNCTION(SensorUltrasonidoTask, pvParameters) {
 	    {
 			if (count >= 50)
 			{
-				sendInfo(Distance_getFront());
+				sendInfo(Distance_getFront(), currentAction.type, gforceXYZ[0], gforceXYZ[1], gforceXYZ[2], position.orientation.Psi, position.orientation.The, position.orientation.Phi);
 				count = 0;
 			}
 			count++;
@@ -284,7 +286,7 @@ static portTASK_FUNCTION(PositionTask, pvParameters) {
 		  	position.orientation.Vy = Vy;
 		  	position.orientation.Vz = Vz;
 		  	cursor = 0;
-
+/*
 			if (SHOW_GFORCES)
 			{
 				point2string(gforceXYZ, str);
@@ -296,7 +298,7 @@ static portTASK_FUNCTION(PositionTask, pvParameters) {
 				angles2string(position.orientation, str);
 				BT_showString(str);
 				BT_showString("\r\n\0");
-		  	}
+		  	}*/
 	  	}
 	  	vTaskDelay(10/portTICK_RATE_MS);
   }
@@ -323,7 +325,7 @@ void CreateTasks(void) {
         for(;;){}; /* error! probably out of memory */
         /*lint +e527 */
     }
-
+#if nav
 	if (FRTOS1_xTaskCreate(
   		  navigationTask,
           "navigationTask",
@@ -336,22 +338,9 @@ void CreateTasks(void) {
     }
 
 	if (FRTOS1_xTaskCreate(
-	  SensorUltrasonidoTask,
-	  "SensorUltrasonidoTask",
-	  configMINIMAL_STACK_SIZE+200,
-	  (void*)NULL,
-	  tskIDLE_PRIORITY + 1,
-	  (xTaskHandle*)NULL
-	) != pdPASS) {
-	  for(;;){};
-	}
-
-#ifdef blablaaba
-
-	if (FRTOS1_xTaskCreate(
 		  PositionTask,  /* pointer to the task */
       "PositionTask", /* task name for kernel awareness debugging */
-      configMINIMAL_STACK_SIZE , /* task stack size */
+      configMINIMAL_STACK_SIZE +200, /* task stack size */
       (void*)NULL, /* optional task startup argument */
       tskIDLE_PRIORITY + 1,  /* initial priority */
       (xTaskHandle*)NULL /* optional task handle to create */
@@ -360,13 +349,27 @@ void CreateTasks(void) {
       for(;;){}; /* error! probably out of memory */
       /*lint +e527 */
   }
+
 #endif
+
+
+	if (FRTOS1_xTaskCreate(
+	  SensorUltrasonidoTask,
+	  "SensorUltrasonidoTask",
+	  configMINIMAL_STACK_SIZE,
+	  (void*)NULL,
+	  tskIDLE_PRIORITY + 1,
+	  (xTaskHandle*)NULL
+	) != pdPASS) {
+	  for(;;){};
+	}
+
   if (FRTOS1_xTaskCreate(
      GatewayTask,  /* pointer to the task */
       "Gateway", /* task name for kernel awareness debugging */
-      1900, /* task stack size */
+      1500, /* task stack size */
       (void*)NULL, /* optional task startup argument */
-      tskIDLE_PRIORITY + 1,  /* initial priority */
+      tskIDLE_PRIORITY + 2,  /* initial priority */
       (xTaskHandle*)NULL /* optional task handle to create */
     ) != pdPASS) {
       /*lint -e527 */
@@ -379,7 +382,7 @@ void CreateTasks(void) {
       "HMI", /* task name for kernel awareness debugging */
       1200, /* task stack size */
       (void*)NULL, /* optional task startup argument */
-      tskIDLE_PRIORITY + 1,  /* initial priority */
+      tskIDLE_PRIORITY + 2,  /* initial priority */
       (xTaskHandle*)NULL /* optional task handle to create */
     ) != pdPASS) {
       /*lint -e527 */

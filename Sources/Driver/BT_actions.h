@@ -10,7 +10,7 @@
 #define logMode_PROD  2
 
 // BTmode
-#define DEBUG	1
+#define DEBUG	0
 #define MENU	1
 #define INPUT	2
 

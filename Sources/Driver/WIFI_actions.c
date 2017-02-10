@@ -208,13 +208,28 @@ void verificarEnvioAlServer()
 	xSemaphoreGive(xSemaphoreWifiRefresh);
 }
 
-void sendInfo(int distance)
+void sendInfo(int distance, char action, int gx, int gy, int gz, int Psi, int The, int Phi)
 {
-	char data[50], command[100], temp[10];
-	Num16sToStr(temp, 10, distance);
+	char data[100], command[200], temp[10], saction[2];
+
 	strcpy(data, "{\"distance\":");
+	Num16sToStr(temp, 10, distance);
 	strcat(data, temp);
-	strcat(data, "}\0");
+	strcat(data, ",\"action\":\"");
+	saction[0] = action;
+	saction[1] = '\0';
+	strcat(data, saction);
+/*	strcat(data, "\",\"gforce\":{\"x\":\0");
+	Num16sToStr(temp, 10, gx);
+	strcat(data, temp);
+	strcat(data, ",\"y\":\0");
+	Num16sToStr(temp, 10, gy);
+	strcat(data, temp);
+	strcat(data, ",\"z\":\0");
+	Num16sToStr(temp, 10, gz);
+	strcat(data, temp);
+	strcat(data, "\"} }\0"); */
+	strcat(data, "\"}\0");
 
 	Num16sToStr(temp, 10, strlen(data));
 
@@ -244,8 +259,7 @@ void evaluarConeccionConServer()
 	}
 	// conecto correctamente
 	connection.status = WIFI_CONNECTED;
-	// presentarse !
-	sendInfo("presentarse|ok");
+	// TODO: presentarse !
 	xSemaphoreGive(xSemaphoreWifiRefresh);
 }
 

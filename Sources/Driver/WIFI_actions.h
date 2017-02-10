@@ -43,7 +43,7 @@ char getStatus();
 char *getWifiBuffer();
 char tryToConnect();
 void readBuffer();
-void sendInfo(int distance);
+void sendInfo(int distance, char action, int gx, int gy, int gz, int Psi, int The, int Phi);
 int SSIDStoredVisible();
 void disconectFromSpot();
 
