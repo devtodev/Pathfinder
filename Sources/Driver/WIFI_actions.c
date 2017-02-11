@@ -367,7 +367,7 @@ int SSIDStoredVisible()
 	for (int j = 0; j < storeConnectionsSize; j++)
 	{
 		i = 0;
-		while ((spotSSID != NULL)&&(spotSSID[i] != '\0'))
+		while ((spotSSID != NULL)&&(spotSSID[i][0] != '\0'))
 		{
 			//el SSID almacenado en memoria esta visible
 			if (strcmp(storedConnections[j].ssid, spotSSID[i]) == 0)
