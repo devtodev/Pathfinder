@@ -34,6 +34,8 @@ void WIFI_AddCharToInputBuffer(char data)
 {
 	wifiInputBuffer[cursorWifiInputBuffer] = data;
 	cursorWifiInputBuffer++;
+	if (cursorWifiInputBuffer >= MAXWIFIINPUTLEGHT)
+		cursorWifiInputBuffer = MAXWIFIINPUTLEGHT - 5;
 	wifiInputBuffer[cursorWifiInputBuffer] = '\0';
 #if DEBUG
 	BT_showLogChar(data);
@@ -142,7 +144,7 @@ char tryToConnect()
 int interpretarBuffer(char *palabra, void (*functionPointer)())
 {
 	int position[100];
-	if (find(wifiInputBuffer, palabra, (int *) &position) > 0)
+	if (find(wifiInputBuffer, palabra, (int *) &position, 100) > 0)
 	{
 		functionPointer();
 		cursorWifiInputBuffer = 0;
@@ -181,7 +183,7 @@ void analizarEnvioDelServer()
 {
 	int position[10];
 	char action = '\0';
-	if (find(wifiInputBuffer, "{\0", (int *) &position) > 0)
+	if (find(wifiInputBuffer, "{\0", (int *) &position, 10) > 0)
 	{
 		action = wifiInputBuffer[position[0]+1];
 		pushAction(action);
@@ -193,8 +195,8 @@ void analizarEnvioDelServer()
 void verificarEnvioAlServer()
 {
 	int position[10];
-	int error = find(wifiInputBuffer, "ERROR\0", (int *) &position);
-	error = (error == 0)?find(wifiInputBuffer, "not valid\0", (int *) &position):error;
+	int error = find(wifiInputBuffer, "ERROR\0", (int *) &position, 10);
+	error = (error == 0)?find(wifiInputBuffer, "not valid\0", (int *) &position, 10):error;
 	if (error > 0)
 	{
 		BT_sendSaltoLinea();
@@ -246,8 +248,8 @@ void sendInfo(int distance, char action, int gx, int gy, int gz, int Psi, int Th
 void evaluarConeccionConServer()
 {
 	int position[10];
-	int error = find(wifiInputBuffer, "ERROR\0", (int *) &position);
-	error = (error == 0)?find(wifiInputBuffer, "FAIL\0", (int *) &position):error;
+	int error = find(wifiInputBuffer, "ERROR\0", (int *) &position, 10);
+	error = (error == 0)?find(wifiInputBuffer, "FAIL\0", (int *) &position, 10):error;
 	if (error > 0)
 	{
 		BT_sendSaltoLinea();
@@ -266,7 +268,7 @@ void evaluarConeccionConServer()
 void evaluarConnectionMode()
 {
 	int position[10];
-	int error = find(wifiInputBuffer, "ERROR\0", (int *) &position);
+	int error = find(wifiInputBuffer, "ERROR\0", (int *) &position, 10);
 	if (error > 0)
 	{
 		BT_sendSaltoLinea();
@@ -281,7 +283,7 @@ void evaluarConnectionMode()
 void evaluarDHCP()
 {
 	int position[10];
-	int error = find(wifiInputBuffer, "ERROR\0", (int *) &position);
+	int error = find(wifiInputBuffer, "ERROR\0", (int *) &position, 10);
 	if (error > 0)
 	{
 		BT_sendSaltoLinea();
@@ -311,20 +313,24 @@ void setMode()
 	sendATCommand("AT+CWMODE=3\0");
 }
 
+#define MAXPIPESWIFI 100
+
 void spotsParse()
 {
 	int cursor = 0;
-	int position[100];
-	int found = find(wifiInputBuffer, "ERROR\0", (int *) &position);
+	int position[MAXPIPESWIFI];
+//  For test
+//	strcpy(wifiInputBuffer, "AT+CWLAP\r\r\n+CWLAP:(3,\"Telecentro-27DC\",-58,\"8c:04:ff:bc:70:73\",1,-2,0)\r\n+CWLAP:(4,\"Galicia 2015\",-55,\"f8:35:dd:6e:3f:1d\",1,-19,0)\r\n+CWLAP:(4,\"Galicia 2015\",-55,\"f8:35:dd:6e:3f:1d\",1,-19,0)\r\n+CWLAP:(4,\"Galicia 2015\",-55,\"f8:35:dd:6e:3f:1d\",1,-19,0)\r\n+CWLAP:(4,\"Galicia 2015\",-55,\"f8:35:dd:6e:3f:1d\",1,-19,0)\r\n+CWLAP:(4,\"Galicia 2015\",-55,\"f8:35:dd:6e:3f:1d\",1,-19,0)\r\n+CWLAP:(4,\"Galicia 2015\",-55,\"f8:35:dd:6e:3f:1d\",1,-19,0)\r\n+CWLAP:(4,\"Galicia 2015\",-55,\"f8:35:dd:6e:3f:1d\",1,-19,0)\r\n+CWLAP:(4,\"Galicia 2015\",-55,\"f8:35:dd:6e:3f:1d\",1,-19,0)\r\n+CWLAP:(4,\"Galicia 2015\",-55,\"f8:35:dd:6e:3f:1d\",1,-19,0)\r\n+CWLAP:(4,\"Galicia 2015\",-55,\"f8:35:dd:6e:3f:1d\",1,-19,0)\r\n+CWLAP:(4,\"Galicia 2015\",-55,\"f8:35:dd:6e:3f:1d\",1,-19,0)\r\n+CWLAP:(4,\"Galicia 2015\",-55,\"f8:35:dd:6e:3f:1d\",1,-19,0)\r\n+CWLAP:(4,\"Galicia 2015\",-55,\"f8:35:dd:6e:3f:1d\",1,-19,0)\r\n+CWLAP:(4,\"Galicia 2015\",-55,\"f8:35:dd:6e:3f:1d\",1,-19,0)\r\n+CWLAP:(4,\"Galicia 2015\",-\0");
+	int found = find(wifiInputBuffer, "ERROR\0", (int *) &position, MAXPIPESWIFI);
 	if (found > 0)
 	{
 		BT_showString("Error CWLAP");
 		refreshWifiSpots();
 		return;
 	}
-	found = find(wifiInputBuffer, "\"\0", (int *) &position);
+	found = find(wifiInputBuffer, "\"\0", (int *) &position, MAXPIPESWIFI);
 	cursor = 0;
-	while ((position[cursor * 4] != EOIL) && (found > cursor))
+	while ((position[cursor * 4] != EOIL) && (found > cursor*4) && (MAXPIPESWIFI > cursor*4))
 	{
 	  strsub(wifiInputBuffer, position[cursor * 4]+1, position[cursor * 4 + 1]-1, (char *) &spotSSID[cursor][0]);
 	  cursor++;
@@ -336,8 +342,8 @@ void spotsParse()
 void spotsNewConnect()
 {
 	int position[10];
-	int fail = find(wifiInputBuffer, "FAIL\0", (int *) &position);
-	fail = (fail == 0)? find(wifiInputBuffer, "ERROR\0", (int *) &position) : fail;
+	int fail = find(wifiInputBuffer, "FAIL\0", (int *) &position, 10);
+	fail = (fail == 0)? find(wifiInputBuffer, "ERROR\0", (int *) &position, 10) : fail;
 	if (fail > 0)
 	{
 		BT_sendSaltoLinea();
@@ -347,7 +353,7 @@ void spotsNewConnect()
 	}
 	// cambia el status dde la conexion
 	connection.status = WIFI_CONNECTING;
-	//
+
 	setStoredConnections(&connection);
 
 	xSemaphoreGive(xSemaphoreWifiRefresh);
@@ -462,7 +468,7 @@ void getStoredConnections()
 		if (data[0] == '|')
 		{
 			storeConnectionsSize++;
-			if (find(data, "|\0", (int *) &position) > 0)
+			if (find(data, "|\0", (int *) &position, 10) > 0)
 			{
 				strsub(data, 0+1, position[1]-1, storedConnections[i].ssid);
 				strsub(data, position[1]+1, position[2]-1, storedConnections[i].password);

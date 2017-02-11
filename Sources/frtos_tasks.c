@@ -147,9 +147,13 @@ static portTASK_FUNCTION(HMITask, pvParameters) {
 		  				temp++;
 		  			}
 		  			if ((temp > 0) && (strcmp("{Ingreso manual}\0", spotSSID[temp-1])!=0))
+		  			{
+		  				temp = (temp >= MAXCANTSPOTSWIFI)?MAXCANTSPOTSWIFI-1:temp;
 		  				strcpy(spotSSID[temp], "{Ingreso manual}\0");
-					// mostrar los SSIDs
-					if (BT_showMenu(&spotSSID, &connection.ssid[0]) != -69)
+		  			}
+		  			// mostrar los SSIDs
+		  			BT_sendSaltoLinea();
+					if (BT_showMenu(&spotSSID[0], &connection.ssid[0]) != -69)
 					{
 						// setPassword
 						BT_sendSaltoLinea();
@@ -380,7 +384,7 @@ void CreateTasks(void) {
   if (FRTOS1_xTaskCreate(
      HMITask,  /* pointer to the task */
       "HMI", /* task name for kernel awareness debugging */
-      1200, /* task stack size */
+      1500, /* task stack size */
       (void*)NULL, /* optional task startup argument */
       tskIDLE_PRIORITY + 2,  /* initial priority */
       (xTaskHandle*)NULL /* optional task handle to create */

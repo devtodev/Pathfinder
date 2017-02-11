@@ -11,7 +11,7 @@
 #define MAXLENFIND 20 // 28
 #define EOL   '\n'
 
-int find(char *text, char *word, int *rtas);
+int find(char *text, char *word, int *rtas, int maxsearch);
 unsigned int strLen(char *value);
 int strsub(char *text, int init, int end, char *rta);
 void setLCD(char *data);

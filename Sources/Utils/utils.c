@@ -26,7 +26,7 @@ char stopChar(char value)
 
 // que pasa si encuentro mas de los que estan dimensionados en la respuesta
 
-int find(char *text, char *word, int *rtas)
+int find(char *text, char *word, int *rtas, int maxsearch)
 {
 	unsigned int indexRtas = 0;
 	unsigned int index = 0;
@@ -36,7 +36,7 @@ int find(char *text, char *word, int *rtas)
 	//unsigned int textLen = length(text);
 
 	rtas[indexRtas] = EOIL;
-	while ((!stopChar(text[index])))
+	while ((!stopChar(text[index])) && (indexRtas < maxsearch))
 	{
 		equals = (word[equals] == text[index])? equals+1 : 0;
 		if (equals == wordLen)
